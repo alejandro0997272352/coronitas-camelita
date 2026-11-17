@@ -3,819 +3,1245 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Únicos — Storytelling 2D para Camelita ✨</title>
+  <title>Para Camelita 👑 — Coronitas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg-night: #07070b;
+      --gold: #f5d076;
+      --pink-neon: #ff7eb6;
+      --lilac: #c084fc;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html, body {
-      margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
-      background: #07070c; color: #f8fafc;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-night);
+      color: #f8fafc;
       font-family: 'Plus Jakarta Sans', sans-serif;
       user-select: none;
     }
-    .font-royal { font-family: 'Cinzel', serif; }
 
-    /* Fondos dinámicos por escena */
-    #scene-bg {
-      position: fixed; inset: 0; z-index: 0;
-      background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 80%);
-      transition: background 0.9s ease;
-    }
-    body.bg-night_stars #scene-bg { background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 80%); }
-    body.bg-dusk_road #scene-bg { background: linear-gradient(180deg, #1e1b4b 0%, #4c1d95 45%, #181024 85%, #07070c 100%); }
-    body.bg-desert_warm #scene-bg { background: linear-gradient(180deg, #431407 0%, #9a3412 45%, #271310 85%, #0a0709 100%); }
-    body.bg-scorching_sun #scene-bg { background: linear-gradient(180deg, #7c2d12 0%, #c2410c 40%, #451a03 80%, #140b07 100%); }
-    body.bg-twilight_sparks #scene-bg { background: linear-gradient(180deg, #1e1b4b 0%, #581c87 48%, #1a0b2e 88%, #07070c 100%); }
-    body.bg-magic_night #scene-bg { background: radial-gradient(circle at 50% 35%, #312e81 0%, #1e1b4b 50%, #07070c 92%); }
-    body.bg-sunrise_transition #scene-bg { background: linear-gradient(180deg, #3b0764 0%, #be185d 45%, #fb923c 78%, #1f1024 100%); }
-    body.bg-neon_galaxy_party #scene-bg { background: radial-gradient(circle at 50% 35%, #6b21a8 0%, #3b0764 52%, #07070c 94%); }
-    body.bg-warm_sunrise #scene-bg { background: linear-gradient(180deg, #831843 0%, #f43f5e 45%, #fbbf24 82%, #23111c 100%); }
-    body.bg-golden_desert #scene-bg { background: linear-gradient(180deg, #78350f 0%, #d97706 48%, #451a03 84%, #110b06 100%); }
-    body.bg-pink_wind_storm #scene-bg { background: radial-gradient(circle at 50% 35%, #9d174d 0%, #500724 55%, #0e0610 95%); }
-
-    #fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-
-    .glass {
-      background: rgba(14, 14, 24, 0.72);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(245, 208, 118, 0.34);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    .font-royal {
+      font-family: 'Cinzel', serif;
     }
 
-    /* Carretera Parallax */
-    .road-floor {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 138px; z-index: 4; pointer-events: none;
-      background: linear-gradient(to top, rgba(12, 10, 20, 0.96) 0%, rgba(192, 132, 252, 0.14) 75%, transparent 100%);
-      border-top: 2px solid rgba(245, 208, 118, 0.32);
-    }
-    .road-dashes {
-      position: absolute; top: 24px; left: 0; width: 200%; height: 3px;
-      background: repeating-linear-gradient(to right, rgba(245, 208, 118, 0.65) 0 28px, transparent 28px 64px);
-    }
-    .road-dashes.moving { animation: roadScroll 0.95s linear infinite; }
-    @keyframes roadScroll { from { transform: translateX(0); } to { transform: translateX(-64px); } }
-
-    /* Karaoke superior */
-    #karaoke-box {
-      position: fixed; top: 52px; left: 50%; transform: translateX(-50%);
-      z-index: 32; width: 94%; max-width: 680px; text-align: center; pointer-events: none;
-    }
-    .k-word {
-      display: inline-block; margin: 0 3px;
-      color: rgba(255, 255, 255, 0.38);
-      transition: color 0.1s ease, text-shadow 0.1s ease, transform 0.1s ease;
-    }
-    .k-word.done { color: #fde68a; text-shadow: 0 0 8px rgba(245, 208, 118, 0.45); }
-    .k-word.active {
-      color: #ffffff;
-      text-shadow: 0 0 14px rgba(255, 126, 182, 0.95), 0 0 26px rgba(245, 208, 118, 0.8);
-      transform: scale(1.07);
-    }
-
-    /* Props Escenográficos 2D interactivos */
-    #props-layer { position: fixed; inset: 0; z-index: 12; pointer-events: none; overflow: hidden; }
-    .prop-interactive { pointer-events: auto; cursor: pointer; transition: transform 0.2s ease; }
-    .prop-interactive:active { transform: scale(1.18); }
-
-    @keyframes windSweep {
-      0% { transform: translateX(110vw) rotate(-6deg); opacity: 0; }
-      15% { opacity: 1; }
-      85% { opacity: 1; }
-      100% { transform: translateX(-110vw) rotate(6deg); opacity: 0; }
-    }
-    .wind-gust {
-      position: fixed; top: 32%; left: 0; font-size: 2.3rem; white-space: nowrap;
-      animation: windSweep 1.5s linear infinite;
-      filter: drop-shadow(0 0 14px rgba(244, 63, 94, 0.85));
-    }
-
-    /* Escenario de Personajes */
-    #stage-actors {
-      position: fixed; left: 0; right: 0; bottom: 122px; height: 240px;
-      z-index: 16; display: flex; align-items: flex-end; justify-content: center; gap: 6px;
+    /* Canvas de fondo a pantalla completa */
+    #magic-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       pointer-events: none;
     }
-    #stage-actors.shake-slow { animation: slowShake 0.45s ease-in-out infinite; }
-    @keyframes slowShake {
-      0%,100% { transform: translate(0, 0); }
-      25% { transform: translate(-3px, 2px); }
-      75% { transform: translate(3px, -2px); }
+
+    /* Sendero luminoso inferior */
+    .luminous-path {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 110px;
+      z-index: 4;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(192, 132, 252, 0.16) 0%, rgba(245, 208, 118, 0.08) 42%, transparent 100%);
+      border-top: 1px solid rgba(245, 208, 118, 0.18);
+      box-shadow: 0 -12px 45px rgba(192, 132, 252, 0.14);
     }
 
-    .actor-wrap {
-      position: relative; display: flex; flex-direction: column; align-items: center;
-      pointer-events: auto; cursor: pointer;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+    .path-dashes {
+      position: absolute;
+      bottom: 46px;
+      left: 0;
+      width: 200%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        to right,
+        rgba(245, 208, 118, 0.5) 0px,
+        rgba(245, 208, 118, 0.5) 28px,
+        transparent 28px,
+        transparent 62px
+      );
+      opacity: 0.55;
+      transition: transform 0.12s linear;
     }
+
+    /* Reproductor flotante Glassmorphism */
+    .audio-pill {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 9999px;
+      background: rgba(18, 18, 28, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(245, 208, 118, 0.3);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .audio-pill:hover {
+      border-color: rgba(255, 126, 182, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .sound-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+    }
+    .sound-bars span {
+      width: 3px;
+      background: linear-gradient(to top, var(--pink-neon), var(--gold));
+      border-radius: 3px;
+      height: 4px;
+      transition: height 0.2s ease;
+    }
+    .audio-pill.playing .sound-bars span:nth-child(1) { animation: barBounce 0.7s ease-in-out infinite 0.0s; }
+    .audio-pill.playing .sound-bars span:nth-child(2) { animation: barBounce 0.7s ease-in-out infinite 0.2s; }
+    .audio-pill.playing .sound-bars span:nth-child(3) { animation: barBounce 0.7s ease-in-out infinite 0.4s; }
+    .audio-pill.playing .sound-bars span:nth-child(4) { animation: barBounce 0.7s ease-in-out infinite 0.15s; }
+
+    @keyframes barBounce {
+      0%, 100% { height: 4px; }
+      50% { height: 15px; }
+    }
+
+    /* Fase 1: Overlay e Intro */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: radial-gradient(circle at center, #11111c 0%, #07070b 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+    #intro-overlay.hidden-phase {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .crown-pulse {
+      font-size: 3rem;
+      filter: drop-shadow(0 0 18px rgba(245, 208, 118, 0.75));
+      animation: pulseGlow 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 14px rgba(245, 208, 118, 0.65)); }
+      50% { transform: scale(1.1); filter: drop-shadow(0 0 28px rgba(255, 126, 182, 0.9)); }
+    }
+
+    .open-btn {
+      position: relative;
+      padding: 15px 30px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+      color: #fff;
+      background: rgba(24, 24, 38, 0.85);
+      border: 1.5px solid rgba(245, 208, 118, 0.75);
+      box-shadow: 0 0 24px rgba(245, 208, 118, 0.35), inset 0 0 14px rgba(255, 126, 182, 0.2);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.5s ease;
+    }
+    .open-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 36px rgba(255, 126, 182, 0.6), inset 0 0 18px rgba(245, 208, 118, 0.3);
+    }
+
+    .intro-text-box {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .intro-text-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .intro-text-box.drop-exit {
+      opacity: 0;
+      transform: translateY(-48px);
+    }
+
+    .glow-line-1 {
+      color: #e5d5b5;
+      text-shadow: 0 0 18px rgba(245, 208, 118, 0.45);
+    }
+    .glow-line-2 {
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255, 126, 182, 0.85), 0 0 42px rgba(255, 126, 182, 0.5);
+    }
+
+    /* Escenario principal 2D */
+    #stage {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1s ease;
+      overflow: hidden;
+    }
+    #stage.active {
+      opacity: 1;
+    }
+
+    /* Personaje Camelita (#camelita-container) */
+    #camelita-container {
+      position: fixed;
+      bottom: 62px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: left 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s ease;
+      pointer-events: none;
+    }
+    @media (min-width: 768px) {
+      #camelita-container.walk-mode {
+        left: 24%;
+      }
+    }
+    @media (max-width: 767px) {
+      #camelita-container.walk-mode {
+        left: 24%;
+      }
+    }
+
     .name-badge {
-      padding: 2px 12px; border-radius: 9999px; font-size: 0.76rem; font-weight: 700;
-      color: #fff; background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(8px); border: 1px solid rgba(255, 215, 140, 0.6);
-      box-shadow: 0 0 14px rgba(255, 126, 182, 0.55);
-      margin-bottom: 2px; white-space: nowrap;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 215, 140, 0.45);
+      box-shadow: 0 0 18px rgba(255, 126, 182, 0.45);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      position: relative;
     }
 
-    /* ¡CLAVE! Anclaje exacto en hombros y cadera para evitar CUALQUIER distorsión al caminar */
-    #cam-leg-l, #cam-leg-r, #cam-arm-l, #cam-arm-r,
-    #boy-leg-l, #boy-leg-r, #boy-arm-l, #boy-arm-r {
-      transform-box: fill-box;
-      transform-origin: 50% 8%;
+    .mini-heart-pop {
+      position: absolute;
+      right: -18px;
+      top: -6px;
+      font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
     }
-    #cam-hair {
-      transform-box: fill-box;
-      transform-origin: 50% 10%;
+    .mini-heart-pop.pop {
+      animation: floatMiniHeart 1.4s ease-out forwards;
     }
-    #cat-tail {
-      transform-box: fill-box;
-      transform-origin: 15% 85%;
-      animation: tailWag 0.8s ease-in-out infinite alternate;
-    }
-    @keyframes tailWag { from { transform: rotate(-12deg); } to { transform: rotate(16deg); } }
-
-    @keyframes fanMotion { 0%,100%{transform:rotate(-8deg);} 50%{transform:rotate(-48deg);} }
-    .fanning-arm { animation: fanMotion 0.35s ease-in-out infinite; }
-
-    @keyframes hairBlow { 0%,100%{transform:skewX(0deg);} 50%{transform:skewX(-12deg);} }
-    .hair-wind { animation: hairBlow 0.3s ease-in-out infinite; }
-
-    @keyframes spin360 { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
-    .spin-now { animation: spin360 0.85s ease-in-out; }
-
-    @keyframes popFloat {
-      0% { opacity: 0; transform: translate(-50%, 0) scale(0.7); }
-      20% { opacity: 1; transform: translate(-50%, -18px) scale(1.08); }
-      100% { opacity: 0; transform: translate(-50%, -56px) scale(0.95); }
-    }
-    .pop-toast {
-      position: fixed; z-index: 60; pointer-events: none;
-      padding: 4px 12px; border-radius: 9999px; font-size: 0.78rem; font-weight: 700;
-      background: rgba(255, 245, 250, 0.94); color: #1e1b2e;
-      border: 1.5px solid #ff7eb6; box-shadow: 0 4px 14px rgba(255, 126, 182, 0.45);
-      animation: popFloat 1.1s ease-out forwards; white-space: nowrap;
+    @keyframes floatMiniHeart {
+      0% { opacity: 0; transform: translateY(4px) scale(0.5); }
+      25% { opacity: 1; transform: translateY(-6px) scale(1.2); }
+      100% { opacity: 0; transform: translateY(-28px) scale(0.9); }
     }
 
-    /* Botones de Reacciones en Vivo */
-    #reactions-bar {
-      position: fixed; bottom: 52px; left: 50%; transform: translateX(-50%);
-      z-index: 38; display: flex; gap: 10px;
+    /* Dropzone sobre la cabeza */
+    #head-dropzone {
+      position: relative;
+      width: 74px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: -14px;
+      z-index: 28;
+      border-radius: 9999px;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
     }
-    .react-btn {
-      width: 44px; height: 44px; border-radius: 50%; font-size: 1.15rem;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      transition: transform 0.12s ease;
-    }
-    .react-btn:active { transform: scale(0.88); }
-
-    /* Scrubber inferior */
-    #scrubber-wrap {
-      position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
-      width: 94%; max-width: 600px; z-index: 40;
-      padding: 6px 12px; border-radius: 9999px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .scrub-track {
-      position: relative; flex: 1; height: 8px; border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.15); cursor: pointer;
-    }
-    .scrub-fill {
-      height: 100%; width: 0%; border-radius: 9999px;
-      background: linear-gradient(to right, #f5d076, #ff7eb6);
+    #head-dropzone.drag-hover {
+      background: rgba(245, 208, 118, 0.22);
+      box-shadow: 0 0 24px rgba(245, 208, 118, 0.7);
     }
 
-    /* Ondas sonido */
-    .waves { display: flex; align-items: flex-end; gap: 2px; height: 13px; }
-    .waves span { width: 2.5px; height: 4px; background: linear-gradient(to top, #ff7eb6, #f5d076); border-radius: 2px; }
-    .playing .waves span:nth-child(1) { animation: wv 0.6s infinite 0.0s; }
-    .playing .waves span:nth-child(2) { animation: wv 0.6s infinite 0.2s; }
-    .playing .waves span:nth-child(3) { animation: wv 0.6s infinite 0.35s; }
-    @keyframes wv { 0%,100%{height:4px;} 50%{height:13px;} }
-
-    /* Overlay Inicial & Modal ⚙️ */
-    #start-overlay {
-      position: fixed; inset: 0; z-index: 80;
-      background: radial-gradient(circle at center, #141126 0%, #07070c 80%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px; transition: opacity 0.6s ease, visibility 0.6s ease;
+    #worn-crown {
+      width: 58px;
+      height: 40px;
+      opacity: 0;
+      transform: scale(0.4) translateY(-12px);
+      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 0 12px rgba(245, 208, 118, 0.85));
     }
-    #start-overlay.hidden-phase { opacity: 0; visibility: hidden; pointer-events: none; }
-
-    .glow-btn {
-      padding: 13px 26px; border-radius: 9999px; font-weight: 700; color: #fff;
-      background: linear-gradient(135deg, rgba(245, 208, 118, 0.24), rgba(255, 126, 182, 0.3));
-      border: 1.5px solid rgba(245, 208, 118, 0.85);
-      box-shadow: 0 0 24px rgba(245, 208, 118, 0.35);
-      cursor: pointer; transition: transform 0.15s ease;
+    #worn-crown.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
-    .glow-btn:active { transform: scale(0.95); }
 
-    .modal-backdrop {
-      position: fixed; inset: 0; z-index: 90;
-      background: rgba(6, 6, 12, 0.78); backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: center; padding: 18px;
-      opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* Corona arrastrable inicial (sin transform para no romper position:fixed al arrastrar) */
+    #draggable-crown-wrap {
+      position: fixed;
+      top: 13%;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
     }
-    .modal-backdrop.open { opacity: 1; visibility: visible; }
+    #draggable-crown-wrap.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #draggable-crown {
+      width: 82px;
+      height: 58px;
+      cursor: grab;
+      pointer-events: auto;
+      touch-action: none;
+      filter: drop-shadow(0 0 20px rgba(245, 208, 118, 0.85));
+      animation: floatCrown 2.3s ease-in-out infinite;
+    }
+    #draggable-crown.dragging {
+      position: fixed;
+      animation: none;
+      cursor: grabbing;
+      transform: scale(1.15);
+      z-index: 90;
+    }
+    @keyframes floatCrown {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    .drag-hint {
+      font-size: 0.9rem;
+      color: #f5d076;
+      background: rgba(15, 15, 25, 0.72);
+      border: 1px solid rgba(245, 208, 118, 0.35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      animation: pulseHint 1.8s ease-in-out infinite;
+    }
+    @keyframes pulseHint {
+      0%, 100% { opacity: 0.75; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(3px); }
+    }
+
+    /* Animaciones SVG de Camelita */
+    #camelita-svg {
+      width: 148px;
+      height: 190px;
+      overflow: visible;
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.65));
+    }
+
+    /* Estado sentada inicial */
+    #camelita-container.sitting #left-leg {
+      transform-origin: 58px 142px;
+      transform: rotate(38deg) translate(-6px, -6px);
+    }
+    #camelita-container.sitting #right-leg {
+      transform-origin: 90px 142px;
+      transform: rotate(-38deg) translate(6px, -6px);
+    }
+    #camelita-container.sitting #camelita-svg {
+      transform: translateY(16px);
+      transition: transform 0.5s ease;
+    }
+
+    /* Salto feliz al coronar o abrir carta */
+    @keyframes happyJump {
+      0%, 100% { transform: translateY(0) scale(1); }
+      35% { transform: translateY(-28px) scale(1.03, 0.97); }
+      65% { transform: translateY(-6px) scale(0.98, 1.03); }
+    }
+    #camelita-container.jumping #camelita-svg,
+    #camelita-container.jumping .name-badge,
+    #camelita-container.jumping #head-dropzone {
+      animation: happyJump 0.62s ease-in-out 2;
+    }
+
+    /* Caminata (.walking) */
+    #camelita-container.walking #camelita-svg {
+      animation: walkBob 0.55s ease-in-out infinite;
+    }
+    #camelita-container.walking .name-badge,
+    #camelita-container.walking #head-dropzone {
+      animation: walkBob 0.55s ease-in-out infinite;
+    }
+    #camelita-container.walking #left-leg {
+      transform-origin: 60px 140px;
+      animation: legSwingA 0.55s ease-in-out infinite;
+    }
+    #camelita-container.walking #right-leg {
+      transform-origin: 88px 140px;
+      animation: legSwingB 0.55s ease-in-out infinite;
+    }
+    #camelita-container.walking #left-arm {
+      transform-origin: 46px 104px;
+      animation: armSwingB 0.55s ease-in-out infinite;
+    }
+    #camelita-container.walking #right-arm {
+      transform-origin: 102px 104px;
+      animation: armSwingA 0.55s ease-in-out infinite;
+    }
+    #camelita-container.walking #hair-back {
+      transform-origin: 74px 48px;
+      animation: hairSway 1.1s ease-in-out infinite;
+    }
+
+    @keyframes walkBob {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes legSwingA {
+      0%, 100% { transform: rotate(-16deg); }
+      50% { transform: rotate(18deg); }
+    }
+    @keyframes legSwingB {
+      0%, 100% { transform: rotate(18deg); }
+      50% { transform: rotate(-16deg); }
+    }
+    @keyframes armSwingA {
+      0%, 100% { transform: rotate(-12deg); }
+      50% { transform: rotate(14deg); }
+    }
+    @keyframes armSwingB {
+      0%, 100% { transform: rotate(14deg); }
+      50% { transform: rotate(-12deg); }
+    }
+    @keyframes hairSway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    /* Parpadeo natural */
+    #eyes {
+      transform-origin: 74px 66px;
+      animation: blinkEyes 4.5s infinite;
+    }
+    @keyframes blinkEyes {
+      0%, 94%, 100% { transform: scaleY(1); }
+      97% { transform: scaleY(0.1); }
+    }
+
+    /* Mundo Parallax con las 4 estaciones + cofre final */
+    #parallax-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      z-index: 15;
+      pointer-events: none;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .station-slot {
+      width: 100vw;
+      height: 100%;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 68px 18px 250px;
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .station-slot {
+        justify-content: center;
+        align-items: flex-end;
+        padding: 40px 8vw 130px 42vw;
+      }
+    }
+
+    .crown-card {
+      width: 100%;
+      max-width: 390px;
+      border-radius: 24px;
+      background: rgba(18, 18, 30, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      overflow: hidden;
+      pointer-events: auto;
+      transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
+    }
+    .crown-card.lit {
+      border-color: rgba(245, 208, 118, 0.65);
+      box-shadow: 0 0 38px rgba(255, 126, 182, 0.28), 0 20px 55px rgba(0, 0, 0, 0.7);
+      transform: translateY(-4px);
+    }
+
+    .crown-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 175px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #261a36 0%, #0b0b12 100%);
+    }
+    @media (min-width: 768px) {
+      .crown-img-wrap {
+        height: 210px;
+      }
+    }
+    .crown-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s ease;
+    }
+    .crown-card.lit .crown-img-wrap img {
+      transform: scale(1.08);
+    }
+    .crown-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(18, 18, 30, 0.95) 0%, transparent 55%);
+    }
+
+    /* Barra inferior de navegación */
+    #walk-controls {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 45;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      width: calc(100% - 32px);
+      max-width: 440px;
+      justify-content: center;
+    }
+    #walk-controls.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .walk-btn {
+      padding: 12px 20px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: linear-gradient(135deg, rgba(245, 208, 118, 0.22), rgba(255, 126, 182, 0.24));
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 208, 118, 0.55);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .walk-btn:active { transform: scale(0.95); }
+
+    /* Cofre / Carta lacrada final */
+    .treasure-box {
+      pointer-events: auto;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 26px 28px;
+      border-radius: 28px;
+      background: rgba(24, 18, 36, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(245, 208, 118, 0.65);
+      box-shadow: 0 0 42px rgba(245, 208, 118, 0.28);
+      animation: floatCrown 2.6s ease-in-out infinite;
+    }
+
+    /* Modal Carta Final */
+    #final-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(7, 7, 11, 0.76);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+    #final-modal.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .final-letter-card {
+      width: 100%;
+      max-width: 460px;
+      max-height: 86vh;
+      overflow-y: auto;
+      border-radius: 26px;
+      background: linear-gradient(160deg, rgba(22, 20, 34, 0.95), rgba(12, 11, 20, 0.98));
+      border: 1.5px solid rgba(245, 208, 118, 0.65);
+      box-shadow: 0 0 60px rgba(255, 126, 182, 0.25);
+      padding: 28px 24px;
+      text-align: center;
+    }
   </style>
 </head>
-<body class="bg-night_stars">
+<body>
 
-  <div id="scene-bg"></div>
-  <canvas id="fx-canvas"></canvas>
-  <div id="props-layer"></div>
-  <div class="road-floor"><div class="road-dashes" id="road-dashes"></div></div>
+  <!-- Canvas de partículas mágicas -->
+  <canvas id="magic-canvas"></canvas>
 
-  <div class="fixed top-2.5 left-2.5 z-40 glass rounded-full px-3 py-1.5 text-[11px] font-bold text-amber-200">
-    Únicos • Camelita 💗
-  </div>
+  <!-- Reproductor Glassmorphism -->
+  <button class="audio-pill" id="audio-pill" aria-label="Controlar música">
+    <div class="sound-bars">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <span class="text-xs font-medium text-amber-100/90" id="audio-status-label">Música</span>
+  </button>
 
-  <div class="fixed top-2.5 right-2.5 z-50 flex items-center gap-1.5">
-    <span id="clock-text" class="glass rounded-full px-2.5 py-1 text-[11px] font-mono text-cyan-300">00.00s</span>
-    <button id="btn-play" class="glass rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs font-semibold text-amber-100 cursor-pointer">
-      <div class="waves"><span></span><span></span><span></span></div>
-      <span id="play-label">▶</span>
-    </button>
-    <button id="btn-cfg" class="glass rounded-full w-8 h-8 flex items-center justify-center text-sm cursor-pointer" title="Música y Sincronización">⚙️</button>
-  </div>
-  <audio id="bg-music" preload="auto"></audio>
+  <audio id="bg-music" loop preload="auto"></audio>
 
-  <div id="karaoke-box">
-    <p id="karaoke-main" class="font-royal text-base sm:text-xl font-bold leading-snug"></p>
-    <p id="karaoke-sub" class="text-xs sm:text-sm text-pink-200/90 mt-1 font-medium"></p>
-  </div>
-
-  <!-- Escenario de Personajes 2D -->
-  <div id="stage-actors">
-    <!-- Acompañante 2D (#char-boy) -->
-    <div id="char-boy" class="actor-wrap" style="opacity:0; transform: translateX(-90px);">
-      <svg id="boy-svg" width="106" height="154" viewBox="0 0 130 180" fill="none">
-        <g id="boy-legs">
-          <g id="boy-leg-l">
-            <rect x="46" y="130" width="13" height="36" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
-          </g>
-          <g id="boy-leg-r">
-            <rect x="71" y="130" width="13" height="36" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
-          </g>
-        </g>
-        <g id="boy-arms">
-          <g id="boy-arm-l">
-            <path d="M38 96 C26 110 26 126 34 130 C40 132 45 120 46 106 Z" fill="#312e81" stroke="#1e1b4b" stroke-width="2"/>
-          </g>
-          <g id="boy-arm-r">
-            <path d="M92 96 C104 110 104 126 96 130 C90 132 85 120 84 106 Z" fill="#312e81" stroke="#1e1b4b" stroke-width="2"/>
-          </g>
-        </g>
-        <path d="M40 92 C38 86 92 86 90 92 L95 134 C95 139 35 139 35 134 Z" fill="#3730a3" stroke="#1e1b4b" stroke-width="2.2"/>
-        <ellipse cx="65" cy="58" rx="30" ry="29" fill="#d49b78" stroke="#2d1e17" stroke-width="2.2"/>
-        <path d="M34 52 C34 26 96 26 96 52 C86 38 74 42 65 36 C55 42 44 38 34 52 Z" fill="#18141c"/>
-        <ellipse cx="53" cy="60" rx="5.5" ry="7" fill="#141016"/>
-        <ellipse cx="77" cy="60" rx="5.5" ry="7" fill="#141016"/>
-        <circle cx="55" cy="57" r="2" fill="#fff"/>
-        <circle cx="79" cy="57" r="2" fill="#fff"/>
-        <path d="M60 73 Q65 77 70 73" stroke="#4a281d" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-        <path id="boy-sweat" d="M88 38 Q93 48 88 52 Q83 48 88 38 Z" fill="#7dd3fc" opacity="0"/>
-        <text id="boy-cocktail" x="98" y="106" font-size="22" opacity="0">🍹</text>
-        <text id="boy-cloud" x="65" y="18" text-anchor="middle" font-size="28" opacity="0">🌧️</text>
-      </svg>
+  <!-- FASE 1: Overlay Inicial + Intro Sincronizada -->
+  <div id="intro-overlay">
+    <div id="unlock-box" class="flex flex-col items-center gap-6">
+      <div class="crown-pulse">👑</div>
+      <p class="font-royal text-xs tracking-[0.28em] uppercase text-amber-200/70">Edición Especial</p>
+      <button id="open-btn" class="open-btn">
+        Para Camelita 👑 <span class="text-pink-300 text-sm block mt-1 font-normal">(Toca para abrir)</span>
+      </button>
     </div>
 
-    <!-- Protagonista: Camelita (#camelita-wrapper + #char-camelita) -->
-    <div id="camelita-wrapper" class="actor-wrap">
-      <div class="name-badge">✨ Camelita ✨</div>
-      <div id="char-camelita">
-        <svg id="camelita-svg" width="124" height="162" viewBox="0 0 148 190" fill="none">
-          <g id="cam-hair">
-            <path d="M36 52 C28 84 26 122 34 142 C46 146 102 146 114 142 C122 122 120 84 112 52 C102 24 46 24 36 52 Z" fill="#18141c" stroke="#0b090e" stroke-width="2.5"/>
-          </g>
-          <g id="cam-legs">
-            <g id="cam-leg-l">
-              <rect x="54" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
-              <path d="M51 168 C51 164 69 164 70 172 C70 176 50 176 51 168 Z" fill="#111827"/>
-            </g>
-            <g id="cam-leg-r">
-              <rect x="80" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
-              <path d="M78 168 C78 164 96 164 97 172 C97 176 77 176 78 168 Z" fill="#111827"/>
-            </g>
-          </g>
-          <g id="cam-arms">
-            <g id="cam-arm-l">
-              <path d="M46 102 C32 114 28 132 36 138 C42 142 50 132 52 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
-              <circle cx="38" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
-            </g>
-            <g id="cam-arm-r">
-              <path d="M102 102 C116 114 120 132 112 138 C106 142 98 132 96 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
-              <circle cx="110" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
-              <text id="cam-fan" x="112" y="128" font-size="20" opacity="0">🪭</text>
-              <text id="cam-cocktail" x="108" y="114" font-size="22" opacity="0">🍹</text>
-            </g>
-          </g>
-          <path d="M46 98 C44 92 104 92 102 98 L108 142 C108 148 40 148 40 142 Z" fill="#161620" stroke="#323244" stroke-width="2.2"/>
-          <path d="M67 98 L65 114 M81 98 L83 114" stroke="#f5d076" stroke-width="2" stroke-linecap="round"/>
-          <g id="cam-head">
-            <ellipse cx="74" cy="64" rx="33" ry="31" fill="#c68b67" stroke="#2d1e17" stroke-width="2.2"/>
-            <path d="M40 56 C42 32 106 32 108 56 C96 44 84 48 74 42 C64 48 52 44 40 56 Z" fill="#18141c"/>
-            <g id="cam-eyes-open">
-              <ellipse cx="60" cy="66" rx="6.5" ry="8" fill="#141016"/>
-              <ellipse cx="88" cy="66" rx="6.5" ry="8" fill="#141016"/>
-              <circle cx="62" cy="63" r="2.4" fill="#fff"/>
-              <circle cx="90" cy="63" r="2.4" fill="#fff"/>
-            </g>
-            <g id="cam-eyes-stars" opacity="0">
-              <text x="55" y="70" font-size="12" fill="#fde68a">✦</text>
-              <text x="83" y="70" font-size="12" fill="#fde68a">✦</text>
-            </g>
-            <path id="cam-eye-closed-l" d="M53 66 Q60 60 67 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
-            <path id="cam-eye-closed-r" d="M81 66 Q88 60 95 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
-            <g id="cam-blush" opacity="0.55">
-              <ellipse cx="50" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
-              <ellipse cx="98" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
-            </g>
-            <path id="cam-sweat" d="M98 44 Q103 54 98 58 Q93 54 98 44 Z" fill="#7dd3fc" opacity="0"/>
-            <path id="cam-mouth" d="M69 80 Q74 85 79 80" stroke="#4a281d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-            <ellipse id="cam-tongue" cx="74" cy="85" rx="3.5" ry="4.5" fill="#fb7185" stroke="#4a281d" stroke-width="1.2" opacity="0"/>
-          </g>
+    <div id="intro-text-box" class="intro-text-box hidden max-w-lg px-4">
+      <p id="intro-line-1" class="font-royal text-lg sm:text-2xl tracking-widest glow-line-1 mb-4"></p>
+      <p id="intro-line-2" class="font-royal text-xl sm:text-3xl font-bold tracking-wider glow-line-2"></p>
+    </div>
+  </div>
+
+  <!-- FASE 2 & 3: Escenario Interactivo -->
+  <main id="stage">
+    <!-- Sendero luminoso inferior -->
+    <div class="luminous-path">
+      <div class="path-dashes" id="path-dashes"></div>
+    </div>
+
+    <!-- Corona arrastrable inicial -->
+    <div id="draggable-crown-wrap">
+      <svg id="draggable-crown" viewBox="0 0 100 70" fill="none">
+        <defs>
+          <linearGradient id="crownGold" x1="0" y1="0" x2="100" y2="70" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fde68a"/>
+            <stop offset="50%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#fef08a"/>
+          </linearGradient>
+        </defs>
+        <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#crownGold)" stroke="#fff7ed" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
+        <circle cx="50" cy="10" r="4.5" fill="#ff7eb6"/>
+        <circle cx="6" cy="20" r="4" fill="#e0f2fe"/>
+        <circle cx="94" cy="20" r="4" fill="#e0f2fe"/>
+        <circle cx="50" cy="40" r="4" fill="#ff7eb6"/>
+      </svg>
+      <div class="drag-hint">Arrastra la coronita hacia la cabeza de Camelita 👑👇</div>
+    </div>
+
+    <!-- Mundo Parallax de Estaciones -->
+    <div id="parallax-track"></div>
+
+    <!-- Personaje 2D: Camelita -->
+    <div id="camelita-container" class="sitting">
+      <div class="name-badge">
+        ✨ Camelita ✨
+        <span class="mini-heart-pop" id="mini-heart">💗</span>
+      </div>
+
+      <!-- Zona de detección para soltar la corona -->
+      <div id="head-dropzone">
+        <svg id="worn-crown" viewBox="0 0 100 70" fill="none">
+          <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#crownGold)" stroke="#fff7ed" stroke-width="2.5" stroke-linejoin="round"/>
+          <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
+          <circle cx="50" cy="10" r="4.5" fill="#ff7eb6"/>
+          <circle cx="6" cy="20" r="3.5" fill="#e0f2fe"/>
+          <circle cx="94" cy="20" r="3.5" fill="#e0f2fe"/>
         </svg>
       </div>
-    </div>
 
-    <!-- Gatito Compañero 2D (#char-cat) -->
-    <div id="char-cat" class="actor-wrap">
-      <svg id="cat-svg" width="64" height="76" viewBox="0 0 74 84" fill="none">
-        <path id="cat-tail" d="M50 58 Q66 48 62 34" stroke="#1e293b" stroke-width="4" stroke-linecap="round" fill="none"/>
-        <polygon points="18,22 24,12 30,22" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
-        <polygon points="40,22 46,12 52,22" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
-        <ellipse cx="35" cy="54" rx="16" ry="18" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
-        <circle cx="35" cy="32" r="15" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
-        <circle cx="29" cy="31" r="2.5" fill="#0f172a"/>
-        <circle cx="41" cy="31" r="2.5" fill="#0f172a"/>
-        <path d="M32 36 Q35 39 38 36" stroke="#f472b6" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <text id="cat-prop" x="52" y="24" font-size="16">🎸</text>
+      <!--
+        TIP DE PERSONALIZACIÓN:
+        Si deseas usar una imagen .png externa en lugar de este SVG,
+        oculta #camelita-svg (display: none) y coloca aquí:
+        <img src="camelita.png" alt="Camelita" class="w-36 h-auto" />
+      -->
+      <svg id="camelita-svg" viewBox="0 0 148 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cabello largo oscuro trasero -->
+        <g id="hair-back">
+          <path d="M36 52 C28 84 26 122 34 142 C46 146 102 146 114 142 C122 122 120 84 112 52 C102 24 46 24 36 52 Z" fill="#18141c" stroke="#0b090e" stroke-width="2.5"/>
+        </g>
+
+        <!-- Piernas -->
+        <g id="left-leg">
+          <rect x="54" y="138" width="14" height="36" rx="7" fill="#c68b67" stroke="#2d1e17" stroke-width="2"/>
+          <path d="M51 168 C51 164 69 164 70 172 C70 176 50 176 51 168 Z" fill="#181822" stroke="#3b3b4d" stroke-width="1.5"/>
+        </g>
+        <g id="right-leg">
+          <rect x="80" y="138" width="14" height="36" rx="7" fill="#c68b67" stroke="#2d1e17" stroke-width="2"/>
+          <path d="M78 168 C78 164 96 164 97 172 C97 176 77 176 78 168 Z" fill="#181822" stroke="#3b3b4d" stroke-width="1.5"/>
+        </g>
+
+        <!-- Brazo izquierdo -->
+        <g id="left-arm">
+          <path d="M46 102 C32 114 28 132 36 138 C42 142 50 132 52 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="38" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+        </g>
+
+        <!-- Brazo derecho -->
+        <g id="right-arm">
+          <path d="M102 102 C116 114 120 132 112 138 C106 142 98 132 96 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="110" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+        </g>
+
+        <!-- Cuerpo: Hoodie negro oversize -->
+        <g id="body">
+          <path d="M46 98 C44 92 104 92 102 98 L108 142 C108 148 40 148 40 142 Z" fill="#161620" stroke="#323244" stroke-width="2.2" stroke-linejoin="round"/>
+          <!-- Bolsillo canguro + cordones -->
+          <path d="M56 124 L92 124 L95 140 L53 140 Z" fill="#1e1e2b" stroke="#2f2f40" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M67 98 L65 114 M81 98 L83 114" stroke="#f5d076" stroke-width="2" stroke-linecap="round"/>
+          <!-- Corazoncito bordado en el buzo -->
+          <path d="M88 108 C86 105 82 106 82 109 C82 112 88 115 88 115 C88 115 94 112 94 109 C94 106 90 105 88 108 Z" fill="#ff7eb6"/>
+        </g>
+
+        <!-- Cabeza -->
+        <g id="head">
+          <!-- Rostro tez canela suave -->
+          <ellipse cx="74" cy="64" rx="33" ry="31" fill="#c68b67" stroke="#2d1e17" stroke-width="2.2"/>
+          <!-- Flequillo frontal tierno -->
+          <path d="M40 56 C42 32 106 32 108 56 C96 44 84 48 74 42 C64 48 52 44 40 56 Z" fill="#18141c" stroke="#0b090e" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Ojos expresivos -->
+          <g id="eyes">
+            <ellipse cx="60" cy="66" rx="6.5" ry="8" fill="#141016"/>
+            <ellipse cx="88" cy="66" rx="6.5" ry="8" fill="#141016"/>
+            <!-- Brillos blancos -->
+            <circle cx="62" cy="63" r="2.4" fill="#ffffff"/>
+            <circle cx="90" cy="63" r="2.4" fill="#ffffff"/>
+            <circle cx="58" cy="69" r="1.1" fill="#ffffff"/>
+            <circle cx="86" cy="69" r="1.1" fill="#ffffff"/>
+          </g>
+          <!-- Mejillas sonrojadas -->
+          <ellipse id="blush-l" cx="50" cy="75" rx="6" ry="3.2" fill="#f472b6" opacity="0.55"/>
+          <ellipse id="blush-r" cx="98" cy="75" rx="6" ry="3.2" fill="#f472b6" opacity="0.55"/>
+          <!-- Boca (cambia al coronarla) -->
+          <g id="mouth">
+            <path id="mouth-path" d="M69 80 Q74 83 79 80" stroke="#4a281d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </g>
+        </g>
       </svg>
     </div>
-  </div>
 
-  <!-- 5 Botones de Reacciones en Vivo -->
-  <div id="reactions-bar">
-    <button id="react-heat" class="glass react-btn" title="Más Calor / Sol">🔥</button>
-    <button id="react-gust" class="glass react-btn" title="Ráfaga de Amor">💨</button>
-    <button id="react-toast" class="glass react-btn" title="Chin-Chin">🍹</button>
-    <button id="react-dance" class="glass react-btn" title="Bailar Juntos">💃</button>
-    <button id="react-petals" class="glass react-btn" title="Lluvia de Rosas">🌹</button>
-  </div>
-
-  <!-- Barra de Progreso Tipo Karaoke -->
-  <div id="scrubber-wrap" class="glass">
-    <span id="scrub-time" class="text-[11px] font-mono text-amber-200 min-w-[38px]">0.0s</span>
-    <div class="scrub-track" id="scrub-track">
-      <div class="scrub-fill" id="scrub-fill"></div>
+    <!-- Controles inferiores del recorrido -->
+    <div id="walk-controls">
+      <button id="btn-step-walk" class="walk-btn">Seguir caminando con Camelita ➡️</button>
+      <button id="btn-auto-walk" class="walk-btn" style="padding: 12px 15px;" title="Auto-caminar">⏸ Auto</button>
     </div>
-    <span class="text-[11px] font-mono text-slate-300">155s</span>
-  </div>
+  </main>
 
-  <!-- Pantalla Inicial -->
-  <div id="start-overlay">
-    <div class="text-5xl mb-3 animate-pulse">🎸💗</div>
-    <p class="font-royal text-xs tracking-[0.26em] uppercase text-amber-200/75 mb-2">Siddhartha — Únicos</p>
-    <h1 class="font-royal text-2xl sm:text-3xl font-bold text-white mb-6">Para Camelita ✨</h1>
-    <button id="btn-start" class="glow-btn">Tocar para Comenzar ▶</button>
-  </div>
-
-  <!-- Modal ⚙️ -->
-  <div id="cfg-modal" class="modal-backdrop">
-    <div class="glass rounded-3xl w-full max-w-sm p-5 text-center">
-      <h3 class="font-royal text-base font-bold text-amber-200 mb-3">⚙️ Música y Sincronización</h3>
-      <input id="inp-url" type="url" placeholder="Link directo .mp3" class="w-full px-3 py-2 rounded-xl bg-black/50 border border-amber-200/40 text-xs text-white mb-3" />
-      <button id="btn-sync-voice" class="w-full glass rounded-xl py-2 text-xs text-pink-200 font-semibold mb-3 cursor-pointer">
-        Sincronizar voz aquí 🎤
-      </button>
-      <p id="offset-label" class="text-[11px] font-mono text-cyan-300 mb-3"></p>
-      <div class="flex gap-2 justify-center">
-        <button id="btn-apply-cfg" class="glow-btn text-xs px-5 py-2">Aplicar ▶</button>
-        <button id="btn-close-cfg" class="glass rounded-full text-xs px-4 py-2 cursor-pointer">Cerrar</button>
+  <!-- FASE 4: Modal de Carta Final -->
+  <div id="final-modal">
+    <div class="final-letter-card">
+      <div class="text-4xl mb-3">💌👑</div>
+      <h2 class="font-royal text-2xl font-bold text-amber-200 mb-3" id="final-title">Para Camelita</h2>
+      <p class="text-sm sm:text-base text-slate-200/90 leading-relaxed mb-6 whitespace-pre-line" id="final-body"></p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <button id="btn-restart-walk" class="walk-btn">Volver a recorrer el camino con Camelita 🔄</button>
+        <button id="btn-close-modal" class="walk-btn" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25);">Cerrar</button>
       </div>
     </div>
   </div>
 
   <script>
     // =========================================================================
-    // 👇 PEGA AQUÍ EL LINK O ARCHIVO DE TU MÚSICA (.mp3) 👇
+    // CONFIGURACIÓN EDITABLE (Personaliza aquí textos, fotos y audio)
     // =========================================================================
     const CONFIG = {
-      musicUrl: "./unicos.mp3",
-      vocalStartOffset: 0.0,
-      totalDuration: 155.0
+      // Archivo de audio local o URL directa
+      audioUrl: "./musica.mp3",
+
+      // Textos de la Fase 1 (Intro sincronizada 0.0s a 4.5s)
+      introLine1: "14 DE NOVIEMBRE? NO IMPORTA EL DÍA...",
+      introLine2: "ESTAS CORONITAS SON PARA TI 💗... <3",
+      introDurationMs: 4500,
+
+      // Las 4 Estaciones de Coronas
+      stations: [
+        {
+          title: "Corona de Cristales y Diamantes",
+          // Puedes reemplazar por "./corona1.jpg" si subes tus propias fotos
+          image: "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&w=900&q=80",
+          meaning: "Por esos ojitos tan lindos y por tener esa luz que brilla incluso en los días más grises ✨"
+        },
+        {
+          title: "Corona Oscura & Estética",
+          image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80",
+          meaning: "Para la niña más inquieta, única y auténtica; porque tu vibra no la tiene nadie más 💜"
+        },
+        {
+          title: "Corona sobre Rosas Rojas",
+          image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80",
+          meaning: "Porque hay personas, risas y momentos que se quedan guardados con cariño sin importar el tiempo 🌹"
+        },
+        {
+          title: "Corona Real de Reina",
+          image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80",
+          meaning: "Porque no importa qué fecha marque el calendario, Camelita siempre va a merecer todo lo bonito de este mundo 👑"
+        }
+      ],
+
+      // Carta final de la Fase 4
+      finalLetterTitle: "Para mi reina, Camelita 👑",
+      finalLetterBody:
+        "No hace falta que sea 14 de noviembre ni ninguna fecha especial para recordarte lo increíble que eres.\n\n" +
+        "Cada una de estas coronitas representa algo que admiro muchísimo de ti: tu luz, tu esencia única, los momentos tan bonitos y todo lo que mereces.\n\n" +
+        "Nunca dejes de brillar, Camelita. Siempre serás merecedora de lo más lindo de este mundo. 💗✨"
     };
 
-    // Sincronizado con el audio real de Siddhartha - Únicos (unicos.mp3)
-    const LYRICS_TIMELINE = [
-      { start: 0.00, end: 10.00, lyric: "♪ (Intro de guitarra...) ♪", subLyric: "Sube el volumen y mira a Camelita ✨", actionState: "intro_guitar_vibe", sceneBg: "night_stars" },
-      { start: 10.00, end: 15.00, lyric: "♪ ... ♪", subLyric: "Preparando el camino...", actionState: "intro_start_walking", sceneBg: "dusk_road" },
-      { start: 15.00, end: 19.20, lyric: "♪ (Entra el ritmo...) ♪", subLyric: "✨ Aquí empieza nuestra canción ✨", actionState: "intro_look_horizon", sceneBg: "desert_warm" },
-
-      { start: 19.20, end: 23.00, lyric: "Veinte millas de calor", subLyric: "☀️🥵 Veinte millas...", actionState: "twenty_miles_heat", sceneBg: "scorching_sun" },
-      { start: 23.00, end: 29.50, lyric: "Y el camino no tiene retorno", subLyric: "🛣️🚫 Sin vuelta atrás", actionState: "no_return_road", sceneBg: "scorching_sun" },
-      { start: 29.50, end: 33.50, lyric: "Algo pasa entre tú y yo", subLyric: "⚡👀💗 Conexión instantánea", actionState: "something_between_us", sceneBg: "twilight_sparks" },
-      { start: 33.50, end: 40.00, lyric: "Sudo gotas de licor y polvo", subLyric: "🍹💦✨", actionState: "sweat_liquor_and_dust", sceneBg: "twilight_sparks" },
-
-      { start: 40.00, end: 44.00, lyric: "Y ahora que te vuelvo a ver", subLyric: "🥺👉👈 Ojitos brillantes", actionState: "see_you_again_eyes", sceneBg: "magic_night" },
-      { start: 44.00, end: 57.00, lyric: "Ya no quiero amanecer tan solo", subLyric: "🌙➡️🌅 Adiós a la soledad", actionState: "no_lonely_sunrise", sceneBg: "sunrise_transition" },
-      { start: 57.00, end: 64.00, lyric: "Otra vez", subLyric: "🤝💗 Nunca más", actionState: "hold_hands_jump", sceneBg: "sunrise_transition" },
-
-      { start: 64.00, end: 69.50, lyric: "Porque ahora somos únicos, los únicos", subLyric: "✨💜 ¡LOS ÚNICOS EN EL MUNDO! 💜✨", actionState: "we_are_unique_dance", sceneBg: "neon_galaxy_party" },
-      { start: 69.50, end: 73.50, lyric: "Y ahora que te vuelvo a ver", subLyric: "💫💃 Giro feliz", actionState: "happy_spin_together", sceneBg: "neon_galaxy_party" },
-      { start: 73.50, end: 79.00, lyric: "Ya no quiero amanecer tan solo", subLyric: "🌅🫶 Juntos al amanecer", actionState: "lean_shoulder_sunrise", sceneBg: "warm_sunrise" },
-      { start: 79.00, end: 101.00, lyric: "♪ (Solo de guitarra y baile...) ♪", subLyric: "💃✨ Bailando juntos ✨🕺", actionState: "we_are_unique_dance", sceneBg: "neon_galaxy_party" },
-
-      { start: 101.00, end: 105.00, lyric: "Veinte millas de calor", subLyric: "🔥🚶‍♀️🚶‍♂️ Seguimos caminando", actionState: "walk_heat_together", sceneBg: "golden_desert" },
-      { start: 105.00, end: 111.50, lyric: "Y el camino que se hundió en el polvo", subLyric: "🏜️✨ Flotando sobre el polvo", actionState: "road_sunk_in_dust", sceneBg: "golden_desert" },
-      { start: 111.50, end: 115.50, lyric: "Una ráfaga de amor", subLyric: "💨❤️🌪️ ¡RÁFAGA DE AMOR!", actionState: "love_gust_tornado", sceneBg: "pink_wind_storm" },
-      { start: 115.50, end: 122.00, lyric: "Lentamente sacudió el entorno", subLyric: "💓🌍 Todo el mundo tiembla", actionState: "shake_environment_slow", sceneBg: "pink_wind_storm" },
-
-      { start: 122.00, end: 126.00, lyric: "Y ahora que te vuelvo a ver", subLyric: "👀💖 Mirada frente a frente", actionState: "face_to_face_blush", sceneBg: "magic_night" },
-      { start: 126.00, end: 138.00, lyric: "Ya no quiero amanecer tan solo", subLyric: "🫂🌅 Abrazo de amanecer", actionState: "warm_hug_sunrise", sceneBg: "sunrise_transition" },
-      { start: 138.00, end: 145.00, lyric: "Otra vez... Porque ahora somos únicos, los únicos", subLyric: "🌟🎉 ¡SOMOS ÚNICOS!", actionState: "climax_dance_1", sceneBg: "neon_galaxy_party" },
-      { start: 145.00, end: 155.00, lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo 💗", subLyric: "✨ Toca a Camelita, al chico o al gatito ✨", actionState: "outro_wave_and_hug", sceneBg: "warm_sunrise" }
-    ];
-
     // =========================================================================
-    // CANVAS DE PARTÍCULAS
+    // MOTOR DE PARTÍCULAS MÁGICAS (CANVAS)
     // =========================================================================
-    const canvas = document.getElementById("fx-canvas");
+    const canvas = document.getElementById("magic-canvas");
     const ctx = canvas.getContext("2d");
     let cw = 0, ch = 0;
-    const stars = Array.from({ length: 75 }, () => ({ x: Math.random(), y: Math.random(), r: 0.8 + Math.random() * 2, p: Math.random() * 6 }));
-    const fx = [];
+    let parallaxOffset = 0;
 
-    function resize() { cw = canvas.width = window.innerWidth; ch = canvas.height = window.innerHeight; }
-    window.addEventListener("resize", resize);
-    resize();
+    const starColors = ["rgba(245, 208, 118,", "rgba(226, 232, 240,", "rgba(192, 132, 252,"];
+    const stars = Array.from({ length: 85 }, () => ({
+      x: Math.random(),
+      y: Math.random() * 0.9,
+      r: 0.8 + Math.random() * 2.2,
+      speed: 0.00012 + Math.random() * 0.0003,
+      color: starColors[Math.floor(Math.random() * starColors.length)],
+      phase: Math.random() * Math.PI * 2
+    }));
 
-    function spawnFx(x, y, count, kind = "heart") {
+    const burstParticles = [];
+    function spawnCelebrationBurst(cx, cy, count = 42) {
       for (let i = 0; i < count; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const sp = kind === "petal" || kind === "gold" ? 1 + Math.random() * 2.6 : 2 + Math.random() * 4.5;
-        fx.push({
-          x, y,
-          vx: kind === "petal" ? -2 - Math.random() * 2.5 : kind === "gold" ? (Math.random() - 0.5) * 1.4 : Math.cos(a) * sp,
-          vy: kind === "petal" || kind === "gold" ? 1.8 + Math.random() * 2.6 : Math.sin(a) * sp - 1.4,
-          life: 1, decay: kind === "petal" || kind === "gold" ? 0.008 : 0.02,
-          kind, size: 6 + Math.random() * 7
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const speed = 2.2 + Math.random() * 5.2;
+        burstParticles.push({
+          x: cx,
+          y: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5,
+          life: 1,
+          decay: 0.015 + Math.random() * 0.015,
+          isHeart: i % 2 === 0,
+          size: 6 + Math.random() * 8,
+          color: i % 2 === 0 ? "#ff7eb6" : "#f5d076"
         });
       }
     }
 
-    function drawCanvas(now) {
+    function resizeCanvas() {
+      cw = canvas.width = window.innerWidth;
+      ch = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function drawHeart(x, y, size, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.translate(x, y);
+      ctx.beginPath();
+      const s = size * 0.5;
+      ctx.moveTo(0, s * 0.4);
+      ctx.bezierCurveTo(-s, -s * 0.5, -s * 1.6, s * 0.6, 0, s * 1.5);
+      ctx.bezierCurveTo(s * 1.6, s * 0.6, s, -s * 0.5, 0, s * 0.4);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function renderCanvas() {
       ctx.clearRect(0, 0, cw, ch);
-      const t = now * 0.002;
+      const now = Date.now() * 0.0025;
+
       stars.forEach((s) => {
-        ctx.fillStyle = `rgba(255,255,255,${0.2 + 0.55 * Math.sin(t + s.p)})`;
-        ctx.beginPath(); ctx.arc(s.x * cw, s.y * ch, s.r, 0, Math.PI * 2); ctx.fill();
+        s.y -= s.speed;
+        if (s.y < -0.02) s.y = 0.92;
+        const px = ((s.x * cw - parallaxOffset * 0.15) % cw + cw) % cw;
+        const py = s.y * ch;
+        const alpha = 0.35 + 0.55 * Math.sin(now + s.phase);
+        ctx.fillStyle = `${s.color} ${Math.max(0.1, alpha)})`;
+        ctx.beginPath();
+        ctx.arc(px, py, s.r, 0, Math.PI * 2);
+        ctx.fill();
       });
-      for (let i = fx.length - 1; i >= 0; i--) {
-        const p = fx[i];
-        p.x += p.vx; p.y += p.vy;
-        if (p.kind === "heart" || p.kind === "note") p.vy += 0.06;
+
+      for (let i = burstParticles.length - 1; i >= 0; i--) {
+        const p = burstParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.09;
         p.life -= p.decay;
-        if (p.life <= 0) { fx.splice(i, 1); continue; }
-        ctx.save(); ctx.globalAlpha = p.life;
-        ctx.fillStyle = p.kind === "petal" ? "#e11d48" : p.kind === "gold" ? "#f5d076" : "#ff7eb6";
-        if (p.kind === "note") { ctx.font = "16px sans-serif"; ctx.fillText("♪", p.x, p.y); }
-        else { ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2); ctx.fill(); }
-        ctx.restore();
+        if (p.life <= 0) {
+          burstParticles.splice(i, 1);
+          continue;
+        }
+        if (p.isHeart) {
+          drawHeart(p.x, p.y, p.size, p.color, p.life);
+        } else {
+          ctx.save();
+          ctx.globalAlpha = p.life;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 0.35, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      requestAnimationFrame(renderCanvas);
+    }
+    renderCanvas();
+
+    // =========================================================================
+    // AUDIO Y FASE 1: INTRO SINCRONIZADA
+    // =========================================================================
+    const bgMusic = document.getElementById("bg-music");
+    bgMusic.src = CONFIG.audioUrl;
+    const audioPill = document.getElementById("audio-pill");
+    const audioStatusLabel = document.getElementById("audio-status-label");
+
+    const introOverlay = document.getElementById("intro-overlay");
+    const unlockBox = document.getElementById("unlock-box");
+    const openBtn = document.getElementById("open-btn");
+    const introTextBox = document.getElementById("intro-text-box");
+    const introLine1 = document.getElementById("intro-line-1");
+    const introLine2 = document.getElementById("intro-line-2");
+    const stage = document.getElementById("stage");
+
+    introLine1.textContent = CONFIG.introLine1;
+    introLine2.textContent = CONFIG.introLine2;
+
+    function updateAudioUI() {
+      if (!bgMusic.paused) {
+        audioPill.classList.add("playing");
+        audioStatusLabel.textContent = "Sonando";
+      } else {
+        audioPill.classList.remove("playing");
+        audioStatusLabel.textContent = "Pausado";
       }
     }
 
-    function showPopToast(x, y, text) {
-      const el = document.createElement("div");
-      el.className = "pop-toast";
-      el.textContent = text;
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 1150);
+    audioPill.addEventListener("click", async () => {
+      if (bgMusic.paused) {
+        try { await bgMusic.play(); } catch {}
+      } else {
+        bgMusic.pause();
+      }
+      updateAudioUI();
+    });
+
+    openBtn.addEventListener("click", async () => {
+      try {
+        await bgMusic.play();
+      } catch {}
+      updateAudioUI();
+
+      unlockBox.style.opacity = "0";
+      unlockBox.style.pointerEvents = "none";
+      setTimeout(() => {
+        unlockBox.classList.add("hidden");
+        introTextBox.classList.remove("hidden");
+        requestAnimationFrame(() => introTextBox.classList.add("show"));
+      }, 380);
+
+      // A los 4.5s: Drop del piano -> entra el escenario
+      setTimeout(() => {
+        introTextBox.classList.add("drop-exit");
+        setTimeout(() => {
+          introOverlay.classList.add("hidden-phase");
+          stage.classList.add("active");
+        }, 700);
+      }, CONFIG.introDurationMs);
+    });
+
+    // =========================================================================
+    // FASE 2: DRAG & DROP DE LA CORONA (Pointer Events API)
+    // =========================================================================
+    const camelitaContainer = document.getElementById("camelita-container");
+    const headDropzone = document.getElementById("head-dropzone");
+    const wornCrown = document.getElementById("worn-crown");
+    const draggableCrownWrap = document.getElementById("draggable-crown-wrap");
+    const draggableCrown = document.getElementById("draggable-crown");
+    const mouthPath = document.getElementById("mouth-path");
+    const blushL = document.getElementById("blush-l");
+    const blushR = document.getElementById("blush-r");
+
+    let isCrowned = false;
+    let isDragging = false;
+
+    function isOverDropzone(clientX, clientY) {
+      const r = headDropzone.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dist = Math.hypot(clientX - cx, clientY - cy);
+      return dist <= 95;
+    }
+
+    draggableCrown.addEventListener("pointerdown", (e) => {
+      if (isCrowned) return;
+      e.preventDefault();
+      isDragging = true;
+      draggableCrown.classList.add("dragging");
+      moveCrownTo(e.clientX, e.clientY);
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!isDragging || isCrowned) return;
+      moveCrownTo(e.clientX, e.clientY);
+      if (isOverDropzone(e.clientX, e.clientY)) {
+        headDropzone.classList.add("drag-hover");
+      } else {
+        headDropzone.classList.remove("drag-hover");
+      }
+    });
+
+    function finishDrag(e) {
+      if (!isDragging || isCrowned) return;
+      isDragging = false;
+      headDropzone.classList.remove("drag-hover");
+
+      if (e && isOverDropzone(e.clientX, e.clientY)) {
+        crownCamelita();
+      } else {
+        draggableCrown.classList.remove("dragging");
+        draggableCrown.style.left = "";
+        draggableCrown.style.top = "";
+      }
+    }
+
+    window.addEventListener("pointerup", finishDrag);
+    window.addEventListener("pointercancel", finishDrag);
+
+    function moveCrownTo(cx, cy) {
+      draggableCrown.style.left = `${cx - 41}px`;
+      draggableCrown.style.top = `${cy - 29}px`;
+    }
+
+    function crownCamelita() {
+      isCrowned = true;
+      draggableCrownWrap.classList.add("done");
+      wornCrown.classList.add("visible");
+
+      // Expresión radiante + más rubor
+      mouthPath.setAttribute("d", "M66 79 Q74 88 82 79");
+      blushL.setAttribute("opacity", "0.85");
+      blushR.setAttribute("opacity", "0.85");
+
+      // Explosión de corazones y destellos
+      const r = headDropzone.getBoundingClientRect();
+      spawnCelebrationBurst(r.left + r.width / 2, r.top + r.height / 2, 48);
+
+      // Se pone de pie, salta feliz y comienza la caminata
+      camelitaContainer.classList.remove("sitting");
+      camelitaContainer.classList.add("jumping");
+
+      setTimeout(() => {
+        camelitaContainer.classList.remove("jumping");
+        camelitaContainer.classList.add("walk-mode");
+        buildParallaxStations();
+        document.getElementById("walk-controls").classList.add("visible");
+        goToStation(0);
+      }, 1150);
     }
 
     // =========================================================================
-    // MOTOR 60 FPS + AUDIO REAL
+    // FASE 3 & 4: PARALLAX, 4 ESTACIONES DE CORONAS Y COFRE FINAL
     // =========================================================================
-    const audio = document.getElementById("bg-music");
-    let useAudio = false, running = false, paused = false, virtualT = 0, lastNow = performance.now();
-    let curIdx = -1, manualBoostUntil = 0, manualAction = "";
+    const parallaxTrack = document.getElementById("parallax-track");
+    const pathDashes = document.getElementById("path-dashes");
+    const miniHeart = document.getElementById("mini-heart");
+    const btnStepWalk = document.getElementById("btn-step-walk");
+    const btnAutoWalk = document.getElementById("btn-auto-walk");
+    const finalModal = document.getElementById("final-modal");
+    const finalTitle = document.getElementById("final-title");
+    const finalBody = document.getElementById("final-body");
+    const btnRestartWalk = document.getElementById("btn-restart-walk");
+    const btnCloseModal = document.getElementById("btn-close-modal");
 
-    const karaokeMain = document.getElementById("karaoke-main");
-    const karaokeSub = document.getElementById("karaoke-sub");
-    const propsLayer = document.getElementById("props-layer");
-    const roadDashes = document.getElementById("road-dashes");
-    const stageActors = document.getElementById("stage-actors");
-    const charBoy = document.getElementById("char-boy");
-    const camWrap = document.getElementById("camelita-wrapper");
-    const camSvg = document.getElementById("camelita-svg");
-    const boySvg = document.getElementById("boy-svg");
-    const charCat = document.getElementById("char-cat");
-    const camArmR = document.getElementById("cam-arm-r");
-    const camArmL = document.getElementById("cam-arm-l");
-    const camLegL = document.getElementById("cam-leg-l");
-    const camLegR = document.getElementById("cam-leg-r");
-    const boyLegL = document.getElementById("boy-leg-l");
-    const boyLegR = document.getElementById("boy-leg-r");
-    const boyArmL = document.getElementById("boy-arm-l");
-    const boyArmR = document.getElementById("boy-arm-r");
-    const camHair = document.getElementById("cam-hair");
-    const camFan = document.getElementById("cam-fan");
-    const camCocktail = document.getElementById("cam-cocktail");
-    const boyCocktail = document.getElementById("boy-cocktail");
-    const boySweat = document.getElementById("boy-sweat");
-    const camSweat = document.getElementById("cam-sweat");
-    const boyCloud = document.getElementById("boy-cloud");
-    const camTongue = document.getElementById("cam-tongue");
-    const camStars = document.getElementById("cam-eyes-stars");
-    const camClosedL = document.getElementById("cam-eye-closed-l");
-    const camBlush = document.getElementById("cam-blush");
-    const catProp = document.getElementById("cat-prop");
-    const scrubFill = document.getElementById("scrub-fill");
-    const scrubTime = document.getElementById("scrub-time");
-    const clockText = document.getElementById("clock-text");
+    finalTitle.textContent = CONFIG.finalLetterTitle;
+    finalBody.textContent = CONFIG.finalLetterBody;
 
-    function blockStart(b) { return b.start >= 19.0 ? Math.max(0, b.start + CONFIG.vocalStartOffset) : b.start; }
-    function blockEnd(b) { return b.end >= 19.0 ? Math.max(0.5, b.end + CONFIG.vocalStartOffset) : b.end; }
+    let currentStation = -1;
+    let autoWalkEnabled = true;
+    let autoTimer = null;
+    let typewriterTimer = null;
+    const totalSlots = CONFIG.stations.length + 1; // 4 coronas + cofre final
 
-    function setPropsForState(st) {
-      let html = "";
-      if (st === "intro_look_horizon" || st === "twenty_miles_heat" || st === "walk_heat_together") {
-        html += `
-          <svg id="prop-sun" class="prop-interactive fixed top-24 right-5 drop-shadow-[0_0_24px_rgba(251,146,60,0.95)]" width="84" height="84" viewBox="0 0 90 90">
-            <circle cx="45" cy="45" r="24" fill="#fbbf24" stroke="#f97316" stroke-width="3"/>
-            <circle cx="37" cy="41" r="3" fill="#451a03"/>
-            <circle cx="53" cy="41" r="3" fill="#451a03"/>
-            <path d="M38 51 Q45 57 52 51" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          </svg>
+    function buildParallaxStations() {
+      parallaxTrack.innerHTML = "";
+      CONFIG.stations.forEach((st, idx) => {
+        const slot = document.createElement("section");
+        slot.className = "station-slot";
+        slot.innerHTML = `
+          <article class="crown-card" id="crown-card-${idx}">
+            <div class="crown-img-wrap">
+              <img src="${st.image}" alt="${st.title}" loading="eager" />
+              <div class="crown-img-overlay"></div>
+              <span class="absolute top-3 left-3 text-xs font-royal tracking-widest uppercase px-3 py-1 rounded-full bg-black/60 border border-amber-200/35 text-amber-200">
+                Corona ${idx + 1} de ${CONFIG.stations.length}
+              </span>
+            </div>
+            <div class="p-5">
+              <h3 class="font-royal text-lg font-bold text-amber-200 mb-2">${st.title}</h3>
+              <p class="text-sm sm:text-base text-slate-200/95 leading-relaxed min-h-[4.5rem]" id="typewriter-${idx}"></p>
+            </div>
+          </article>
         `;
-      }
-      if (st === "twenty_miles_heat" || st === "walk_heat_together") {
-        html += `<div class="fixed bottom-[152px] left-4 glass rounded-xl px-3 py-1 text-xs font-royal text-amber-200 border border-amber-300/60">🌵 20 MILLAS</div>`;
-      }
-      if (st === "no_return_road") {
-        html += `<div class="fixed bottom-[152px] left-4 glass rounded-xl px-3 py-1 text-xs font-bold text-rose-200 border border-rose-400/60">NO RETORNO ↩️🚫</div>`;
-      }
-      if (st === "something_between_us") {
-        html += `<div class="fixed bottom-[238px] left-1/2 -translate-x-1/2 text-3xl animate-pulse">⚡💗⚡</div>`;
-      }
-      if (st === "no_lonely_sunrise" || st === "hold_hands_jump" || st === "lean_shoulder_sunrise" || st === "warm_hug_sunrise" || st === "outro_wave_and_hug") {
-        html += `<div class="fixed bottom-[136px] left-1/2 -translate-x-1/2 w-60 h-28 rounded-t-full bg-gradient-to-t from-amber-300/60 to-pink-400/25 blur-md"></div>`;
-      }
-      if (st === "walk_heat_together") {
-        html += `<div class="fixed bottom-[290px] left-1/2 -translate-x-1/2 text-5xl">⛱️</div>`;
-      }
-      if (st === "love_gust_tornado") {
-        html += `<div class="wind-gust">💨 ❤️ 🌹 ✨ 💖 🍃 💨</div>`;
-      }
-      propsLayer.innerHTML = html;
-
-      const propSun = document.getElementById("prop-sun");
-      if (propSun) {
-        propSun.addEventListener("pointerdown", (e) => {
-          e.stopPropagation();
-          spawnFx(e.clientX, e.clientY, 18, "gold");
-          showPopToast(e.clientX, e.clientY, "☀️ ¡Qué calorcito!");
-        });
-      }
-    }
-
-    function renderAt(t) {
-      scrubTime.textContent = `${t.toFixed(1)}s`;
-      clockText.textContent = `${t.toFixed(2)}s`;
-      scrubFill.style.width = `${Math.min(100, (t / CONFIG.totalDuration) * 100)}%`;
-
-      let bIdx = 0;
-      for (let i = 0; i < LYRICS_TIMELINE.length; i++) {
-        if (t >= blockStart(LYRICS_TIMELINE[i])) bIdx = i;
-      }
-      const b = LYRICS_TIMELINE[bIdx];
-      const st = performance.now() < manualBoostUntil ? manualAction : b.actionState;
-
-      if (bIdx !== curIdx) {
-        curIdx = bIdx;
-        document.body.className = `bg-${b.sceneBg}`;
-        karaokeMain.innerHTML = b.lyric.split(" ").map((w) => `<span class="k-word">${w}</span>`).join(" ");
-        karaokeSub.textContent = b.subLyric || "";
-        setPropsForState(b.actionState);
-      }
-
-      // Karaoke palabra por palabra
-      const bs = blockStart(b), be = blockEnd(b);
-      const frac = Math.max(0, Math.min(1, (t - bs) / Math.max(0.1, be - bs)));
-      const wEls = karaokeMain.querySelectorAll(".k-word");
-      const activeW = Math.floor(frac * wEls.length);
-      wEls.forEach((el, idx) => {
-        el.classList.toggle("done", idx < activeW);
-        el.classList.toggle("active", idx === activeW);
+        parallaxTrack.appendChild(slot);
       });
 
-      const bounce = Math.abs(Math.sin(t * 7.2)) * 6;
+      // Estación final: Carta Lacrada / Cofre Brillante
+      const endSlot = document.createElement("section");
+      endSlot.className = "station-slot";
+      endSlot.innerHTML = `
+        <div class="treasure-box" id="treasure-box">
+          <div class="text-5xl">💌</div>
+          <h3 class="font-royal text-xl font-bold text-amber-200 text-center">Carta Real para Camelita</h3>
+          <p class="text-xs sm:text-sm text-pink-200/90 text-center">Toca el cofre para abrir tu dedicatoria ✨</p>
+        </div>
+      `;
+      parallaxTrack.appendChild(endSlot);
 
-      // Reset props
-      camFan.setAttribute("opacity", "0");
-      camCocktail.setAttribute("opacity", "0");
-      boyCocktail.setAttribute("opacity", "0");
-      boySweat.setAttribute("opacity", "0");
-      camSweat.setAttribute("opacity", "0");
-      boyCloud.setAttribute("opacity", "0");
-      camTongue.setAttribute("opacity", "0");
-      camStars.setAttribute("opacity", "0");
-      camBlush.setAttribute("opacity", "0.55");
-      camArmR.classList.remove("fanning-arm");
-      camHair.classList.remove("hair-wind");
-      stageActors.classList.remove("shake-slow");
-      roadDashes.classList.remove("moving");
-      catProp.textContent = st === "intro_guitar_vibe" ? "🎸" : st === "twenty_miles_heat" ? "🥵" : "✨";
-
-      // Chico visible desde 29.5s ("Algo pasa entre tú y yo")
-      if (t >= 29.5) {
-        charBoy.style.opacity = "1";
-        charBoy.style.transform = st === "warm_hug_sunrise" || st === "outro_wave_and_hug" ? "translateX(14px)" : "translateX(0px)";
-      } else {
-        charBoy.style.opacity = "0";
-        charBoy.style.transform = "translateX(-90px)";
-      }
-
-      camSvg.style.transform = `translateY(${-bounce}px)`;
-      boySvg.style.transform = `translateY(${-bounce * 0.85}px)`;
-      charCat.style.transform = `translateY(${-bounce * 1.4}px)`;
-
-      // Caminata limpia (gracias a transform-box: fill-box en CSS)
-      const isWalking = st === "intro_start_walking" || st === "twenty_miles_heat" || st === "no_return_road" || st === "walk_heat_together";
-      if (isWalking) {
-        roadDashes.classList.add("moving");
-        const legAng = Math.sin(t * 9.5) * 18;
-        camLegL.style.transform = `rotate(${legAng}deg)`;
-        camLegR.style.transform = `rotate(${-legAng}deg)`;
-        boyLegL.style.transform = `rotate(${legAng}deg)`;
-        boyLegR.style.transform = `rotate(${-legAng}deg)`;
-      } else {
-        camLegL.style.transform = "rotate(0deg)";
-        camLegR.style.transform = "rotate(0deg)";
-        boyLegL.style.transform = "rotate(0deg)";
-        boyLegR.style.transform = "rotate(0deg)";
-      }
-
-      if (st === "twenty_miles_heat") {
-        camFan.setAttribute("opacity", "1");
-        camTongue.setAttribute("opacity", "1");
-        camArmR.classList.add("fanning-arm");
-      } else if (st === "sweat_liquor_and_dust") {
-        camCocktail.setAttribute("opacity", "1");
-        boyCocktail.setAttribute("opacity", "1");
-        boySweat.setAttribute("opacity", "1");
-        camSweat.setAttribute("opacity", "1");
-      } else if (st === "see_you_again_eyes" || st === "face_to_face_blush") {
-        camStars.setAttribute("opacity", "1");
-        camBlush.setAttribute("opacity", "0.95");
-      } else if (st === "no_lonely_sunrise") {
-        boyCloud.setAttribute("opacity", "1");
-      } else if (st === "love_gust_tornado") {
-        camHair.classList.add("hair-wind");
-        if (Math.random() < 0.4) spawnFx(cw + 10, Math.random() * ch * 0.75, 1, "petal");
-      } else if (st === "shake_environment_slow") {
-        stageActors.classList.add("shake-slow");
-        if (Math.random() < 0.28) spawnFx(Math.random() * cw, -10, 1, "heart");
-      } else if (st === "we_are_unique_dance" || st === "climax_dance_1") {
-        const armAng = Math.sin(t * 10) * 30;
-        camArmL.style.transform = `rotate(${40 + armAng}deg)`;
-        camArmR.style.transform = `rotate(${-40 - armAng}deg)`;
-        boyArmL.style.transform = `rotate(${40 - armAng}deg)`;
-        boyArmR.style.transform = `rotate(${-40 + armAng}deg)`;
-        if (Math.random() < 0.22) spawnFx(Math.random() * cw, -10, 1, "gold");
-      } else if (st === "happy_spin_together") {
-        camSvg.style.transform = `translateY(${-bounce - 6}px) rotateY(${((t - bs) * 360) % 360}deg)`;
-      } else {
-        const idleArm = Math.sin(t * 6) * 10;
-        camArmL.style.transform = `rotate(${idleArm}deg)`;
-        camArmR.style.transform = `rotate(${-idleArm}deg)`;
-        boyArmL.style.transform = `rotate(${idleArm}deg)`;
-        boyArmR.style.transform = `rotate(${-idleArm}deg)`;
-      }
+      document.getElementById("treasure-box").addEventListener("click", openFinalLetter);
     }
 
-    function loop(now) {
-      requestAnimationFrame(loop);
-      drawCanvas(now);
-      if (!running || paused) { lastNow = now; return; }
-      const dt = (now - lastNow) / 1000;
-      lastNow = now;
-      if (!useAudio || audio.paused) virtualT += dt;
-      const cur = useAudio && !audio.paused ? audio.currentTime : virtualT;
-      renderAt(Math.min(CONFIG.totalDuration, cur));
+    function runTypewriter(el, text) {
+      clearInterval(typewriterTimer);
+      el.textContent = "";
+      let i = 0;
+      typewriterTimer = setInterval(() => {
+        el.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(typewriterTimer);
+      }, 28);
     }
-    requestAnimationFrame(loop);
 
-    // Inicio limpio del audio
-    document.getElementById("btn-start").addEventListener("click", async () => {
-      document.getElementById("start-overlay").classList.add("hidden-phase");
-      running = true;
-      lastNow = performance.now();
-      if (CONFIG.musicUrl) {
-        audio.src = CONFIG.musicUrl;
-        audio.volume = 1;
-        try {
-          await audio.play();
-          useAudio = true;
-          document.getElementById("play-label").textContent = "⏸";
-          document.getElementById("btn-play").classList.add("playing");
-        } catch { useAudio = false; }
-      }
-    });
+    function triggerMiniHeart() {
+      miniHeart.classList.remove("pop");
+      void miniHeart.offsetWidth;
+      miniHeart.classList.add("pop");
+    }
 
-    document.getElementById("btn-play").addEventListener("click", async () => {
-      if (!running) return;
-      paused = !paused;
-      if (paused) {
-        if (useAudio) audio.pause();
-        document.getElementById("play-label").textContent = "▶";
-        document.getElementById("btn-play").classList.remove("playing");
+    function goToStation(index) {
+      if (index < 0 || index >= totalSlots) return;
+      currentStation = index;
+
+      // Animación de caminata durante el desplazamiento
+      camelitaContainer.classList.add("walking");
+      parallaxOffset = index * window.innerWidth;
+      parallaxTrack.style.transform = `translateX(-${index * 100}vw)`;
+      pathDashes.style.transform = `translateX(-${(index * 120) % 400}px)`;
+
+      // Llega frente a la vitrina y se detiene suavemente
+      setTimeout(() => {
+        camelitaContainer.classList.remove("walking");
+        triggerMiniHeart();
+
+        if (index < CONFIG.stations.length) {
+          document.querySelectorAll(".crown-card").forEach((c, i) => {
+            c.classList.toggle("lit", i === index);
+          });
+          const twEl = document.getElementById(`typewriter-${index}`);
+          runTypewriter(twEl, CONFIG.stations[index].meaning);
+          btnStepWalk.textContent =
+            index === CONFIG.stations.length - 1
+              ? "Ir al final del camino 💌"
+              : "Seguir caminando con Camelita ➡️";
+        } else {
+          btnStepWalk.textContent = "Abrir Carta Real 💌";
+        }
+
+        scheduleAutoNext();
+      }, 900);
+    }
+
+    function scheduleAutoNext() {
+      clearTimeout(autoTimer);
+      if (!autoWalkEnabled || currentStation >= totalSlots - 1) return;
+      autoTimer = setTimeout(() => {
+        goToStation(currentStation + 1);
+      }, 5600);
+    }
+
+    btnStepWalk.addEventListener("click", () => {
+      clearTimeout(autoTimer);
+      if (currentStation < totalSlots - 1) {
+        goToStation(currentStation + 1);
       } else {
-        lastNow = performance.now();
-        if (useAudio) await audio.play().catch(() => {});
-        document.getElementById("play-label").textContent = "⏸";
-        document.getElementById("btn-play").classList.add("playing");
+        openFinalLetter();
       }
     });
 
-    // Interactividad individual por personaje
-    camWrap.addEventListener("pointerdown", (e) => {
-      e.stopPropagation();
-      spawnFx(e.clientX, e.clientY, 16, "heart");
-      showPopToast(e.clientX, e.clientY - 20, "💗 ¡Te quiero!");
-      camClosedL.setAttribute("opacity", "1");
-      setTimeout(() => camClosedL.setAttribute("opacity", "0"), 280);
-    });
-    charCat.addEventListener("pointerdown", (e) => {
-      e.stopPropagation();
-      spawnFx(e.clientX, e.clientY, 12, "note");
-      showPopToast(e.clientX, e.clientY - 20, "🐾 ¡Miau!");
-    });
-    charBoy.addEventListener("pointerdown", (e) => {
-      e.stopPropagation();
-      spawnFx(e.clientX, e.clientY, 14, "heart");
-      showPopToast(e.clientX, e.clientY - 20, "💜 ¡Únicos!");
+    btnAutoWalk.addEventListener("click", () => {
+      autoWalkEnabled = !autoWalkEnabled;
+      btnAutoWalk.textContent = autoWalkEnabled ? "⏸ Auto" : "▶ Auto";
+      if (autoWalkEnabled) scheduleAutoNext();
+      else clearTimeout(autoTimer);
     });
 
-    window.addEventListener("pointerdown", (e) => {
-      if (!running || e.target.closest("button, input, .modal-backdrop, #scrubber-wrap")) return;
-      spawnFx(e.clientX, e.clientY, 10, Math.random() < 0.5 ? "heart" : "note");
-    });
-
-    // 5 Botones de Reacciones en Vivo
-    function triggerManual(action, ms = 2400) {
-      manualAction = action;
-      manualBoostUntil = performance.now() + ms;
-      setPropsForState(action);
+    function openFinalLetter() {
+      clearTimeout(autoTimer);
+      camelitaContainer.classList.add("jumping");
+      const r = camelitaContainer.getBoundingClientRect();
+      spawnCelebrationBurst(r.left + r.width / 2, r.top + 40, 46);
+      setTimeout(() => {
+        camelitaContainer.classList.remove("jumping");
+        finalModal.classList.add("open");
+      }, 650);
     }
-    document.getElementById("react-heat").addEventListener("click", () => triggerManual("twenty_miles_heat"));
-    document.getElementById("react-gust").addEventListener("click", () => triggerManual("love_gust_tornado"));
-    document.getElementById("react-toast").addEventListener("click", () => triggerManual("sweat_liquor_and_dust"));
-    document.getElementById("react-petals").addEventListener("click", () => spawnFx(cw / 2, 0, 35, "petal"));
-    document.getElementById("react-dance").addEventListener("click", () => {
-      camWrap.classList.remove("spin-now");
-      void camWrap.offsetWidth;
-      camWrap.classList.add("spin-now");
-      spawnFx(cw / 2, ch * 0.6, 22, "heart");
+
+    btnCloseModal.addEventListener("click", () => {
+      finalModal.classList.remove("open");
     });
 
-    // Scrubber
-    document.getElementById("scrub-track").addEventListener("click", (e) => {
-      if (!running) return;
-      const r = e.currentTarget.getBoundingClientRect();
-      const targetT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * CONFIG.totalDuration;
-      virtualT = targetT;
-      if (useAudio) audio.currentTime = targetT;
-      renderAt(targetT);
-    });
-
-    // Modal ⚙️
-    const cfgModal = document.getElementById("cfg-modal");
-    document.getElementById("btn-cfg").addEventListener("click", () => {
-      document.getElementById("inp-url").value = CONFIG.musicUrl;
-      document.getElementById("offset-label").textContent = `Offset de voz actual: ${CONFIG.vocalStartOffset.toFixed(2)}s`;
-      cfgModal.classList.add("open");
-    });
-    document.getElementById("btn-close-cfg").addEventListener("click", () => cfgModal.classList.remove("open"));
-    document.getElementById("btn-sync-voice").addEventListener("click", () => {
-      const cur = useAudio && !audio.paused ? audio.currentTime : virtualT;
-      CONFIG.vocalStartOffset = cur - 19.2;
-      document.getElementById("offset-label").textContent = `Sincronizado ✅ Offset: ${CONFIG.vocalStartOffset.toFixed(2)}s`;
-    });
-    document.getElementById("btn-apply-cfg").addEventListener("click", async () => {
-      const url = document.getElementById("inp-url").value.trim();
-      CONFIG.musicUrl = url;
-      if (url) {
-        audio.src = url;
-        audio.currentTime = virtualT;
-        await audio.play().then(() => { useAudio = true; }).catch(() => {});
-      }
-      cfgModal.classList.remove("open");
+    btnRestartWalk.addEventListener("click", () => {
+      finalModal.classList.remove("open");
+      goToStation(0);
     });
   </script>
 </body>
