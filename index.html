@@ -299,17 +299,18 @@
       transform: scale(1) translateY(0);
     }
 
-    /* Corona arrastrable inicial */
+    /* Corona arrastrable inicial (sin transform para no romper position:fixed al arrastrar) */
     #draggable-crown-wrap {
       position: fixed;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 13%;
+      left: 0;
+      right: 0;
       z-index: 40;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      pointer-events: none;
       transition: opacity 0.4s ease;
     }
     #draggable-crown-wrap.done {
@@ -321,6 +322,7 @@
       width: 82px;
       height: 58px;
       cursor: grab;
+      pointer-events: auto;
       touch-action: none;
       filter: drop-shadow(0 0 20px rgba(245, 208, 118, 0.85));
       animation: floatCrown 2.3s ease-in-out infinite;
@@ -329,8 +331,8 @@
       position: fixed;
       animation: none;
       cursor: grabbing;
-      transform: scale(1.12);
-      z-index: 70;
+      transform: scale(1.15);
+      z-index: 90;
     }
     @keyframes floatCrown {
       0%, 100% { transform: translateY(0) rotate(-3deg); }
@@ -797,7 +799,7 @@
       audioUrl: "./musica.mp3",
 
       // Textos de la Fase 1 (Intro sincronizada 0.0s a 4.5s)
-      introLine1: "12 DE AGOSTO? NO IMPORTA EL DÍA...",
+      introLine1: "14 DE NOVIEMBRE? NO IMPORTA EL DÍA...",
       introLine2: "ESTAS CORONITAS SON PARA TI 💗... <3",
       introDurationMs: 4500,
 
@@ -829,7 +831,7 @@
       // Carta final de la Fase 4
       finalLetterTitle: "Para mi reina, Camelita 👑",
       finalLetterBody:
-        "No hace falta que sea 12 de agosto ni ninguna fecha especial para recordarte lo increíble que eres.\n\n" +
+        "No hace falta que sea 14 de noviembre ni ninguna fecha especial para recordarte lo increíble que eres.\n\n" +
         "Cada una de estas coronitas representa algo que admiro muchísimo de ti: tu luz, tu esencia única, los momentos tan bonitos y todo lo que mereces.\n\n" +
         "Nunca dejes de brillar, Camelita. Siempre serás merecedora de lo más lindo de este mundo. 💗✨"
     };
@@ -1014,24 +1016,21 @@
 
     function isOverDropzone(clientX, clientY) {
       const r = headDropzone.getBoundingClientRect();
-      const pad = 42;
-      return (
-        clientX >= r.left - pad &&
-        clientX <= r.right + pad &&
-        clientY >= r.top - pad &&
-        clientY <= r.bottom + pad
-      );
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dist = Math.hypot(clientX - cx, clientY - cy);
+      return dist <= 95;
     }
 
     draggableCrown.addEventListener("pointerdown", (e) => {
       if (isCrowned) return;
+      e.preventDefault();
       isDragging = true;
-      draggableCrown.setPointerCapture(e.pointerId);
       draggableCrown.classList.add("dragging");
       moveCrownTo(e.clientX, e.clientY);
     });
 
-    draggableCrown.addEventListener("pointermove", (e) => {
+    window.addEventListener("pointermove", (e) => {
       if (!isDragging || isCrowned) return;
       moveCrownTo(e.clientX, e.clientY);
       if (isOverDropzone(e.clientX, e.clientY)) {
@@ -1041,19 +1040,22 @@
       }
     });
 
-    draggableCrown.addEventListener("pointerup", (e) => {
+    function finishDrag(e) {
       if (!isDragging || isCrowned) return;
       isDragging = false;
       headDropzone.classList.remove("drag-hover");
 
-      if (isOverDropzone(e.clientX, e.clientY)) {
+      if (e && isOverDropzone(e.clientX, e.clientY)) {
         crownCamelita();
       } else {
         draggableCrown.classList.remove("dragging");
         draggableCrown.style.left = "";
         draggableCrown.style.top = "";
       }
-    });
+    }
+
+    window.addEventListener("pointerup", finishDrag);
+    window.addEventListener("pointercancel", finishDrag);
 
     function moveCrownTo(cx, cy) {
       draggableCrown.style.left = `${cx - 41}px`;
