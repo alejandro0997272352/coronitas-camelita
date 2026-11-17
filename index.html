@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Únicos — Camelita 👑 (14 de Noviembre)</title>
+  <title>Únicos — Storytelling 2D para Camelita ✨</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,21 +18,23 @@
     }
     .font-royal { font-family: 'Cinzel', serif; }
 
-    /* Fondos dinámicos según bgTheme */
-    #bg-gradient {
+    /* Fondos por sceneBg */
+    #scene-bg {
       position: fixed; inset: 0; z-index: 0;
-      background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 78%);
-      transition: background 1.1s ease;
+      background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 80%);
+      transition: background 0.9s ease;
     }
-    body.theme-night_sparkles #bg-gradient { background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 78%); }
-    body.theme-warm_dusk #bg-gradient { background: radial-gradient(circle at 50% 40%, #3b2438 0%, #140f1d 70%, #07070c 100%); }
-    body.theme-sunset_heat #bg-gradient { background: linear-gradient(180deg, #431407 0%, #7c2d12 35%, #1c1018 80%, #09070c 100%); }
-    body.theme-twilight_magic #bg-gradient { background: linear-gradient(180deg, #1e1b4b 0%, #4c1d95 45%, #130c1f 85%, #07070c 100%); }
-    body.theme-sunrise_pink #bg-gradient { background: linear-gradient(180deg, #500724 0%, #9d174d 38%, #f472b6 68%, #1e1024 100%); }
-    body.theme-neon_purple_party #bg-gradient { background: radial-gradient(circle at 50% 35%, #581c87 0%, #2e1065 48%, #07070c 92%); }
-    body.theme-golden_hour #bg-gradient { background: linear-gradient(180deg, #451a03 0%, #92400e 42%, #1e140c 85%, #07070c 100%); }
-    body.theme-crimson_roses #bg-gradient { background: radial-gradient(circle at 50% 35%, #881337 0%, #4c0519 48%, #09060c 92%); }
-    body.theme-royal_gold #bg-gradient { background: radial-gradient(circle at 50% 30%, #78350f 0%, #3b1c0a 42%, #0a0812 90%); }
+    body.bg-night_stars #scene-bg { background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 80%); }
+    body.bg-dusk_road #scene-bg { background: linear-gradient(180deg, #1e1b4b 0%, #4c1d95 45%, #181024 85%, #07070c 100%); }
+    body.bg-desert_warm #scene-bg { background: linear-gradient(180deg, #431407 0%, #9a3412 45%, #271310 85%, #0a0709 100%); }
+    body.bg-scorching_sun #scene-bg { background: linear-gradient(180deg, #7c2d12 0%, #c2410c 40%, #451a03 80%, #140b07 100%); }
+    body.bg-twilight_sparks #scene-bg { background: linear-gradient(180deg, #1e1b4b 0%, #581c87 48%, #1a0b2e 88%, #07070c 100%); }
+    body.bg-magic_night #scene-bg { background: radial-gradient(circle at 50% 35%, #312e81 0%, #1e1b4b 50%, #07070c 92%); }
+    body.bg-sunrise_transition #scene-bg { background: linear-gradient(180deg, #3b0764 0%, #be185d 45%, #fb923c 78%, #1f1024 100%); }
+    body.bg-neon_galaxy_party #scene-bg { background: radial-gradient(circle at 50% 35%, #6b21a8 0%, #3b0764 52%, #07070c 94%); }
+    body.bg-warm_sunrise #scene-bg { background: linear-gradient(180deg, #831843 0%, #f43f5e 45%, #fbbf24 82%, #23111c 100%); }
+    body.bg-golden_desert #scene-bg { background: linear-gradient(180deg, #78350f 0%, #d97706 48%, #451a03 84%, #110b06 100%); }
+    body.bg-pink_wind_storm #scene-bg { background: radial-gradient(circle at 50% 35%, #9d174d 0%, #500724 55%, #0e0610 95%); }
 
     #fx-canvas {
       position: fixed; inset: 0; width: 100%; height: 100%;
@@ -44,21 +46,26 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(245, 208, 118, 0.34);
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
-    /* Suelo luminoso */
-    .stage-floor {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 148px; z-index: 3; pointer-events: none;
-      background: linear-gradient(to top, rgba(10, 8, 18, 0.96) 0%, rgba(192, 132, 252, 0.14) 75%, transparent 100%);
-      border-top: 1.5px solid rgba(245, 208, 118, 0.28);
+    /* Carretera Parallax inferior */
+    .road-floor {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 138px; z-index: 4; pointer-events: none;
+      background: linear-gradient(to top, rgba(12, 10, 20, 0.96) 0%, rgba(192, 132, 252, 0.14) 75%, transparent 100%);
+      border-top: 2px solid rgba(245, 208, 118, 0.32);
     }
+    .road-dashes {
+      position: absolute; top: 24px; left: 0; width: 200%; height: 3px;
+      background: repeating-linear-gradient(to right, rgba(245, 208, 118, 0.65) 0 28px, transparent 28px 64px);
+    }
+    .road-dashes.moving { animation: roadScroll 1.1s linear infinite; }
+    @keyframes roadScroll { from { transform: translateX(0); } to { transform: translateX(-64px); } }
 
     /* Karaoke superior */
-    #karaoke-wrap {
-      position: fixed; top: 56px; left: 50%; transform: translateX(-50%);
-      z-index: 30; width: 94%; max-width: 680px; text-align: center;
-      pointer-events: none; padding: 6px 12px;
+    #karaoke-box {
+      position: fixed; top: 52px; left: 50%; transform: translateX(-50%);
+      z-index: 32; width: 94%; max-width: 680px; text-align: center; pointer-events: none;
     }
     .k-word {
       display: inline-block; margin: 0 3px;
@@ -68,29 +75,44 @@
     .k-word.done { color: #fde68a; text-shadow: 0 0 8px rgba(245, 208, 118, 0.45); }
     .k-word.active {
       color: #ffffff;
-      text-shadow: 0 0 14px rgba(255, 126, 182, 0.95), 0 0 26px rgba(245, 208, 118, 0.75);
-      transform: scale(1.06);
+      text-shadow: 0 0 14px rgba(255, 126, 182, 0.95), 0 0 26px rgba(245, 208, 118, 0.8);
+      transform: scale(1.07);
     }
 
-    /* Escenario de Personajes 2D */
+    /* Props Escenográficos 2D */
+    #props-layer {
+      position: fixed; inset: 0; z-index: 8; pointer-events: none; overflow: hidden;
+    }
+    @keyframes windSweep {
+      0% { transform: translateX(110vw) rotate(-8deg); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateX(-110vw) rotate(8deg); opacity: 0; }
+    }
+    .wind-gust {
+      position: fixed; top: 32%; left: 0; font-size: 2.2rem; white-space: nowrap;
+      animation: windSweep 1.6s linear infinite;
+      filter: drop-shadow(0 0 14px rgba(244, 63, 94, 0.85));
+    }
+
+    /* Escenario de Personajes */
     #stage-actors {
-      position: fixed; left: 0; right: 0; bottom: 132px; height: 240px;
-      z-index: 15; display: flex; align-items: flex-end; justify-content: center;
+      position: fixed; left: 0; right: 0; bottom: 120px; height: 240px;
+      z-index: 16; display: flex; align-items: flex-end; justify-content: center; gap: 6px;
       pointer-events: none;
     }
-    #stage-actors.shake { animation: screenShake 0.4s ease-in-out infinite; }
-    @keyframes screenShake {
+    #stage-actors.shake-slow { animation: slowShake 0.45s ease-in-out infinite; }
+    @keyframes slowShake {
       0%,100% { transform: translate(0, 0); }
-      25% { transform: translate(-2px, 1px); }
-      75% { transform: translate(2px, -1px); }
+      25% { transform: translate(-3px, 2px); }
+      75% { transform: translate(3px, -2px); }
     }
 
-    .actor-box {
+    .actor-wrap {
       position: relative; display: flex; flex-direction: column; align-items: center;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
       pointer-events: auto; cursor: pointer;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
     }
-
     .name-badge {
       padding: 2px 12px; border-radius: 9999px; font-size: 0.76rem; font-weight: 700;
       color: #fff; background: rgba(255, 255, 255, 0.14);
@@ -99,68 +121,51 @@
       margin-bottom: 2px; white-space: nowrap;
     }
 
-    #camelita-crown-slot {
-      width: 52px; height: 32px; display: flex; align-items: center; justify-content: center;
-      margin-bottom: -11px; z-index: 20; border-radius: 9999px;
-      transition: background 0.2s ease, box-shadow 0.2s ease;
-    }
-    #camelita-crown-slot.drag-hover {
-      background: rgba(245, 208, 118, 0.3);
-      box-shadow: 0 0 22px rgba(245, 208, 118, 0.9);
-    }
+    /* Animaciones de estados corporales */
+    @keyframes fanMotion { 0%,100%{transform:rotate(-10deg);} 50%{transform:rotate(-55deg);} }
+    .fanning-arm { transform-origin: 102px 104px; animation: fanMotion 0.35s ease-in-out infinite; }
 
-    /* Corona flotante de Compuerta 4.5s */
-    #intro-crown-drag {
-      position: fixed; top: 27%; left: 50%; margin-left: -38px;
-      width: 76px; height: 54px; z-index: 45; cursor: grab; touch-action: none;
-      filter: drop-shadow(0 0 20px rgba(245, 208, 118, 0.95));
-      display: none;
-    }
-    #intro-crown-drag.visible { display: block; animation: floatY 1.8s ease-in-out infinite; }
-    #intro-crown-drag.dragging { animation: none; cursor: grabbing; transform: scale(1.15); z-index: 95; }
-    @keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+    @keyframes hairBlow { 0%,100%{transform:skewX(0deg);} 50%{transform:skewX(-14deg);} }
+    .hair-wind { transform-origin: 74px 40px; animation: hairBlow 0.3s ease-in-out infinite; }
 
-    /* Props 2D */
-    #scene-props {
-      position: fixed; inset: 0; z-index: 8; pointer-events: none;
+    @keyframes danceParty {
+      0%,100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-16px) rotate(3deg); }
     }
+    .party-bounce { animation: danceParty 0.48s ease-in-out infinite; }
 
-    /* Exhibidor inferior de 4 Coronitas */
-    #crowns-dock {
-      position: fixed; bottom: 54px; left: 50%; transform: translateX(-50%);
-      z-index: 38; display: flex; gap: 8px; padding: 6px 10px; border-radius: 9999px;
+    @keyframes spin360 { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+    .spin-now { animation: spin360 0.85s ease-in-out; }
+
+    /* Botones de Reacciones en Vivo (abajo del escenario) */
+    #reactions-bar {
+      position: fixed; bottom: 52px; left: 50%; transform: translateX(-50%);
+      z-index: 38; display: flex; gap: 10px;
     }
-    .dock-crown-btn {
-      width: 44px; height: 44px; border-radius: 50%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 1.1rem; cursor: pointer; touch-action: none;
-      border: 1px solid rgba(245, 208, 118, 0.35);
-      background: rgba(255, 255, 255, 0.06);
-      opacity: 0.35; transition: opacity 0.3s ease, transform 0.2s ease, background 0.3s ease;
+    .react-btn {
+      width: 44px; height: 44px; border-radius: 50%; font-size: 1.15rem;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: transform 0.12s ease;
     }
-    .dock-crown-btn.unlocked {
-      opacity: 1; background: rgba(245, 208, 118, 0.2);
-      box-shadow: 0 0 14px rgba(255, 126, 182, 0.45);
-    }
-    .dock-crown-btn.unlocked:active { transform: scale(0.92); }
+    .react-btn:active { transform: scale(0.88); }
 
     /* Scrubber inferior */
     #scrubber-wrap {
-      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+      position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
       width: 94%; max-width: 600px; z-index: 40;
       padding: 6px 12px; border-radius: 9999px;
       display: flex; align-items: center; gap: 8px;
     }
     .scrub-track {
       position: relative; flex: 1; height: 8px; border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.14); cursor: pointer;
+      background: rgba(255, 255, 255, 0.15); cursor: pointer;
     }
     .scrub-fill {
       height: 100%; width: 0%; border-radius: 9999px;
       background: linear-gradient(to right, #f5d076, #ff7eb6);
     }
 
-    /* Ondas audio */
+    /* Ondas sonido */
     .waves { display: flex; align-items: flex-end; gap: 2px; height: 13px; }
     .waves span { width: 2.5px; height: 4px; background: linear-gradient(to top, #ff7eb6, #f5d076); border-radius: 2px; }
     .playing .waves span:nth-child(1) { animation: wv 0.6s infinite 0.0s; }
@@ -168,7 +173,7 @@
     .playing .waves span:nth-child(3) { animation: wv 0.6s infinite 0.35s; }
     @keyframes wv { 0%,100%{height:4px;} 50%{height:13px;} }
 
-    /* Overlay Inicial & Modales */
+    /* Overlay Inicial & Modal ⚙️ */
     #start-overlay {
       position: fixed; inset: 0; z-index: 80;
       background: radial-gradient(circle at center, #141126 0%, #07070c 80%);
@@ -195,52 +200,40 @@
     .modal-backdrop.open { opacity: 1; visibility: visible; }
   </style>
 </head>
-<body class="theme-night_sparkles">
+<body class="bg-night_stars">
 
-  <div id="bg-gradient"></div>
+  <div id="scene-bg"></div>
   <canvas id="fx-canvas"></canvas>
-  <div id="scene-props"></div>
-  <div class="stage-floor"></div>
+  <div id="props-layer"></div>
+  <div class="road-floor"><div class="road-dashes" id="road-dashes"></div></div>
 
-  <!-- HUD Superior Izquierdo -->
-  <div class="fixed top-2.5 left-2.5 z-40 glass rounded-2xl px-3 py-1.5 flex items-center gap-2">
-    <span class="text-[11px] sm:text-xs font-bold text-amber-200">Coronitas de Camelita: <span id="hud-count" class="text-pink-300">0 / 4 👑</span></span>
+  <!-- Esquina Superior Izquierda: Título -->
+  <div class="fixed top-2.5 left-2.5 z-40 glass rounded-full px-3 py-1.5 text-[11px] font-bold text-amber-200">
+    Únicos • Camelita 💗
   </div>
 
-  <!-- Controles Superiores Derechos -->
+  <!-- Esquina Superior Derecha: Play/Pausa + Reloj + ⚙️ -->
   <div class="fixed top-2.5 right-2.5 z-50 flex items-center gap-1.5">
-    <span id="clock-badge" class="glass rounded-full px-2.5 py-1 text-[11px] font-mono text-cyan-300">00.00s</span>
+    <span id="clock-text" class="glass rounded-full px-2.5 py-1 text-[11px] font-mono text-cyan-300">00.00s</span>
     <button id="btn-play" class="glass rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs font-semibold text-amber-100 cursor-pointer">
       <div class="waves"><span></span><span></span><span></span></div>
       <span id="play-label">▶</span>
     </button>
-    <button id="btn-cfg" class="glass rounded-full w-8 h-8 flex items-center justify-center text-sm cursor-pointer" title="Música y Ajuste de Voz">⚙️</button>
+    <button id="btn-cfg" class="glass rounded-full w-8 h-8 flex items-center justify-center text-sm cursor-pointer" title="Música y Sincronización">⚙️</button>
   </div>
   <audio id="bg-music" crossorigin="anonymous" preload="auto"></audio>
 
   <!-- Karaoke Palabra por Palabra -->
-  <div id="karaoke-wrap">
+  <div id="karaoke-box">
     <p id="karaoke-main" class="font-royal text-base sm:text-xl font-bold leading-snug"></p>
     <p id="karaoke-sub" class="text-xs sm:text-sm text-pink-200/90 mt-1 font-medium"></p>
   </div>
 
-  <!-- Corona Arrastrable Inicial (4.5s - 9.5s) -->
-  <svg id="intro-crown-drag" viewBox="0 0 100 70" fill="none">
-    <defs>
-      <linearGradient id="cGold" x1="0" y1="0" x2="100" y2="70" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stop-color="#fde68a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fef08a"/>
-      </linearGradient>
-    </defs>
-    <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#cGold)" stroke="#fff7ed" stroke-width="2.5" stroke-linejoin="round"/>
-    <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
-    <circle cx="50" cy="10" r="4.5" fill="#ff7eb6"/>
-  </svg>
-
-  <!-- Escenario de Personajes 2D (#char-boy, #char-camelita, #char-cat) -->
+  <!-- Escenario de Personajes 2D -->
   <div id="stage-actors">
-    <!-- Chico 2D (#char-boy) -->
-    <div id="char-boy" class="actor-box" style="opacity:0; transform: translateX(-80px); margin-right:-6px;">
-      <svg id="boy-svg" width="108" height="154" viewBox="0 0 130 180" fill="none">
+    <!-- Acompañante 2D (#char-boy) -->
+    <div id="char-boy" class="actor-wrap" style="opacity:0; transform: translateX(-90px);">
+      <svg id="boy-svg" width="106" height="154" viewBox="0 0 130 180" fill="none">
         <g id="boy-legs">
           <rect x="46" y="130" width="13" height="36" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
           <rect x="71" y="130" width="13" height="36" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
@@ -257,109 +250,100 @@
         <circle cx="55" cy="57" r="2" fill="#fff"/>
         <circle cx="79" cy="57" r="2" fill="#fff"/>
         <path d="M60 73 Q65 77 70 73" stroke="#4a281d" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Gotita de sudor cómica -->
+        <path id="boy-sweat" d="M88 38 Q93 48 88 52 Q83 48 88 38 Z" fill="#7dd3fc" opacity="0"/>
+        <!-- Cóctel -->
+        <text id="boy-cocktail" x="102" y="106" font-size="22" opacity="0">🍹</text>
+        <!-- Nube gris triste -->
+        <text id="boy-cloud" x="65" y="18" text-anchor="middle" font-size="28" opacity="0">🌧️</text>
       </svg>
     </div>
 
-    <!-- Protagonista: Camelita (#char-camelita) -->
-    <div id="char-camelita" class="actor-box">
+    <!-- Protagonista: Camelita (#camelita-wrapper + #char-camelita) -->
+    <div id="camelita-wrapper" class="actor-wrap">
       <div class="name-badge">✨ Camelita ✨</div>
-      <div id="camelita-crown-slot">
-        <svg id="worn-crown" width="46" height="32" viewBox="0 0 100 70" fill="none" style="opacity:0; transition: opacity 0.35s ease, filter 0.35s ease;">
-          <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#cGold)" stroke="#fff7ed" stroke-width="2.5"/>
-          <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
-          <circle id="worn-gem" cx="50" cy="10" r="5" fill="#38bdf8"/>
+      <div id="char-camelita">
+        <svg id="camelita-svg" width="124" height="162" viewBox="0 0 148 190" fill="none">
+          <g id="cam-hair">
+            <path d="M36 52 C28 84 26 122 34 142 C46 146 102 146 114 142 C122 122 120 84 112 52 C102 24 46 24 36 52 Z" fill="#18141c" stroke="#0b090e" stroke-width="2.5"/>
+          </g>
+          <g id="cam-legs">
+            <g id="cam-leg-l">
+              <rect x="54" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
+              <path d="M51 168 C51 164 69 164 70 172 C70 176 50 176 51 168 Z" fill="#111827"/>
+            </g>
+            <g id="cam-leg-r">
+              <rect x="80" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
+              <path d="M78 168 C78 164 96 164 97 172 C97 176 77 176 78 168 Z" fill="#111827"/>
+            </g>
+          </g>
+          <g id="cam-arms">
+            <g id="cam-arm-l">
+              <path d="M46 102 C32 114 28 132 36 138 C42 142 50 132 52 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
+              <circle cx="38" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+            </g>
+            <g id="cam-arm-r">
+              <path d="M102 102 C116 114 120 132 112 138 C106 142 98 132 96 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
+              <circle cx="110" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+              <!-- Abanico / Cóctel -->
+              <text id="cam-fan" x="112" y="128" font-size="20" opacity="0">🪭</text>
+              <text id="cam-cocktail" x="108" y="114" font-size="22" opacity="0">🍹</text>
+            </g>
+          </g>
+          <path d="M46 98 C44 92 104 92 102 98 L108 142 C108 148 40 148 40 142 Z" fill="#161620" stroke="#323244" stroke-width="2.2"/>
+          <path d="M67 98 L65 114 M81 98 L83 114" stroke="#f5d076" stroke-width="2" stroke-linecap="round"/>
+          <g id="cam-head">
+            <ellipse cx="74" cy="64" rx="33" ry="31" fill="#c68b67" stroke="#2d1e17" stroke-width="2.2"/>
+            <path d="M40 56 C42 32 106 32 108 56 C96 44 84 48 74 42 C64 48 52 44 40 56 Z" fill="#18141c"/>
+            <g id="cam-eyes-open">
+              <ellipse cx="60" cy="66" rx="6.5" ry="8" fill="#141016"/>
+              <ellipse cx="88" cy="66" rx="6.5" ry="8" fill="#141016"/>
+              <circle cx="62" cy="63" r="2.4" fill="#fff"/>
+              <circle cx="90" cy="63" r="2.4" fill="#fff"/>
+            </g>
+            <g id="cam-eyes-stars" opacity="0">
+              <text x="55" y="70" font-size="12" fill="#fde68a">✦</text>
+              <text x="83" y="70" font-size="12" fill="#fde68a">✦</text>
+            </g>
+            <path id="cam-eye-closed-l" d="M53 66 Q60 60 67 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
+            <path id="cam-eye-closed-r" d="M81 66 Q88 60 95 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
+            <g id="cam-blush" opacity="0.55">
+              <ellipse cx="50" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
+              <ellipse cx="98" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
+            </g>
+            <path id="cam-sweat" d="M98 44 Q103 54 98 58 Q93 54 98 44 Z" fill="#7dd3fc" opacity="0"/>
+            <path id="cam-mouth" d="M69 80 Q74 85 79 80" stroke="#4a281d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <!-- Lengüita cómica de calor -->
+            <ellipse id="cam-tongue" cx="74" cy="85" rx="3.5" ry="4.5" fill="#fb7185" stroke="#4a281d" stroke-width="1.2" opacity="0"/>
+          </g>
         </svg>
       </div>
-
-      <svg id="camelita-svg" width="124" height="162" viewBox="0 0 148 190" fill="none">
-        <g id="cam-hair">
-          <path d="M36 52 C28 84 26 122 34 142 C46 146 102 146 114 142 C122 122 120 84 112 52 C102 24 46 24 36 52 Z" fill="#18141c" stroke="#0b090e" stroke-width="2.5"/>
-        </g>
-        <!-- Pantalón azul marino -->
-        <g id="cam-legs">
-          <g id="cam-leg-l">
-            <rect x="54" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
-            <path d="M51 168 C51 164 69 164 70 172 C70 176 50 176 51 168 Z" fill="#111827"/>
-          </g>
-          <g id="cam-leg-r">
-            <rect x="80" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
-            <path d="M78 168 C78 164 96 164 97 172 C97 176 77 176 78 168 Z" fill="#111827"/>
-          </g>
-        </g>
-        <g id="cam-arms">
-          <g id="cam-arm-l">
-            <path d="M46 102 C32 114 28 132 36 138 C42 142 50 132 52 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
-            <circle cx="38" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
-          </g>
-          <g id="cam-arm-r">
-            <path d="M102 102 C116 114 120 132 112 138 C106 142 98 132 96 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
-            <circle cx="110" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
-          </g>
-        </g>
-        <!-- Buzo / Hoodie negro -->
-        <path d="M46 98 C44 92 104 92 102 98 L108 142 C108 148 40 148 40 142 Z" fill="#161620" stroke="#323244" stroke-width="2.2"/>
-        <path d="M67 98 L65 114 M81 98 L83 114" stroke="#f5d076" stroke-width="2" stroke-linecap="round"/>
-        <!-- Rosa / Corazón en las manos -->
-        <text id="cam-prop-emoji" x="74" y="128" text-anchor="middle" font-size="24" opacity="0">🌹</text>
-        <!-- Cabeza -->
-        <g id="cam-head">
-          <ellipse cx="74" cy="64" rx="33" ry="31" fill="#c68b67" stroke="#2d1e17" stroke-width="2.2"/>
-          <path d="M40 56 C42 32 106 32 108 56 C96 44 84 48 74 42 C64 48 52 44 40 56 Z" fill="#18141c"/>
-          <g id="cam-eyes-open">
-            <ellipse cx="60" cy="66" rx="6.5" ry="8" fill="#141016"/>
-            <ellipse cx="88" cy="66" rx="6.5" ry="8" fill="#141016"/>
-            <circle cx="62" cy="63" r="2.4" fill="#fff"/>
-            <circle cx="90" cy="63" r="2.4" fill="#fff"/>
-          </g>
-          <g id="cam-eyes-stars" opacity="0">
-            <text x="55" y="70" font-size="12" fill="#fde68a">✦</text>
-            <text x="83" y="70" font-size="12" fill="#fde68a">✦</text>
-          </g>
-          <path id="cam-eye-closed-l" d="M53 66 Q60 60 67 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
-          <path id="cam-eye-closed-r" d="M81 66 Q88 60 95 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
-          <g id="cam-blush" opacity="0.55">
-            <ellipse cx="50" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
-            <ellipse cx="98" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
-          </g>
-          <path d="M69 80 Q74 85 79 80" stroke="#4a281d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-        </g>
-      </svg>
     </div>
 
     <!-- Gatito Compañero 2D (#char-cat) -->
-    <div id="char-cat" class="actor-box" style="opacity:0; margin-left:-4px;">
-      <svg id="cat-svg" width="58" height="68" viewBox="0 0 70 80" fill="none">
-        <!-- Mini coronita morada/negra -->
-        <path d="M22 18 L20 6 L30 13 L35 3 L40 13 L50 6 L48 18 Z" fill="#a855f7" stroke="#f5d076" stroke-width="1.5"/>
-        <!-- Orejitas -->
+    <div id="char-cat" class="actor-wrap">
+      <svg id="cat-svg" width="60" height="72" viewBox="0 0 70 80" fill="none">
         <polygon points="18,22 24,14 30,22" fill="#f1f5f9" stroke="#1e293b" stroke-width="2"/>
         <polygon points="40,22 46,14 52,22" fill="#f1f5f9" stroke="#1e293b" stroke-width="2"/>
-        <!-- Cuerpo y carita -->
         <ellipse cx="35" cy="54" rx="16" ry="18" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
         <circle cx="35" cy="32" r="15" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
         <circle cx="29" cy="31" r="2.5" fill="#0f172a"/>
         <circle cx="41" cy="31" r="2.5" fill="#0f172a"/>
         <path d="M32 36 Q35 39 38 36" stroke="#f472b6" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M50 58 Q64 48 60 36" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <text id="cat-prop" x="52" y="24" font-size="16" opacity="1">🎸</text>
       </svg>
     </div>
   </div>
 
-  <!-- Sobre Real Final -->
-  <button id="btn-final-envelope" class="hidden fixed bottom-[132px] right-4 sm:right-12 z-35 glass rounded-2xl px-3.5 py-2 flex flex-col items-center animate-bounce cursor-pointer">
-    <span class="text-3xl">💌</span>
-    <span class="text-[10px] font-royal text-amber-200">Nota Final</span>
-  </button>
-
-  <!-- Exhibidor Interactivo de las 4 Coronitas (abajo) -->
-  <div id="crowns-dock" class="glass">
-    <button class="dock-crown-btn" data-c="0" title="Corona 1: Diamantes">👑</button>
-    <button class="dock-crown-btn" data-c="1" title="Corona 2: Oscura Morada">👑</button>
-    <button class="dock-crown-btn" data-c="2" title="Corona 3: Rosas Rojas">👑</button>
-    <button class="dock-crown-btn" data-c="3" title="Corona 4: Imperial">👑</button>
+  <!-- 4 Botones de Reacciones en Vivo -->
+  <div id="reactions-bar">
+    <button id="react-heat" class="glass react-btn" title="Más Calor / Sol">🔥</button>
+    <button id="react-gust" class="glass react-btn" title="Ráfaga de Amor">💨</button>
+    <button id="react-toast" class="glass react-btn" title="Chin-Chin">🍹</button>
+    <button id="react-dance" class="glass react-btn" title="Bailar Juntos">💃</button>
   </div>
 
-  <!-- Barra Scrubber con Marcadores de Versos -->
+  <!-- Barra de Progreso Tipo Karaoke -->
   <div id="scrubber-wrap" class="glass">
     <span id="scrub-time" class="text-[11px] font-mono text-amber-200 min-w-[38px]">0.0s</span>
     <div class="scrub-track" id="scrub-track">
@@ -368,54 +352,25 @@
     <span class="text-[11px] font-mono text-slate-300">125s</span>
   </div>
 
-  <!-- Pantalla de Inicio -->
+  <!-- Pantalla Inicial -->
   <div id="start-overlay">
-    <div class="text-5xl mb-3 animate-pulse">👑</div>
-    <p class="font-royal text-xs tracking-[0.26em] uppercase text-amber-200/75 mb-2">14 de Noviembre • Siddhartha - Únicos</p>
+    <div class="text-5xl mb-3 animate-pulse">🎸💗</div>
+    <p class="font-royal text-xs tracking-[0.26em] uppercase text-amber-200/75 mb-2">Siddhartha — Únicos</p>
     <h1 class="font-royal text-2xl sm:text-3xl font-bold text-white mb-6">Para Camelita ✨</h1>
-    <button id="btn-start" class="glow-btn">Tocar para Comenzar 💗</button>
+    <button id="btn-start" class="glow-btn">Tocar para Comenzar ▶</button>
   </div>
 
-  <!-- Modal Tarjeta de Corona -->
-  <div id="crown-modal" class="modal-backdrop">
-    <div class="glass rounded-3xl w-full max-w-sm overflow-hidden text-center">
-      <div class="relative h-48 bg-black">
-        <img id="cm-img" src="" alt="Corona" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0e0e18] via-transparent to-transparent"></div>
-        <span id="cm-badge" class="absolute top-3 left-3 text-[10px] font-royal uppercase tracking-widest px-3 py-1 rounded-full bg-black/70 border border-amber-200/40 text-amber-200"></span>
-      </div>
-      <div class="p-5">
-        <h3 id="cm-title" class="font-royal text-lg font-bold text-amber-200 mb-2"></h3>
-        <p id="cm-msg" class="text-xs sm:text-sm text-slate-200 leading-relaxed mb-4"></p>
-        <div class="flex gap-2 justify-center">
-          <button id="cm-equip" class="glow-btn text-xs px-4 py-2">Ponerle a Camelita 👑</button>
-          <button id="cm-close" class="glass rounded-full text-xs px-4 py-2 cursor-pointer">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Carta Final -->
-  <div id="final-modal" class="modal-backdrop">
-    <div class="glass rounded-3xl w-full max-w-md p-6 text-center max-h-[84vh] overflow-y-auto">
-      <div class="text-4xl mb-2">💌👑</div>
-      <h2 class="font-royal text-xl font-bold text-amber-200 mb-3">14 de Noviembre • Para Camelita</h2>
-      <p id="final-letter-text" class="text-sm text-slate-200 leading-relaxed whitespace-pre-line mb-5"></p>
-      <button id="btn-close-final" class="glow-btn text-xs px-5 py-2.5">Seguir viendo ✨</button>
-    </div>
-  </div>
-
-  <!-- Modal ⚙️ Configuración y Ajuste de Voz -->
+  <!-- Modal ⚙️ Música y Sincronización -->
   <div id="cfg-modal" class="modal-backdrop">
     <div class="glass rounded-3xl w-full max-w-sm p-5 text-center">
       <h3 class="font-royal text-base font-bold text-amber-200 mb-3">⚙️ Música y Sincronización</h3>
       <input id="inp-url" type="url" placeholder="Pega aquí el link directo .mp3" class="w-full px-3 py-2 rounded-xl bg-black/50 border border-amber-200/40 text-xs text-white mb-3" />
-      <button id="btn-set-vocal-offset" class="w-full glass rounded-xl py-2 text-xs text-pink-200 font-semibold mb-3 cursor-pointer">
-        Ajustar aquí inicio de voz 🎤
+      <button id="btn-sync-voice" class="w-full glass rounded-xl py-2 text-xs text-pink-200 font-semibold mb-3 cursor-pointer">
+        Sincronizar voz aquí 🎤
       </button>
-      <p id="offset-info" class="text-[11px] font-mono text-cyan-300 mb-3"></p>
+      <p id="offset-label" class="text-[11px] font-mono text-cyan-300 mb-3"></p>
       <div class="flex gap-2 justify-center">
-        <button id="btn-apply-url" class="glow-btn text-xs px-5 py-2">Aplicar ▶</button>
+        <button id="btn-apply-cfg" class="glow-btn text-xs px-5 py-2">Aplicar ▶</button>
         <button id="btn-close-cfg" class="glass rounded-full text-xs px-4 py-2 cursor-pointer">Cerrar</button>
       </div>
     </div>
@@ -427,328 +382,267 @@
     // =========================================================================
     const CONFIG = {
       musicUrl: "",
-      // Permite ajustar con un solo número si el .mp3 empieza directo en la voz o tras otra intro
+      // Desfase configurable por si el audio empieza directo en la voz o tras otra intro
       vocalStartOffset: 0.0,
-      totalDuration: 125.0,
-
-      crowns: [
-        {
-          title: "Corona de Diamantes y Hielo",
-          color: "#38bdf8",
-          image: "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&w=900&q=80",
-          message: "Por esos ojitos grandes tan lindos y por tener esa luz que brilla incluso en los días más grises ✨"
-        },
-        {
-          title: "Corona Oscura & Estética - Los Únicos",
-          color: "#a855f7",
-          image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80",
-          message: "Para la niña más inquieta, única y auténtica; porque tu vibra tan bonita no la tiene nadie más 💜"
-        },
-        {
-          title: "Corona sobre Rosas Rojas - Ráfaga de Amor",
-          color: "#e11d48",
-          image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80",
-          message: "Por esa ráfaga de momentos y risas que sacudió todo y se quedó guardada con cariño sin importar el tiempo 🌹"
-        },
-        {
-          title: "Corona Real del 14 de Noviembre",
-          color: "#f59e0b",
-          image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80",
-          message: "Porque sea 14 de noviembre o cualquier otro día, siempre somos únicos y Camelita siempre merece todas las coronas 👑"
-        }
-      ],
-
-      finalLetter:
-        "14 de noviembre o cualquier otro día: contigo cada momento se siente único.\n\n" +
-        "Estas 4 coronitas son para recordarte lo especial que eres, tus ojitos que brillan, tu vibra tan auténtica y las risas que se quedan guardadas para siempre.\n\n" +
-        "Nunca dejes de ser tú, Camelita. 👑💗✨"
+      totalDuration: 125.0
     };
 
     const LYRICS_TIMELINE = [
-      // ================= INTRO INSTRUMENTAL + TIKTOK INTRO (0.0s - 14.0s) =================
+      // ================= INTRO INSTRUMENTAL DE GUITARRA (0.00s - 14.00s) =================
       {
-        start: 0.0, end: 4.5,
-        lyric: "14 DE NOVIEMBRE? NO IMPORTA EL DÍA...",
-        subText: "ESTAS CORONITAS SON PARA TI, CAMELITA 💗... <3",
-        state: "intro_tiktok_dark",
-        bgTheme: "night_sparkles",
-        crown: null,
-        actionNote: "Texto grande brillante estilo TikTok; debajo aparece Camelita sentada en la noche estrellada con su letrero ✨ Camelita ✨ encima"
+        start: 0.00, end: 4.50,
+        lyric: "♪ (Intro de guitarra...) ♪",
+        subLyric: "Sube el volumen y mira a Camelita ✨",
+        actionState: "intro_guitar_vibe",
+        sceneBg: "night_stars",
+        animationDetail: "Camelita aparece en el centro con su nombre '✨ Camelita ✨' flotando arriba, moviendo la cabecita al ritmo de la guitarra junto al gatito 2D que toca una mini guitarra."
       },
       {
-        start: 4.5, end: 9.5,
-        lyric: "👑 Arrastra o toca la coronita para coronar a Camelita ✨",
-        subText: "(Suena la guitarra inicial de la canción...)",
-        state: "crown_drop_equip",
-        bgTheme: "night_sparkles",
-        crown: 1,
-        actionNote: "Baja la primera coronita brillante; al tocar su cabeza explotan corazones, Camelita se levanta feliz y desbloquea la 1ra Corona (Diamantes)"
+        start: 4.50, end: 9.50,
+        lyric: "♪ ... ♪",
+        subLyric: "Preparando el camino...",
+        actionState: "intro_start_walking",
+        sceneBg: "dusk_road",
+        animationDetail: "Se enciende el sendero bajo los pies de Camelita; ella se levanta y empieza a caminar con pasos rítmicos sincronizados con la batería."
       },
       {
-        start: 9.5, end: 14.0,
-        lyric: "✨ Camelita está lista... empieza nuestra historia ✨",
-        subText: "",
-        state: "camelita_start_walking",
-        bgTheme: "warm_dusk",
-        crown: 1,
-        actionNote: "Camelita empieza a caminar al ritmo de la batería junto a su gatito 2D mientras su corona de diamantes brilla"
+        start: 9.50, end: 14.00,
+        lyric: "♪ (Entra el ritmo...) ♪",
+        subLyric: "✨ Aquí empieza nuestra canción ✨",
+        actionState: "intro_look_horizon",
+        sceneBg: "desert_warm",
+        animationDetail: "Camelita mira hacia el horizonte poniéndose la manito en la frente mientras el sol empieza a subir."
       },
 
-      // ================= ESTROFA 1 (14.0s - 28.0s) =================
+      // ================= ESTROFA 1 (14.00s - 28.00s) =================
       {
-        start: 14.0, end: 17.5,
+        start: 14.00, end: 17.50,
         lyric: "Veinte millas de calor",
-        subText: "☀️🔥",
-        state: "walk_desert_heat",
-        bgTheme: "sunset_heat",
-        crown: 1,
-        actionNote: "Sol grande cálido en 2D; Camelita camina abanicándose tiernamente"
+        subLyric: "☀️🥵 Veinte millas...",
+        actionState: "twenty_miles_heat",
+        sceneBg: "scorching_sun",
+        animationDetail: "Sale un sol gigante ardiente en el cielo y un cartelito en el camino que dice '20 MILLAS'; Camelita y el gatito sacan la lengüita de calor y se abanican rápido con la manito."
       },
       {
-        start: 17.5, end: 21.0,
+        start: 17.50, end: 21.00,
         lyric: "Y el camino no tiene retorno",
-        subText: "🛣️✨",
-        state: "endless_star_road",
-        bgTheme: "sunset_heat",
-        crown: 1,
-        actionNote: "El sendero bajo los pies de Camelita se ilumina con huellas de luz dorada"
+        subLyric: "🛣️🚫 Sin vuelta atrás",
+        actionState: "no_return_road",
+        sceneBg: "scorching_sun",
+        animationDetail: "Camelita avanza decidida mientras el camino detrás de ella desaparece convirtiéndose en estrellitas y pasa una señal de tránsito que dice 'NO RETORNO ↩️🚫'."
       },
       {
-        start: 21.0, end: 24.5,
+        start: 21.00, end: 24.50,
         lyric: "Algo pasa entre tú y yo",
-        subText: "⚡💗",
-        state: "boy_appears_spark",
-        bgTheme: "twilight_magic",
-        crown: 1,
-        actionNote: "Entra el chico 2D frente a Camelita con chispa rosada llena de corazones"
+        subLyric: "⚡👀💗 Conexión instantánea",
+        actionState: "something_between_us",
+        sceneBg: "twilight_sparks",
+        animationDetail: "Aparece el chico 2D del lado derecho; se detienen frente a frente, sus ojos hacen zoom y salta un rayo eléctrico rosado lleno de corazoncitos conectando sus miradas."
       },
       {
-        start: 24.5, end: 28.0,
+        start: 24.50, end: 28.00,
         lyric: "Sudo gotas de licor y polvo",
-        subText: "🍹✨",
-        state: "cocktail_toast_dust",
-        bgTheme: "twilight_magic",
-        crown: 1,
-        actionNote: "Cóctel brillante entre los dos soltando burbujas de luz y polvo dorado"
+        subLyric: "🍹💦✨",
+        actionState: "sweat_liquor_and_dust",
+        sceneBg: "twilight_sparks",
+        animationDetail: "Al chico y a Camelita les sale una gotita cómica/tierna en la frente por los nervios mientras brindan con dos cócteles brillantes y se levanta polvo dorado."
       },
 
-      // ================= PRE-CORO 1 (28.0s - 37.5s) =================
+      // ================= PRE-CORO 1 (28.00s - 37.50s) =================
       {
-        start: 28.0, end: 31.5,
+        start: 28.00, end: 31.50,
         lyric: "Y ahora que te vuelvo a ver",
-        subText: "👀💖",
-        state: "reunion_blush_eyes",
-        bgTheme: "sunrise_pink",
-        crown: 1,
-        actionNote: "Los ojos grandes de Camelita se llenan de estrellitas blancas y se sonroja"
+        subLyric: "🥺👉👈 Ojitos brillantes",
+        actionState: "see_you_again_eyes",
+        sceneBg: "magic_night",
+        animationDetail: "Los dos dan un paso adelante; los ojos grandes de Camelita se llenan de estrellitas blancas gigantes, se lleva las manitos a las mejillas sonrojadas y sonríe."
       },
       {
-        start: 31.5, end: 35.0,
+        start: 31.50, end: 35.00,
         lyric: "Ya no quiero amanecer tan solo",
-        subText: "🌅🫶",
-        state: "sunrise_together",
-        bgTheme: "sunrise_pink",
-        crown: 1,
-        actionNote: "Sube un sol de amanecer rosado/dorado; el chico se acerca al lado de Camelita"
+        subLyric: "🌙➡️🌅 Adiós a la soledad",
+        actionState: "no_lonely_sunrise",
+        sceneBg: "sunrise_transition",
+        animationDetail: "El chico empuja una nube gris triste, se pone juntito a Camelita y detrás de ellos sube un sol de amanecer rosado y cálido."
       },
       {
-        start: 35.0, end: 37.5,
-        lyric: "Otra vez...",
-        subText: "✨",
-        state: "hold_hands_smile",
-        bgTheme: "sunrise_pink",
-        crown: 1,
-        actionNote: "Se toman de las manos y dan un pequeño brinquito antes del coro"
+        start: 35.00, end: 37.50,
+        lyric: "Otra vez",
+        subLyric: "🤝💗 Nunca más",
+        actionState: "hold_hands_jump",
+        sceneBg: "sunrise_transition",
+        animationDetail: "Se toman de las manos con fuerza, el gatito salta entre los dos y aparece una piedrita brillante flotando."
       },
 
-      // ================= CORO 1 + DESBLOQUEO CORONA 2 (37.5s - 52.0s) =================
+      // ================= CORO 1 (37.50s - 52.00s) =================
       {
-        start: 37.5, end: 42.5,
+        start: 37.50, end: 42.50,
         lyric: "Porque ahora somos únicos, los únicos",
-        subText: "👑💜 ¡2da Coronita para Camelita!",
-        state: "chorus_dance_crown2",
-        bgTheme: "neon_purple_party",
-        crown: 2,
-        actionNote: "Explosión morada y plateada; se desbloquea la 2da Corona y todos bailan"
+        subLyric: "✨💜 ¡LOS ÚNICOS EN EL MUNDO! 💜✨",
+        actionState: "we_are_unique_dance",
+        sceneBg: "neon_galaxy_party",
+        animationDetail: "El fondo explota en una galaxia morada/neón donde Camelita, el chico y el gatito bailan sincronizados al ritmo."
       },
       {
-        start: 42.5, end: 46.5,
+        start: 42.50, end: 46.50,
         lyric: "Y ahora que te vuelvo a ver",
-        subText: "💜✨",
-        state: "spin_happy_camelita",
-        bgTheme: "neon_purple_party",
-        crown: 2,
-        actionNote: "Camelita da una vueltita feliz presumiendo su nueva corona"
+        subLyric: "💫💃 Giro feliz",
+        actionState: "happy_spin_together",
+        sceneBg: "neon_galaxy_party",
+        animationDetail: "Camelita da un giro de baile feliz mientras salen disparados destellos y corazones."
       },
       {
-        start: 46.5, end: 52.0,
+        start: 46.50, end: 52.00,
         lyric: "Ya no quiero amanecer tan solo",
-        subText: "🌟💗",
-        state: "walk_together_rhythm",
-        bgTheme: "neon_purple_party",
-        crown: 2,
-        actionNote: "Caminan juntos al compás de la guitarra"
+        subLyric: "🌅🫶 Juntos al amanecer",
+        actionState: "lean_shoulder_sunrise",
+        sceneBg: "warm_sunrise",
+        animationDetail: "Se sientan mirando el amanecer; Camelita apoya su cabecita hacia el chico mientras el gatito ronronea al lado."
       },
 
-      // ================= ESTROFA 2 + DESBLOQUEO CORONA 3 (52.0s - 66.5s) =================
+      // ================= ESTROFA 2 (52.00s - 66.50s) =================
       {
-        start: 52.0, end: 55.5,
+        start: 52.00, end: 55.50,
         lyric: "Veinte millas de calor",
-        subText: "🔥✨",
-        state: "warm_breeze_walk",
-        bgTheme: "golden_hour",
-        crown: 2,
-        actionNote: "Cielo dorado intenso mientras siguen avanzando juntos"
+        subLyric: "🔥🚶‍♀️🚶‍♂️ Seguimos caminando",
+        actionState: "walk_heat_together",
+        sceneBg: "golden_desert",
+        animationDetail: "Caminan juntos bajo el sol dorado con sombrillita para cuidarla del calor."
       },
       {
-        start: 55.5, end: 59.0,
+        start: 55.50, end: 59.00,
         lyric: "Y el camino que se hundió en el polvo",
-        subText: "🌌",
-        state: "floating_star_bridge",
-        bgTheme: "golden_hour",
-        crown: 2,
-        actionNote: "Flotan sobre un puente de cristal luminoso"
+        subLyric: "🏜️✨ Flotando sobre el polvo",
+        actionState: "road_sunk_in_dust",
+        sceneBg: "golden_desert",
+        animationDetail: "Flotan en el aire sobre estrellitas doradas."
       },
       {
-        start: 59.0, end: 62.5,
+        start: 59.00, end: 62.50,
         lyric: "Una ráfaga de amor",
-        subText: "🌹💨 ¡3ra Coronita desbloqueada!",
-        state: "love_gust_roses_crown3",
-        bgTheme: "crimson_roses",
-        crown: 3,
-        actionNote: "Ráfaga de viento con pétalos de rosas rojas y 3ra Corona"
+        subLyric: "💨❤️🌪️ ¡RÁFAGA DE AMOR!",
+        actionState: "love_gust_tornado",
+        sceneBg: "pink_wind_storm",
+        animationDetail: "Entra una ráfaga de viento gigante hecha de corazones rojos y rosas que mueve el cabello largo de Camelita."
       },
       {
-        start: 62.5, end: 66.5,
+        start: 62.50, end: 66.50,
         lyric: "Lentamente sacudió el entorno",
-        subText: "🌹❤️",
-        state: "screen_shake_petals",
-        bgTheme: "crimson_roses",
-        crown: 3,
-        actionNote: "Escenario vibra suavemente con lluvia de rosas; Camelita atrapa una rosa"
+        subLyric: "💓🌍 Todo el mundo tiembla",
+        actionState: "shake_environment_slow",
+        sceneBg: "pink_wind_storm",
+        animationDetail: "Todo el escenario se mece y tiembla suavemente mientras caen corazones del cielo."
       },
 
-      // ================= PRE-CORO 2 (66.5s - 75.5s) =================
+      // ================= PRE-CORO 2 (66.50s - 75.50s) =================
       {
-        start: 66.5, end: 70.0,
+        start: 66.50, end: 70.00,
         lyric: "Y ahora que te vuelvo a ver",
-        subText: "🥺💗",
-        state: "close_gaze_hearts",
-        bgTheme: "crimson_roses",
-        crown: 3,
-        actionNote: "Camelita mira al frente con sonrisa tierna y corazoncitos"
+        subLyric: "👀💖 Mirada frente a frente",
+        actionState: "face_to_face_blush",
+        sceneBg: "magic_night",
+        animationDetail: "El viento los deja juntitos frente a frente; Camelita parpadea con sus ojitos grandes brillantes."
       },
       {
-        start: 70.0, end: 73.5,
+        start: 70.00, end: 73.50,
         lyric: "Ya no quiero amanecer tan solo",
-        subText: "🌅💞",
-        state: "hug_giant_heart",
-        bgTheme: "sunrise_pink",
-        crown: 3,
-        actionNote: "Camelita y el chico sostienen juntos un corazón brillante"
+        subLyric: "🫂🌅 Abrazo de amanecer",
+        actionState: "warm_hug_sunrise",
+        sceneBg: "sunrise_transition",
+        animationDetail: "Se dan un abrazo súper tierno en el centro mientras el sol ilumina todo."
       },
       {
-        start: 73.5, end: 75.5,
-        lyric: "Otra vez...",
-        subText: "👑✨",
-        state: "prepare_climax_jump",
-        bgTheme: "royal_gold",
-        crown: 3,
-        actionNote: "Toman impulso para el gran final de coronas"
+        start: 73.50, end: 75.50,
+        lyric: "Otra vez",
+        subLyric: "✨Uno, dos, tres... ¡Salto!✨",
+        actionState: "pre_chorus_jump_prep",
+        sceneBg: "sunrise_transition",
+        animationDetail: "Se agachan tomando impulso para saltar en el coro final."
       },
 
-      // ================= COROS FINALES EN CADENA + CORONA 4 (75.5s - FINAL) =================
+      // ================= COROS FINALES EN CADENA (75.50s - FINAL) =================
       {
-        start: 75.5, end: 80.5,
+        start: 75.50, end: 80.50,
         lyric: "Porque ahora somos únicos, los únicos",
-        subText: "👑✨ ¡4ta Coronita Real del 14 de Noviembre!",
-        state: "royal_crown4_unlock",
-        bgTheme: "royal_gold",
-        crown: 4,
-        actionNote: "El chico coloca la 4ta Corona Imperial Dorada a Camelita"
+        subLyric: "🌟🎉 ¡SOMOS ÚNICOS!",
+        actionState: "climax_dance_1",
+        sceneBg: "neon_galaxy_party",
+        animationDetail: "Salto alto con explosión de confeti; bailan moviendo los bracitos arriba y abajo."
       },
       {
-        start: 80.5, end: 85.5,
+        start: 80.50, end: 85.50,
         lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo",
-        subText: "💖👑",
-        state: "royal_dance_1",
-        bgTheme: "royal_gold",
-        crown: 4,
-        actionNote: "Camelita baila feliz con todas sus coronas brillando"
+        subLyric: "💞🌅",
+        actionState: "climax_walk_hearts",
+        sceneBg: "neon_galaxy_party",
+        animationDetail: "Caminan de la mano mientras brotan flores y corazones luminosos."
       },
       {
-        start: 85.5, end: 88.0,
-        lyric: "Y otra vez...",
-        subText: "✨",
-        state: "jump_sparkle_turn",
-        bgTheme: "neon_purple_party",
-        crown: 4,
-        actionNote: "Salto sincronizado con explosión de fuegos artificiales"
+        start: 85.50, end: 88.00,
+        lyric: "Y otra vez",
+        subLyric: "🔄✨ ¡Otra vuelta más!",
+        actionState: "climax_spin_transition",
+        sceneBg: "twilight_sparks",
+        animationDetail: "Vuelta rápida en el aire con estela de brillos."
       },
       {
-        start: 88.0, end: 93.0,
+        start: 88.00, end: 93.00,
         lyric: "Porque ahora somos únicos, los únicos",
-        subText: "💜👑✨",
-        state: "all_characters_party",
-        bgTheme: "neon_purple_party",
-        crown: 4,
-        actionNote: "Camelita, el chico y el gatito bailan juntos bajo destellos"
+        subLyric: "💜✨ Únicos tú y yo ✨💜",
+        actionState: "climax_dance_2_cat",
+        sceneBg: "neon_galaxy_party",
+        animationDetail: "Fiesta con el gatito saltando en dos patitas y luces de colores."
       },
       {
-        start: 93.0, end: 98.0,
+        start: 93.00, end: 98.00,
         lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo",
-        subText: "🌅💗",
-        state: "sunset_embrace",
-        bgTheme: "sunrise_pink",
-        crown: 4,
-        actionNote: "Abrazo tierno entre el chico y Camelita"
+        subLyric: "🌅🫶",
+        actionState: "climax_flying_sunrise",
+        sceneBg: "warm_sunrise",
+        animationDetail: "Flotan juntos sobre una nube dorada viendo salir el sol."
       },
       {
-        start: 98.0, end: 100.5,
-        lyric: "Otra vez...",
-        subText: "💫",
-        state: "star_shower",
-        bgTheme: "royal_gold",
-        crown: 4,
-        actionNote: "Lluvia de estrellas fugaces cruzando el cielo"
+        start: 98.00, end: 100.50,
+        lyric: "Otra vez",
+        subLyric: "💫",
+        actionState: "heart_fireworks",
+        sceneBg: "warm_sunrise",
+        animationDetail: "Explotan fuegos artificiales en el cielo detrás de ellos."
       },
       {
-        start: 100.5, end: 105.5,
+        start: 100.50, end: 105.50,
         lyric: "Porque ahora somos únicos, los únicos",
-        subText: "👑 Para ti, Camelita 👑",
-        state: "camelita_queen_pose",
-        bgTheme: "royal_gold",
-        crown: 4,
-        actionNote: "Camelita saluda y guiña un ojo en el centro"
+        subLyric: "💖✨",
+        actionState: "climax_dance_3_all",
+        sceneBg: "neon_galaxy_party",
+        animationDetail: "Fiesta total al ritmo de la guitarra."
       },
       {
-        start: 105.5, end: 111.0,
+        start: 105.50, end: 111.00,
         lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo",
-        subText: "🌹✨",
-        state: "petal_and_diamond_rain",
-        bgTheme: "crimson_roses",
-        crown: 4,
-        actionNote: "Lluvia de diamantes y pétalos de rosas rojas"
+        subLyric: "🥺💗",
+        actionState: "sweet_forehead_touch",
+        sceneBg: "sunrise_transition",
+        animationDetail: "Juntan sus frentes mirándose con cariño bajo lluvia de pétalos y oro."
       },
       {
-        start: 111.0, end: 125.0,
+        start: 111.00, end: 125.00,
         lyric: "Y otra vez... Porque ahora somos únicos, los únicos... Ya no quiero amanecer tan solo 💗",
-        subText: "💌 Toca el sobre brillante para leer tu nota del 14 de Noviembre",
-        state: "grand_finale_envelope",
-        bgTheme: "royal_gold",
-        crown: 4,
-        actionNote: "Sobre Real Brillante junto a Camelita para abrir la dedicatoria final"
+        subLyric: "✨ Toca a Camelita para hacerla saltar y lanzar corazones ✨",
+        actionState: "outro_wave_and_hug",
+        sceneBg: "warm_sunrise",
+        animationDetail: "Saludan con la manito a la pantalla y se abrazan felices."
       }
     ];
 
     // =========================================================================
-    // CANVAS DE PARTÍCULAS Y REACCIÓN AL RITMO
+    // CANVAS + WEB AUDIO ANALYSER
     // =========================================================================
     const canvas = document.getElementById("fx-canvas");
     const ctx = canvas.getContext("2d");
     let cw = 0, ch = 0;
-    const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: 0.8 + Math.random() * 2, p: Math.random() * 6 }));
-    const fxParticles = [];
+    const stars = Array.from({ length: 75 }, () => ({ x: Math.random(), y: Math.random(), r: 0.8 + Math.random() * 2, p: Math.random() * 6 }));
+    const fx = [];
 
     function resize() { cw = canvas.width = window.innerWidth; ch = canvas.height = window.innerHeight; }
     window.addEventListener("resize", resize);
@@ -757,227 +651,151 @@
     function spawnFx(x, y, count, kind = "heart") {
       for (let i = 0; i < count; i++) {
         const a = Math.random() * Math.PI * 2;
-        const sp = kind === "petal" || kind === "gold" || kind === "diamond" ? 1 + Math.random() * 2.5 : 2 + Math.random() * 4.5;
-        fxParticles.push({
+        const sp = kind === "petal" || kind === "gold" ? 1 + Math.random() * 2.6 : 2 + Math.random() * 4.5;
+        fx.push({
           x, y,
-          vx: kind === "petal" ? -1.5 - Math.random() * 2 : kind === "gold" || kind === "diamond" ? (Math.random() - 0.5) * 1.4 : Math.cos(a) * sp,
-          vy: kind === "petal" || kind === "gold" || kind === "diamond" ? 1.8 + Math.random() * 2.5 : Math.sin(a) * sp - 1.5,
+          vx: kind === "petal" ? -2 - Math.random() * 2.5 : kind === "gold" ? (Math.random() - 0.5) * 1.4 : Math.cos(a) * sp,
+          vy: kind === "petal" || kind === "gold" ? 1.8 + Math.random() * 2.6 : Math.sin(a) * sp - 1.4,
           life: 1, decay: kind === "petal" || kind === "gold" ? 0.008 : 0.02,
           kind, size: 6 + Math.random() * 7
         });
       }
     }
 
-    function drawCanvas(nowMs) {
+    function drawCanvas(now) {
       ctx.clearRect(0, 0, cw, ch);
-      const t = nowMs * 0.002;
+      const t = now * 0.002;
       stars.forEach((s) => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${0.2 + 0.55 * Math.sin(t + s.p)})`;
+        ctx.fillStyle = `rgba(255,255,255,${0.2 + 0.55 * Math.sin(t + s.p)})`;
         ctx.beginPath(); ctx.arc(s.x * cw, s.y * ch, s.r, 0, Math.PI * 2); ctx.fill();
       });
-      for (let i = fxParticles.length - 1; i >= 0; i--) {
-        const p = fxParticles[i];
+      for (let i = fx.length - 1; i >= 0; i--) {
+        const p = fx[i];
         p.x += p.vx; p.y += p.vy;
         if (p.kind === "heart" || p.kind === "note") p.vy += 0.06;
         p.life -= p.decay;
-        if (p.life <= 0) { fxParticles.splice(i, 1); continue; }
+        if (p.life <= 0) { fx.splice(i, 1); continue; }
         ctx.save(); ctx.globalAlpha = p.life;
-        ctx.fillStyle = p.kind === "petal" ? "#e11d48" : p.kind === "gold" ? "#f5d076" : p.kind === "diamond" ? "#7dd3fc" : "#ff7eb6";
-        if (p.kind === "note") {
-          ctx.font = "16px sans-serif";
-          ctx.fillText("♪", p.x, p.y);
-        } else {
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.44, 0, Math.PI * 2); ctx.fill();
-        }
+        ctx.fillStyle = p.kind === "petal" ? "#e11d48" : p.kind === "gold" ? "#f5d076" : "#ff7eb6";
+        if (p.kind === "note") { ctx.font = "16px sans-serif"; ctx.fillText("♪", p.x, p.y); }
+        else { ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2); ctx.fill(); }
         ctx.restore();
       }
     }
 
-    // =========================================================================
-    // AUDIO + RELOJ MAESTRO 60 FPS
-    // =========================================================================
     const audio = document.getElementById("bg-music");
-    let useAudio = false;
-    let running = false;
-    let paused = false;
-    let virtualT = 0;
-    let lastNow = performance.now();
+    let audioCtx = null, analyser = null, freqData = null;
+    function setupAnalyser() {
+      try {
+        if (audioCtx) return;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        audioCtx = new AC();
+        const src = audioCtx.createMediaElementSource(audio);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 64;
+        freqData = new Uint8Array(analyser.frequencyBinCount);
+        src.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      } catch {}
+    }
 
-    function effectiveTime(rawT) {
-      return rawT;
-    }
-    function getBlockStart(b) {
-      return b.start >= 14.0 ? Math.max(0, b.start + CONFIG.vocalStartOffset) : b.start;
-    }
-    function getBlockEnd(b) {
-      return b.end >= 14.0 ? Math.max(0.5, b.end + CONFIG.vocalStartOffset) : b.end;
+    function getBeatEnergy(t) {
+      if (analyser && useAudio && !audio.paused) {
+        analyser.getByteFrequencyData(freqData);
+        const bass = (freqData[0] + freqData[1] + freqData[2]) / (3 * 255);
+        return bass;
+      }
+      return Math.abs(Math.sin(t * 7.2)) * 0.65;
     }
 
     // =========================================================================
-    // REFERENCIAS DE UI Y ELENCO 2D
+    // MOTOR PRINCIPAL 60 FPS
     // =========================================================================
+    let useAudio = false, running = false, paused = false, virtualT = 0, lastNow = performance.now();
+    let curIdx = -1, manualBoostUntil = 0, manualAction = "";
+
     const karaokeMain = document.getElementById("karaoke-main");
     const karaokeSub = document.getElementById("karaoke-sub");
-    const sceneProps = document.getElementById("scene-props");
+    const propsLayer = document.getElementById("props-layer");
+    const roadDashes = document.getElementById("road-dashes");
     const stageActors = document.getElementById("stage-actors");
     const charBoy = document.getElementById("char-boy");
-    const charCamelita = document.getElementById("char-camelita");
-    const charCat = document.getElementById("char-cat");
+    const camWrap = document.getElementById("camelita-wrapper");
     const camSvg = document.getElementById("camelita-svg");
+    const charCat = document.getElementById("char-cat");
+    const camArmR = document.getElementById("cam-arm-r");
+    const camArmL = document.getElementById("cam-arm-l");
     const camLegL = document.getElementById("cam-leg-l");
     const camLegR = document.getElementById("cam-leg-r");
-    const camArmL = document.getElementById("cam-arm-l");
-    const camArmR = document.getElementById("cam-arm-r");
-    const camEyesOpen = document.getElementById("cam-eyes-open");
-    const camEyesStars = document.getElementById("cam-eyes-stars");
-    const camEyeClosedL = document.getElementById("cam-eye-closed-l");
-    const camEyeClosedR = document.getElementById("cam-eye-closed-r");
+    const camHair = document.getElementById("cam-hair");
+    const camFan = document.getElementById("cam-fan");
+    const camCocktail = document.getElementById("cam-cocktail");
+    const boyCocktail = document.getElementById("boy-cocktail");
+    const boySweat = document.getElementById("boy-sweat");
+    const camSweat = document.getElementById("cam-sweat");
+    const boyCloud = document.getElementById("boy-cloud");
+    const camTongue = document.getElementById("cam-tongue");
+    const camStars = document.getElementById("cam-eyes-stars");
+    const camClosedL = document.getElementById("cam-eye-closed-l");
+    const camClosedR = document.getElementById("cam-eye-closed-r");
     const camBlush = document.getElementById("cam-blush");
-    const camPropEmoji = document.getElementById("cam-prop-emoji");
-    const wornCrown = document.getElementById("worn-crown");
-    const wornGem = document.getElementById("worn-gem");
-    const crownSlot = document.getElementById("camelita-crown-slot");
-    const introCrownDrag = document.getElementById("intro-crown-drag");
-    const btnFinalEnv = document.getElementById("btn-final-envelope");
-    const hudCount = document.getElementById("hud-count");
-    const dockBtns = document.querySelectorAll(".dock-crown-btn");
+    const catProp = document.getElementById("cat-prop");
     const scrubFill = document.getElementById("scrub-fill");
     const scrubTime = document.getElementById("scrub-time");
-    const clockBadge = document.getElementById("clock-badge");
+    const clockText = document.getElementById("clock-text");
 
-    document.getElementById("final-letter-text").textContent = CONFIG.finalLetter;
+    function blockStart(b) { return b.start >= 14.0 ? Math.max(0, b.start + CONFIG.vocalStartOffset) : b.start; }
+    function blockEnd(b) { return b.end >= 14.0 ? Math.max(0.5, b.end + CONFIG.vocalStartOffset) : b.end; }
 
-    let unlocked = [false, false, false, false];
-    let currentIdx = -1;
-    let activeCrownModalIdx = 0;
-
-    function equipCrown(idx) {
-      const c = CONFIG.crowns[idx];
-      if (!c) return;
-      wornCrown.style.opacity = "1";
-      wornGem.setAttribute("fill", c.color);
-      wornCrown.style.filter = `drop-shadow(0 0 14px ${c.color})`;
-    }
-
-    function unlockCrown(idx) {
-      if (idx < 0 || idx > 3 || unlocked[idx]) return;
-      unlocked[idx] = true;
-      dockBtns[idx].classList.add("unlocked");
-      hudCount.textContent = `${unlocked.filter(Boolean).length} / 4 👑`;
-      equipCrown(idx);
-      const r = crownSlot.getBoundingClientRect();
-      spawnFx(r.left + r.width / 2, r.top + r.height / 2, 28, "heart");
-    }
-
-    function openCrownModal(idx) {
-      activeCrownModalIdx = idx;
-      const c = CONFIG.crowns[idx];
-      document.getElementById("cm-img").src = c.image;
-      document.getElementById("cm-badge").textContent = `Corona ${idx + 1} de 4`;
-      document.getElementById("cm-title").textContent = c.title;
-      document.getElementById("cm-msg").textContent = c.message;
-      document.getElementById("crown-modal").classList.add("open");
-    }
-    document.getElementById("cm-close").addEventListener("click", () => document.getElementById("crown-modal").classList.remove("open"));
-    document.getElementById("cm-equip").addEventListener("click", () => {
-      equipCrown(activeCrownModalIdx);
-      document.getElementById("crown-modal").classList.remove("open");
-    });
-
-    dockBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const idx = Number(btn.dataset.c);
-        if (unlocked[idx]) openCrownModal(idx);
-      });
-    });
-
-    // Arrastrar corona inicial (4.5s - 9.5s)
-    let draggingIntroCrown = false;
-    function nearSlot(cx, cy) {
-      const r = crownSlot.getBoundingClientRect();
-      return Math.hypot(cx - (r.left + r.width / 2), cy - (r.top + r.height / 2)) <= 90;
-    }
-    introCrownDrag.addEventListener("pointerdown", (e) => {
-      e.preventDefault();
-      draggingIntroCrown = true;
-      introCrownDrag.classList.add("dragging");
-      introCrownDrag.style.left = `${e.clientX - 38}px`;
-      introCrownDrag.style.top = `${e.clientY - 27}px`;
-      introCrownDrag.style.marginLeft = "0";
-    });
-    window.addEventListener("pointermove", (e) => {
-      if (!draggingIntroCrown) return;
-      introCrownDrag.style.left = `${e.clientX - 38}px`;
-      introCrownDrag.style.top = `${e.clientY - 27}px`;
-      crownSlot.classList.toggle("drag-hover", nearSlot(e.clientX, e.clientY));
-    });
-    window.addEventListener("pointerup", (e) => {
-      if (!draggingIntroCrown) return;
-      draggingIntroCrown = false;
-      crownSlot.classList.remove("drag-hover");
-      if (nearSlot(e.clientX, e.clientY)) {
-        introCrownDrag.classList.remove("visible", "dragging");
-        unlockCrown(0);
-      } else {
-        introCrownDrag.classList.remove("dragging");
-        introCrownDrag.style.left = "";
-        introCrownDrag.style.top = "";
-        introCrownDrag.style.marginLeft = "-38px";
-      }
-    });
-    introCrownDrag.addEventListener("click", () => {
-      if (!draggingIntroCrown) {
-        introCrownDrag.classList.remove("visible");
-        unlockCrown(0);
-      }
-    });
-
-    // Toques en pantalla / Camelita -> corazones + notas + guiño sin pausar música
-    window.addEventListener("pointerdown", (e) => {
-      if (!running || e.target.closest("button, input, .modal-backdrop")) return;
-      spawnFx(e.clientX, e.clientY, 10, Math.random() < 0.5 ? "heart" : "note");
-      camEyeClosedL.setAttribute("opacity", "1");
-      setTimeout(() => camEyeClosedL.setAttribute("opacity", "0"), 260);
-    });
-
-    // Props 2D por estado
-    function renderSceneProps(state) {
+    function setPropsForState(st) {
       let html = "";
-      if (state === "walk_desert_heat" || state === "endless_star_road") {
-        html = `<div class="fixed top-28 right-8 text-6xl animate-pulse drop-shadow-[0_0_24px_rgba(251,146,60,0.9)]">☀️</div>`;
-      } else if (state === "cocktail_toast_dust") {
-        html = `<div class="fixed bottom-[230px] left-1/2 -translate-x-1/2 text-4xl animate-bounce drop-shadow-[0_0_16px_rgba(245,208,118,0.9)]">🍹✨</div>`;
-      } else if (state === "sunrise_together" || state === "hold_hands_smile") {
-        html = `<div class="fixed bottom-[150px] left-1/2 -translate-x-1/2 w-44 h-24 rounded-t-full bg-gradient-to-t from-amber-300/60 to-pink-400/30 blur-md"></div>`;
-      } else if (state === "hug_giant_heart") {
-        html = `<div class="fixed bottom-[225px] left-1/2 -translate-x-1/2 text-5xl animate-pulse drop-shadow-[0_0_24px_rgba(244,63,94,0.95)]">💖</div>`;
+      if (st === "intro_look_horizon" || st === "twenty_miles_heat" || st === "walk_heat_together") {
+        html += `<div class="fixed top-28 right-6 text-6xl animate-pulse drop-shadow-[0_0_24px_rgba(251,146,60,0.95)]">☀️</div>`;
       }
-      sceneProps.innerHTML = html;
+      if (st === "twenty_miles_heat") {
+        html += `<div class="fixed bottom-[152px] left-5 glass rounded-xl px-3 py-1 text-xs font-royal text-amber-200 border border-amber-300/60">20 MILLAS</div>`;
+      }
+      if (st === "no_return_road") {
+        html += `<div class="fixed bottom-[152px] left-5 glass rounded-xl px-3 py-1 text-xs font-bold text-rose-200 border border-rose-400/60">NO RETORNO ↩️🚫</div>`;
+      }
+      if (st === "something_between_us") {
+        html += `<div class="fixed bottom-[238px] left-1/2 -translate-x-1/2 text-3xl animate-pulse">⚡💗⚡</div>`;
+      }
+      if (st === "no_lonely_sunrise" || st === "hold_hands_jump" || st === "lean_shoulder_sunrise" || st === "warm_hug_sunrise" || st === "climax_flying_sunrise") {
+        html += `<div class="fixed bottom-[136px] left-1/2 -translate-x-1/2 w-56 h-28 rounded-t-full bg-gradient-to-t from-amber-300/55 to-pink-400/25 blur-md"></div>`;
+      }
+      if (st === "walk_heat_together") {
+        html += `<div class="fixed bottom-[290px] left-1/2 -translate-x-1/2 text-5xl">⛱️</div>`;
+      }
+      if (st === "love_gust_tornado") {
+        html += `<div class="wind-gust">💨 ❤️ 🌹 ✨ 💖 🍃 💨</div>`;
+      }
+      propsLayer.innerHTML = html;
     }
 
     function renderAt(t) {
       scrubTime.textContent = `${t.toFixed(1)}s`;
-      clockBadge.textContent = `${t.toFixed(2)}s`;
+      clockText.textContent = `${t.toFixed(2)}s`;
       scrubFill.style.width = `${Math.min(100, (t / CONFIG.totalDuration) * 100)}%`;
 
       let bIdx = 0;
       for (let i = 0; i < LYRICS_TIMELINE.length; i++) {
-        if (t >= getBlockStart(LYRICS_TIMELINE[i])) bIdx = i;
+        if (t >= blockStart(LYRICS_TIMELINE[i])) bIdx = i;
       }
       const b = LYRICS_TIMELINE[bIdx];
+      const st = performance.now() < manualBoostUntil ? manualAction : b.actionState;
 
-      if (bIdx !== currentIdx) {
-        currentIdx = bIdx;
-        document.body.className = `theme-${b.bgTheme}`;
+      if (bIdx !== curIdx) {
+        curIdx = bIdx;
+        document.body.className = `bg-${b.sceneBg}`;
         karaokeMain.innerHTML = b.lyric.split(" ").map((w) => `<span class="k-word">${w}</span>`).join(" ");
-        karaokeSub.textContent = b.subText || "";
-        renderSceneProps(b.state);
-        if (b.crown) unlockCrown(b.crown - 1);
+        karaokeSub.textContent = b.subLyric || "";
+        setPropsForState(b.actionState);
       }
 
       // Karaoke palabra por palabra
-      const bs = getBlockStart(b);
-      const be = getBlockEnd(b);
+      const bs = blockStart(b), be = blockEnd(b);
       const frac = Math.max(0, Math.min(1, (t - bs) / Math.max(0.1, be - bs)));
       const wEls = karaokeMain.querySelectorAll(".k-word");
       const activeW = Math.floor(frac * wEls.length);
@@ -986,59 +804,79 @@
         el.classList.toggle("active", idx === activeW);
       });
 
-      // Visibilidad corona inicial
-      introCrownDrag.classList.toggle("visible", b.state === "crown_drop_equip" && !unlocked[0]);
-      stageActors.classList.toggle("shake", b.state === "screen_shake_petals");
-      btnFinalEnv.classList.toggle("hidden", b.state !== "grand_finale_envelope");
+      const beat = getBeatEnergy(t);
+      const bounce = beat * 8;
 
-      // Expresiones y posturas de Camelita, Chico y Gatito
-      const bounce = Math.abs(Math.sin(t * 7.5));
-      camEyesStars.setAttribute("opacity", "0");
-      camEyeClosedR.setAttribute("opacity", "0");
-      camPropEmoji.setAttribute("opacity", "0");
+      // Reset props de personajes
+      camFan.setAttribute("opacity", "0");
+      camCocktail.setAttribute("opacity", "0");
+      boyCocktail.setAttribute("opacity", "0");
+      boySweat.setAttribute("opacity", "0");
+      camSweat.setAttribute("opacity", "0");
+      boyCloud.setAttribute("opacity", "0");
+      camTongue.setAttribute("opacity", "0");
+      camStars.setAttribute("opacity", "0");
+      camClosedR.setAttribute("opacity", "0");
       camBlush.setAttribute("opacity", "0.55");
-      camSvg.style.transform = `translateY(${-bounce * 6}px)`;
+      camArmR.classList.remove("fanning-arm");
+      camHair.classList.remove("hair-wind");
+      stageActors.classList.remove("shake-slow");
+      roadDashes.classList.remove("moving");
+      catProp.textContent = st === "intro_guitar_vibe" ? "🎸" : st === "twenty_miles_heat" ? "🥵" : "✨";
 
-      // Gatito aparece desde 9.5s
-      charCat.style.opacity = t >= 9.5 ? "1" : "0";
-      charCat.style.transform = `translateY(${-Math.abs(Math.sin(t * 8.5)) * 10}px)`;
-
-      // Chico aparece desde 21.0s
+      // Chico visible desde 21.0s
       if (t >= 21.0) {
         charBoy.style.opacity = "1";
-        charBoy.style.transform = b.state === "sunset_embrace" || b.state === "hold_hands_smile" ? "translateX(12px)" : "translateX(0px)";
+        charBoy.style.transform = st === "warm_hug_sunrise" || st === "outro_wave_and_hug" || st === "sweet_forehead_touch" ? "translateX(14px)" : "translateX(0px)";
       } else {
         charBoy.style.opacity = "0";
-        charBoy.style.transform = "translateX(-80px)";
+        charBoy.style.transform = "translateX(-90px)";
       }
 
-      if (b.state === "intro_tiktok_dark" || b.state === "crown_drop_equip") {
-        camLegL.style.transform = "rotate(34deg) translate(-6px,-6px)";
-        camLegR.style.transform = "rotate(-34deg) translate(6px,-6px)";
-        camSvg.style.transform = "translateY(14px)";
+      // Caminata / Baile / Posturas
+      camSvg.style.transform = `translateY(${-bounce}px)`;
+      charCat.style.transform = `translateY(${-bounce * 1.3}px)`;
+
+      if (st === "intro_start_walking" || st === "no_return_road" || st === "walk_heat_together" || st === "climax_walk_hearts") {
+        roadDashes.classList.add("moving");
+        camLegL.style.transform = `rotate(${Math.sin(t * 10) * 18}deg)`;
+        camLegR.style.transform = `rotate(${-Math.sin(t * 10) * 18}deg)`;
       } else {
-        camLegL.style.transform = `rotate(${Math.sin(t * 10) * 16}deg)`;
-        camLegR.style.transform = `rotate(${-Math.sin(t * 10) * 16}deg)`;
+        camLegL.style.transform = "rotate(0deg)";
+        camLegR.style.transform = "rotate(0deg)";
       }
 
-      if (b.state === "reunion_blush_eyes" || b.state === "boy_appears_spark") {
-        camEyesStars.setAttribute("opacity", "1");
+      if (st === "twenty_miles_heat") {
+        camFan.setAttribute("opacity", "1");
+        camTongue.setAttribute("opacity", "1");
+        camArmR.classList.add("fanning-arm");
+      } else if (st === "sweat_liquor_and_dust") {
+        camCocktail.setAttribute("opacity", "1");
+        boyCocktail.setAttribute("opacity", "1");
+        boySweat.setAttribute("opacity", "1");
+        camSweat.setAttribute("opacity", "1");
+      } else if (st === "see_you_again_eyes" || st === "face_to_face_blush") {
+        camStars.setAttribute("opacity", "1");
         camBlush.setAttribute("opacity", "0.95");
-      }
-      if (b.state === "spin_happy_camelita" || b.state === "jump_sparkle_turn") {
-        camSvg.style.transform = `translateY(${-bounce * 12}px) rotateY(${((t - bs) * 360) % 360}deg)`;
-      }
-      if (b.state === "love_gust_roses_crown3" || b.state === "screen_shake_petals" || b.state === "petal_and_diamond_rain") {
-        if (Math.random() < 0.35) spawnFx(cw + 10, Math.random() * ch * 0.7, 1, "petal");
-        if (b.state === "screen_shake_petals") camPropEmoji.setAttribute("opacity", "1");
-      }
-      if (b.state === "royal_crown4_unlock" || b.state === "royal_dance_1" || b.state === "grand_finale_envelope") {
-        if (Math.random() < 0.32) spawnFx(Math.random() * cw, -10, 1, "gold");
-        camArmL.style.transform = "rotate(110deg)";
-        camArmR.style.transform = "rotate(-110deg)";
+      } else if (st === "no_lonely_sunrise") {
+        boyCloud.setAttribute("opacity", "1");
+      } else if (st === "love_gust_tornado") {
+        camHair.classList.add("hair-wind");
+        if (Math.random() < 0.4) spawnFx(cw + 10, Math.random() * ch * 0.75, 1, "petal");
+      } else if (st === "shake_environment_slow") {
+        stageActors.classList.add("shake-slow");
+        if (Math.random() < 0.28) spawnFx(Math.random() * cw, -10, 1, "heart");
+      } else if (st === "we_are_unique_dance" || st === "climax_dance_1" || st === "climax_dance_2_cat" || st === "climax_dance_3_all") {
+        camArmL.style.transform = `rotate(${65 + Math.sin(t * 11) * 35}deg)`;
+        camArmR.style.transform = `rotate(${-65 - Math.sin(t * 11) * 35}deg)`;
+        if (Math.random() < 0.2) spawnFx(Math.random() * cw, -10, 1, "gold");
+      } else if (st === "happy_spin_together" || st === "climax_spin_transition") {
+        camSvg.style.transform = `translateY(${-bounce - 8}px) rotateY(${((t - bs) * 360) % 360}deg)`;
+      } else if (st === "heart_fireworks") {
+        if (Math.random() < 0.25) spawnFx(Math.random() * cw, Math.random() * ch * 0.45, 6, "heart");
       } else {
-        camArmL.style.transform = `rotate(${Math.sin(t * 8) * 18}deg)`;
-        camArmR.style.transform = `rotate(${-Math.sin(t * 8) * 18}deg)`;
+        camArmL.style.transform = `rotate(${Math.sin(t * 8) * 14}deg)`;
+        camArmR.style.transform = `rotate(${-Math.sin(t * 8) * 14}deg)`;
       }
     }
 
@@ -1061,7 +899,9 @@
       lastNow = performance.now();
       if (CONFIG.musicUrl) {
         audio.src = CONFIG.musicUrl;
+        setupAnalyser();
         try {
+          if (audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
           await audio.play();
           useAudio = true;
           document.getElementById("play-label").textContent = "⏸";
@@ -1085,6 +925,31 @@
       }
     });
 
+    // Toques al ritmo en pantalla / personajes
+    window.addEventListener("pointerdown", (e) => {
+      if (!running || e.target.closest("button, input, .modal-backdrop, #scrubber-wrap")) return;
+      spawnFx(e.clientX, e.clientY, 12, Math.random() < 0.5 ? "heart" : "note");
+      camClosedL.setAttribute("opacity", "1");
+      setTimeout(() => camClosedL.setAttribute("opacity", "0"), 260);
+    });
+
+    // 4 Botones de reacciones en vivo
+    function triggerManual(action, ms = 2200) {
+      manualAction = action;
+      manualBoostUntil = performance.now() + ms;
+      setPropsForState(action);
+    }
+    document.getElementById("react-heat").addEventListener("click", () => triggerManual("twenty_miles_heat"));
+    document.getElementById("react-gust").addEventListener("click", () => triggerManual("love_gust_tornado"));
+    document.getElementById("react-toast").addEventListener("click", () => triggerManual("sweat_liquor_and_dust"));
+    document.getElementById("react-dance").addEventListener("click", () => {
+      camWrap.classList.remove("spin-now");
+      void camWrap.offsetWidth;
+      camWrap.classList.add("spin-now");
+      spawnFx(cw / 2, ch * 0.6, 20, "heart");
+    });
+
+    // Scrubber
     document.getElementById("scrub-track").addEventListener("click", (e) => {
       if (!running) return;
       const r = e.currentTarget.getBoundingClientRect();
@@ -1094,27 +959,25 @@
       renderAt(targetT);
     });
 
-    btnFinalEnv.addEventListener("click", () => document.getElementById("final-modal").classList.add("open"));
-    document.getElementById("btn-close-final").addEventListener("click", () => document.getElementById("final-modal").classList.remove("open"));
-
-    // Modal Configuración & Calibración
+    // Modal ⚙️
     const cfgModal = document.getElementById("cfg-modal");
     document.getElementById("btn-cfg").addEventListener("click", () => {
       document.getElementById("inp-url").value = CONFIG.musicUrl;
-      document.getElementById("offset-info").textContent = `Offset actual de voz: ${CONFIG.vocalStartOffset.toFixed(2)}s`;
+      document.getElementById("offset-label").textContent = `Offset de voz actual: ${CONFIG.vocalStartOffset.toFixed(2)}s`;
       cfgModal.classList.add("open");
     });
     document.getElementById("btn-close-cfg").addEventListener("click", () => cfgModal.classList.remove("open"));
-    document.getElementById("btn-set-vocal-offset").addEventListener("click", () => {
+    document.getElementById("btn-sync-voice").addEventListener("click", () => {
       const cur = useAudio && !audio.paused ? audio.currentTime : virtualT;
       CONFIG.vocalStartOffset = cur - 14.0;
-      document.getElementById("offset-info").textContent = `Nuevo offset: ${CONFIG.vocalStartOffset.toFixed(2)}s ✅`;
+      document.getElementById("offset-label").textContent = `Sincronizado ✅ Offset: ${CONFIG.vocalStartOffset.toFixed(2)}s`;
     });
-    document.getElementById("btn-apply-url").addEventListener("click", async () => {
+    document.getElementById("btn-apply-cfg").addEventListener("click", async () => {
       const url = document.getElementById("inp-url").value.trim();
       CONFIG.musicUrl = url;
       if (url) {
         audio.src = url;
+        setupAnalyser();
         audio.currentTime = virtualT;
         await audio.play().then(() => { useAudio = true; }).catch(() => {});
       }
