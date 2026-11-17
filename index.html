@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Para Camelita 👑 — 14 de Noviembre (Audio-Sync)</title>
+  <title>Únicos — Camelita 👑 (14 de Noviembre)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,212 +12,176 @@
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body {
       margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
-      background: #07070b; color: #f8fafc;
+      background: #07070c; color: #f8fafc;
       font-family: 'Plus Jakarta Sans', sans-serif;
       user-select: none;
     }
     .font-royal { font-family: 'Cinzel', serif; }
 
-    #bg-canvas {
-      position: fixed; inset: 0; width: 100%; height: 100%;
-      z-index: 1; pointer-events: none;
-    }
-
-    /* Atardecer/Cielo dinámico según escena */
-    #sky-tint {
-      position: fixed; inset: 0; z-index: 2; pointer-events: none;
-      background: radial-gradient(circle at 50% 35%, rgba(192, 132, 252, 0.12), transparent 65%);
+    /* Fondos dinámicos según bgTheme */
+    #bg-gradient {
+      position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 78%);
       transition: background 1.1s ease;
     }
-    body.theme-purple #sky-tint {
-      background: radial-gradient(circle at 50% 35%, rgba(168, 85, 247, 0.34), rgba(88, 28, 135, 0.16) 60%, transparent 85%);
-    }
-    body.theme-rose #sky-tint {
-      background: radial-gradient(circle at 50% 35%, rgba(244, 63, 94, 0.28), rgba(136, 19, 55, 0.14) 60%, transparent 85%);
-    }
-    body.theme-gold #sky-tint {
-      background: radial-gradient(circle at 50% 35%, rgba(245, 158, 11, 0.32), rgba(244, 114, 182, 0.16) 60%, transparent 85%);
+    body.theme-night_sparkles #bg-gradient { background: radial-gradient(circle at 50% 35%, #16142c 0%, #07070c 78%); }
+    body.theme-warm_dusk #bg-gradient { background: radial-gradient(circle at 50% 40%, #3b2438 0%, #140f1d 70%, #07070c 100%); }
+    body.theme-sunset_heat #bg-gradient { background: linear-gradient(180deg, #431407 0%, #7c2d12 35%, #1c1018 80%, #09070c 100%); }
+    body.theme-twilight_magic #bg-gradient { background: linear-gradient(180deg, #1e1b4b 0%, #4c1d95 45%, #130c1f 85%, #07070c 100%); }
+    body.theme-sunrise_pink #bg-gradient { background: linear-gradient(180deg, #500724 0%, #9d174d 38%, #f472b6 68%, #1e1024 100%); }
+    body.theme-neon_purple_party #bg-gradient { background: radial-gradient(circle at 50% 35%, #581c87 0%, #2e1065 48%, #07070c 92%); }
+    body.theme-golden_hour #bg-gradient { background: linear-gradient(180deg, #451a03 0%, #92400e 42%, #1e140c 85%, #07070c 100%); }
+    body.theme-crimson_roses #bg-gradient { background: radial-gradient(circle at 50% 35%, #881337 0%, #4c0519 48%, #09060c 92%); }
+    body.theme-royal_gold #bg-gradient { background: radial-gradient(circle at 50% 30%, #78350f 0%, #3b1c0a 42%, #0a0812 90%); }
+
+    #fx-canvas {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      z-index: 2; pointer-events: none;
     }
 
     .glass {
-      background: rgba(16, 16, 28, 0.72);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(14, 14, 24, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(245, 208, 118, 0.34);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
     }
 
-    /* Sendero luminoso inferior */
+    /* Suelo luminoso */
     .stage-floor {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 96px; z-index: 4; pointer-events: none;
-      background: linear-gradient(to top, rgba(16, 12, 28, 0.96) 0%, rgba(192, 132, 252, 0.14) 70%, transparent 100%);
+      position: fixed; bottom: 0; left: 0; right: 0; height: 148px; z-index: 3; pointer-events: none;
+      background: linear-gradient(to top, rgba(10, 8, 18, 0.96) 0%, rgba(192, 132, 252, 0.14) 75%, transparent 100%);
       border-top: 1.5px solid rgba(245, 208, 118, 0.28);
     }
 
-    /* Karaoke Palabra por Palabra */
-    #karaoke-box {
-      position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
-      z-index: 30; width: 92%; max-width: 620px; text-align: center;
-      pointer-events: none; padding: 8px 14px;
+    /* Karaoke superior */
+    #karaoke-wrap {
+      position: fixed; top: 56px; left: 50%; transform: translateX(-50%);
+      z-index: 30; width: 94%; max-width: 680px; text-align: center;
+      pointer-events: none; padding: 6px 12px;
     }
     .k-word {
       display: inline-block; margin: 0 3px;
-      color: rgba(248, 250, 252, 0.38);
-      transition: color 0.12s ease, text-shadow 0.12s ease, transform 0.12s ease;
+      color: rgba(255, 255, 255, 0.36);
+      transition: color 0.1s ease, text-shadow 0.1s ease, transform 0.1s ease;
     }
+    .k-word.done { color: #fde68a; text-shadow: 0 0 8px rgba(245, 208, 118, 0.45); }
     .k-word.active {
       color: #ffffff;
-      text-shadow: 0 0 14px rgba(255, 126, 182, 0.9), 0 0 26px rgba(245, 208, 118, 0.65);
+      text-shadow: 0 0 14px rgba(255, 126, 182, 0.95), 0 0 26px rgba(245, 208, 118, 0.75);
       transform: scale(1.06);
     }
-    .k-word.done {
-      color: #fde68a;
-      text-shadow: 0 0 10px rgba(245, 208, 118, 0.4);
+
+    /* Escenario de Personajes 2D */
+    #stage-actors {
+      position: fixed; left: 0; right: 0; bottom: 132px; height: 240px;
+      z-index: 15; display: flex; align-items: flex-end; justify-content: center;
+      pointer-events: none;
+    }
+    #stage-actors.shake { animation: screenShake 0.4s ease-in-out infinite; }
+    @keyframes screenShake {
+      0%,100% { transform: translate(0, 0); }
+      25% { transform: translate(-2px, 1px); }
+      75% { transform: translate(2px, -1px); }
     }
 
-    /* Tarjeta de Corona con Flip 3D */
-    #crown-showcase {
-      position: fixed; top: 146px; left: 50%; transform: translateX(-50%);
-      z-index: 25; width: 90%; max-width: 340px; height: 200px;
-      perspective: 1100px;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.45s ease, transform 0.45s ease;
-    }
-    #crown-showcase.visible {
-      opacity: 1; pointer-events: auto;
-    }
-    .flip-inner {
-      position: relative; width: 100%; height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-      cursor: pointer;
-    }
-    .flip-inner.flipped { transform: rotateY(180deg); }
-    .flip-face {
-      position: absolute; inset: 0; backface-visibility: hidden;
-      border-radius: 22px; overflow: hidden;
-    }
-    .flip-back {
-      transform: rotateY(180deg);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 18px; text-align: center;
+    .actor-box {
+      position: relative; display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+      pointer-events: auto; cursor: pointer;
     }
 
-    /* Personaje Camelita (#camelita-player) */
-    #camelita-player {
-      position: fixed; bottom: 72px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 22; display: flex; flex-direction: column; align-items: center;
-      cursor: pointer;
-      transition: opacity 0.6s ease;
-    }
     .name-badge {
-      padding: 3px 13px; border-radius: 9999px;
-      font-size: 0.78rem; font-weight: 700; color: #fff;
-      background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 215, 140, 0.55);
-      box-shadow: 0 0 16px rgba(255, 126, 182, 0.5);
+      padding: 2px 12px; border-radius: 9999px; font-size: 0.76rem; font-weight: 700;
+      color: #fff; background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(8px); border: 1px solid rgba(255, 215, 140, 0.6);
+      box-shadow: 0 0 14px rgba(255, 126, 182, 0.55);
       margin-bottom: 2px; white-space: nowrap;
     }
+
     #camelita-crown-slot {
-      width: 56px; height: 38px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: -12px; z-index: 26;
-      border-radius: 9999px;
+      width: 52px; height: 32px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: -11px; z-index: 20; border-radius: 9999px;
       transition: background 0.2s ease, box-shadow 0.2s ease;
     }
     #camelita-crown-slot.drag-hover {
-      background: rgba(245, 208, 118, 0.28);
-      box-shadow: 0 0 24px rgba(245, 208, 118, 0.9);
-    }
-    #equipped-crown {
-      width: 52px; height: 36px;
-      opacity: 0; transform: scale(0.4);
-      transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-      filter: drop-shadow(0 0 12px rgba(245, 208, 118, 0.9));
-    }
-    #equipped-crown.visible { opacity: 1; transform: scale(1); }
-
-    #camelita-svg {
-      width: 132px; height: 170px; overflow: visible;
-      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.7));
-      transition: transform 0.35s ease;
+      background: rgba(245, 208, 118, 0.3);
+      box-shadow: 0 0 22px rgba(245, 208, 118, 0.9);
     }
 
-    /* Semicírculo de 4 coronas en el clímax */
-    #orbit-crowns {
-      position: absolute; inset: -30px -55px auto; height: 120px;
-      pointer-events: none; opacity: 0; transition: opacity 0.6s ease;
+    /* Corona flotante de Compuerta 4.5s */
+    #intro-crown-drag {
+      position: fixed; top: 27%; left: 50%; margin-left: -38px;
+      width: 76px; height: 54px; z-index: 45; cursor: grab; touch-action: none;
+      filter: drop-shadow(0 0 20px rgba(245, 208, 118, 0.95));
+      display: none;
     }
-    #orbit-crowns.visible { opacity: 1; }
-    .orbit-mini {
-      position: absolute; font-size: 1.5rem;
-      filter: drop-shadow(0 0 10px rgba(245, 208, 118, 0.9));
-      animation: floatMini 2.2s ease-in-out infinite;
-    }
-    @keyframes floatMini { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+    #intro-crown-drag.visible { display: block; animation: floatY 1.8s ease-in-out infinite; }
+    #intro-crown-drag.dragging { animation: none; cursor: grabbing; transform: scale(1.15); z-index: 95; }
+    @keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
 
-    /* Corona arrastrable en la Compuerta 4.50s */
-    #gate-crown-wrap {
-      position: fixed; top: 20%; left: 0; right: 0; z-index: 45;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      pointer-events: none; opacity: 0; transition: opacity 0.35s ease;
-    }
-    #gate-crown-wrap.active { opacity: 1; }
-    #gate-crown {
-      width: 82px; height: 58px; pointer-events: auto; touch-action: none; cursor: grab;
-      filter: drop-shadow(0 0 22px rgba(245, 208, 118, 0.95));
-      animation: floatMini 2s ease-in-out infinite;
-    }
-    #gate-crown.dragging {
-      position: fixed; animation: none; cursor: grabbing; transform: scale(1.15); z-index: 95;
+    /* Props 2D */
+    #scene-props {
+      position: fixed; inset: 0; z-index: 8; pointer-events: none;
     }
 
-    /* Sobre Real Final */
-    #final-envelope {
-      position: fixed; bottom: 88px; right: 14%; z-index: 28;
-      cursor: pointer; display: none; flex-direction: column; align-items: center;
-      animation: floatMini 2s ease-in-out infinite;
+    /* Exhibidor inferior de 4 Coronitas */
+    #crowns-dock {
+      position: fixed; bottom: 54px; left: 50%; transform: translateX(-50%);
+      z-index: 38; display: flex; gap: 8px; padding: 6px 10px; border-radius: 9999px;
     }
-    #final-envelope.visible { display: flex; }
+    .dock-crown-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 1.1rem; cursor: pointer; touch-action: none;
+      border: 1px solid rgba(245, 208, 118, 0.35);
+      background: rgba(255, 255, 255, 0.06);
+      opacity: 0.35; transition: opacity 0.3s ease, transform 0.2s ease, background 0.3s ease;
+    }
+    .dock-crown-btn.unlocked {
+      opacity: 1; background: rgba(245, 208, 118, 0.2);
+      box-shadow: 0 0 14px rgba(255, 126, 182, 0.45);
+    }
+    .dock-crown-btn.unlocked:active { transform: scale(0.92); }
 
-    /* Scrubber inferior con marcas de coronitas */
-    #scrubber-bar {
-      position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
-      width: 92%; max-width: 560px; z-index: 40;
-      padding: 8px 14px; border-radius: 9999px;
-      display: flex; align-items: center; gap: 10px;
+    /* Scrubber inferior */
+    #scrubber-wrap {
+      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+      width: 94%; max-width: 600px; z-index: 40;
+      padding: 6px 12px; border-radius: 9999px;
+      display: flex; align-items: center; gap: 8px;
     }
-    .scrubber-track {
-      position: relative; flex: 1; height: 8px;
-      background: rgba(255, 255, 255, 0.14); border-radius: 9999px; cursor: pointer;
+    .scrub-track {
+      position: relative; flex: 1; height: 8px; border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.14); cursor: pointer;
     }
-    .scrubber-fill {
+    .scrub-fill {
       height: 100%; width: 0%; border-radius: 9999px;
       background: linear-gradient(to right, #f5d076, #ff7eb6);
     }
-    .crown-marker {
-      position: absolute; top: -11px; transform: translateX(-50%);
-      font-size: 0.78rem; cursor: pointer;
-      filter: drop-shadow(0 0 4px rgba(245, 208, 118, 0.8));
-    }
 
-    /* Pantalla de Inicio */
+    /* Ondas audio */
+    .waves { display: flex; align-items: flex-end; gap: 2px; height: 13px; }
+    .waves span { width: 2.5px; height: 4px; background: linear-gradient(to top, #ff7eb6, #f5d076); border-radius: 2px; }
+    .playing .waves span:nth-child(1) { animation: wv 0.6s infinite 0.0s; }
+    .playing .waves span:nth-child(2) { animation: wv 0.6s infinite 0.2s; }
+    .playing .waves span:nth-child(3) { animation: wv 0.6s infinite 0.35s; }
+    @keyframes wv { 0%,100%{height:4px;} 50%{height:13px;} }
+
+    /* Overlay Inicial & Modales */
     #start-overlay {
       position: fixed; inset: 0; z-index: 80;
-      background: radial-gradient(circle at center, #121022 0%, #07070b 80%);
+      background: radial-gradient(circle at center, #141126 0%, #07070c 80%);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      text-align: center; padding: 24px; transition: opacity 0.6s ease, visibility 0.6s ease;
     }
     #start-overlay.hidden-phase { opacity: 0; visibility: hidden; pointer-events: none; }
 
     .glow-btn {
-      padding: 14px 28px; border-radius: 9999px; font-weight: 700; color: #fff;
-      background: linear-gradient(135deg, rgba(245, 208, 118, 0.22), rgba(255, 126, 182, 0.28));
-      border: 1.5px solid rgba(245, 208, 118, 0.8);
-      box-shadow: 0 0 26px rgba(245, 208, 118, 0.35);
+      padding: 13px 26px; border-radius: 9999px; font-weight: 700; color: #fff;
+      background: linear-gradient(135deg, rgba(245, 208, 118, 0.24), rgba(255, 126, 182, 0.3));
+      border: 1.5px solid rgba(245, 208, 118, 0.85);
+      box-shadow: 0 0 24px rgba(245, 208, 118, 0.35);
       cursor: pointer; transition: transform 0.15s ease;
     }
     .glow-btn:active { transform: scale(0.95); }
@@ -226,211 +190,232 @@
       position: fixed; inset: 0; z-index: 90;
       background: rgba(6, 6, 12, 0.78); backdrop-filter: blur(12px);
       display: flex; align-items: center; justify-content: center; padding: 18px;
-      opacity: 0; visibility: hidden; transition: opacity 0.35s ease, visibility 0.35s ease;
+      opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     .modal-backdrop.open { opacity: 1; visibility: visible; }
   </style>
 </head>
-<body>
+<body class="theme-night_sparkles">
 
-  <canvas id="bg-canvas"></canvas>
-  <div id="sky-tint"></div>
+  <div id="bg-gradient"></div>
+  <canvas id="fx-canvas"></canvas>
+  <div id="scene-props"></div>
   <div class="stage-floor"></div>
 
-  <!-- HUD Superior: 4 Coronas inspeccionables -->
-  <div id="top-hud" class="fixed top-3 left-3 z-40 glass rounded-2xl px-3 py-2 flex items-center gap-2">
-    <span class="text-xs font-bold text-amber-200">Coronas: <span id="hud-score">0 / 4</span></span>
-    <div class="flex gap-1" id="hud-crowns">
-      <button data-c="0" class="w-6 h-6 rounded-full bg-white/10 text-xs opacity-40 transition" title="Ver Corona 1">👑</button>
-      <button data-c="1" class="w-6 h-6 rounded-full bg-white/10 text-xs opacity-40 transition" title="Ver Corona 2">👑</button>
-      <button data-c="2" class="w-6 h-6 rounded-full bg-white/10 text-xs opacity-40 transition" title="Ver Corona 3">👑</button>
-      <button data-c="3" class="w-6 h-6 rounded-full bg-white/10 text-xs opacity-40 transition" title="Ver Corona 4">👑</button>
-    </div>
+  <!-- HUD Superior Izquierdo -->
+  <div class="fixed top-2.5 left-2.5 z-40 glass rounded-2xl px-3 py-1.5 flex items-center gap-2">
+    <span class="text-[11px] sm:text-xs font-bold text-amber-200">Coronitas de Camelita: <span id="hud-count" class="text-pink-300">0 / 4 👑</span></span>
   </div>
 
-  <!-- Reproductor + Calibración ⚙️ -->
-  <div class="fixed top-3 right-3 z-50 flex items-center gap-1.5">
-    <div id="calib-clock" class="hidden glass rounded-full px-3 py-1.5 text-xs font-mono text-cyan-300">00.00s</div>
-    <button id="btn-play-pause" class="glass rounded-full px-3 py-1.5 text-xs font-semibold text-amber-100 cursor-pointer">▶ Música</button>
-    <button id="btn-settings" class="glass rounded-full w-8 h-8 flex items-center justify-center text-sm cursor-pointer" title="Calibración y Música">⚙️</button>
+  <!-- Controles Superiores Derechos -->
+  <div class="fixed top-2.5 right-2.5 z-50 flex items-center gap-1.5">
+    <span id="clock-badge" class="glass rounded-full px-2.5 py-1 text-[11px] font-mono text-cyan-300">00.00s</span>
+    <button id="btn-play" class="glass rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs font-semibold text-amber-100 cursor-pointer">
+      <div class="waves"><span></span><span></span><span></span></div>
+      <span id="play-label">▶</span>
+    </button>
+    <button id="btn-cfg" class="glass rounded-full w-8 h-8 flex items-center justify-center text-sm cursor-pointer" title="Música y Ajuste de Voz">⚙️</button>
   </div>
-  <audio id="bg-music" preload="auto"></audio>
+  <audio id="bg-music" crossorigin="anonymous" preload="auto"></audio>
 
   <!-- Karaoke Palabra por Palabra -->
-  <div id="karaoke-box">
-    <p id="karaoke-line" class="font-royal text-base sm:text-xl font-bold leading-snug"></p>
+  <div id="karaoke-wrap">
+    <p id="karaoke-main" class="font-royal text-base sm:text-xl font-bold leading-snug"></p>
+    <p id="karaoke-sub" class="text-xs sm:text-sm text-pink-200/90 mt-1 font-medium"></p>
   </div>
 
-  <!-- Vitrina de Corona con Flip 3D -->
-  <div id="crown-showcase">
-    <div class="flip-inner glass rounded-3xl" id="flip-inner">
-      <div class="flip-face">
-        <img id="sc-img" src="" alt="Corona" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-        <div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
-          <div>
-            <span id="sc-badge" class="text-[10px] font-royal uppercase tracking-widest text-amber-300"></span>
-            <h3 id="sc-title" class="font-royal text-sm sm:text-base font-bold text-white"></h3>
-          </div>
-          <span class="text-[10px] bg-white/15 px-2 py-0.5 rounded-full text-pink-200">Toca para girar ↻</span>
-        </div>
-      </div>
-      <div class="flip-face flip-back glass">
-        <span class="text-2xl mb-1">👑</span>
-        <h4 id="sc-back-title" class="font-royal text-sm font-bold text-amber-200 mb-2"></h4>
-        <p id="sc-back-msg" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></p>
-      </div>
-    </div>
-  </div>
+  <!-- Corona Arrastrable Inicial (4.5s - 9.5s) -->
+  <svg id="intro-crown-drag" viewBox="0 0 100 70" fill="none">
+    <defs>
+      <linearGradient id="cGold" x1="0" y1="0" x2="100" y2="70" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#fde68a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fef08a"/>
+      </linearGradient>
+    </defs>
+    <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#cGold)" stroke="#fff7ed" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
+    <circle cx="50" cy="10" r="4.5" fill="#ff7eb6"/>
+  </svg>
 
-  <!-- Compuerta Interactiva 4.50s -->
-  <div id="gate-crown-wrap">
-    <svg id="gate-crown" viewBox="0 0 100 70" fill="none">
-      <defs>
-        <linearGradient id="cGold" x1="0" y1="0" x2="100" y2="70" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#fde68a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fef08a"/>
-        </linearGradient>
-      </defs>
-      <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#cGold)" stroke="#fff7ed" stroke-width="2.5" stroke-linejoin="round"/>
-      <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
-      <circle cx="50" cy="10" r="4.5" fill="#ff7eb6"/>
-    </svg>
-    <div class="glass rounded-full px-4 py-1.5 text-xs sm:text-sm text-amber-200 font-semibold text-center max-w-[88vw]">
-      Arrastra (o toca) la coronita hacia Camelita para continuar 👑👇
-    </div>
-  </div>
-
-  <!-- Personaje 2D/2.5D Camelita -->
-  <div id="camelita-player">
-    <div id="orbit-crowns">
-      <span class="orbit-mini" style="left:10%; top:18%;">👑</span>
-      <span class="orbit-mini" style="left:32%; top:-8%; animation-delay:0.3s;">👑</span>
-      <span class="orbit-mini" style="right:32%; top:-8%; animation-delay:0.6s;">👑</span>
-      <span class="orbit-mini" style="right:10%; top:18%; animation-delay:0.9s;">👑</span>
-    </div>
-    <div class="name-badge">✨ Camelita ✨</div>
-    <div id="camelita-crown-slot">
-      <svg id="equipped-crown" viewBox="0 0 100 70" fill="none">
-        <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#cGold)" stroke="#fff7ed" stroke-width="2.5" stroke-linejoin="round"/>
-        <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
-        <circle cx="50" cy="10" r="4.5" fill="#ff7eb6"/>
+  <!-- Escenario de Personajes 2D (#char-boy, #char-camelita, #char-cat) -->
+  <div id="stage-actors">
+    <!-- Chico 2D (#char-boy) -->
+    <div id="char-boy" class="actor-box" style="opacity:0; transform: translateX(-80px); margin-right:-6px;">
+      <svg id="boy-svg" width="108" height="154" viewBox="0 0 130 180" fill="none">
+        <g id="boy-legs">
+          <rect x="46" y="130" width="13" height="36" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
+          <rect x="71" y="130" width="13" height="36" rx="6" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
+        </g>
+        <g id="boy-arms">
+          <path id="boy-arm-l" d="M38 96 C26 110 26 126 34 130 C40 132 45 120 46 106 Z" fill="#312e81" stroke="#1e1b4b" stroke-width="2"/>
+          <path id="boy-arm-r" d="M92 96 C104 110 104 126 96 130 C90 132 85 120 84 106 Z" fill="#312e81" stroke="#1e1b4b" stroke-width="2"/>
+        </g>
+        <path d="M40 92 C38 86 92 86 90 92 L95 134 C95 139 35 139 35 134 Z" fill="#3730a3" stroke="#1e1b4b" stroke-width="2.2"/>
+        <ellipse cx="65" cy="58" rx="30" ry="29" fill="#d49b78" stroke="#2d1e17" stroke-width="2.2"/>
+        <path d="M34 52 C34 26 96 26 96 52 C86 38 74 42 65 36 C55 42 44 38 34 52 Z" fill="#18141c"/>
+        <ellipse cx="53" cy="60" rx="5.5" ry="7" fill="#141016"/>
+        <ellipse cx="77" cy="60" rx="5.5" ry="7" fill="#141016"/>
+        <circle cx="55" cy="57" r="2" fill="#fff"/>
+        <circle cx="79" cy="57" r="2" fill="#fff"/>
+        <path d="M60 73 Q65 77 70 73" stroke="#4a281d" stroke-width="2.2" stroke-linecap="round" fill="none"/>
       </svg>
     </div>
 
-    <svg id="camelita-svg" viewBox="0 0 148 190" fill="none">
-      <g id="camelita-hair">
-        <path d="M36 52 C28 84 26 122 34 142 C46 146 102 146 114 142 C122 122 120 84 112 52 C102 24 46 24 36 52 Z" fill="#18141c" stroke="#0b090e" stroke-width="2.5"/>
-      </g>
-      <g id="camelita-legs">
-        <g id="leg-l">
-          <rect x="54" y="138" width="14" height="36" rx="7" fill="#c68b67" stroke="#2d1e17" stroke-width="2"/>
-          <path d="M51 168 C51 164 69 164 70 172 C70 176 50 176 51 168 Z" fill="#181822" stroke="#3b3b4d" stroke-width="1.5"/>
+    <!-- Protagonista: Camelita (#char-camelita) -->
+    <div id="char-camelita" class="actor-box">
+      <div class="name-badge">✨ Camelita ✨</div>
+      <div id="camelita-crown-slot">
+        <svg id="worn-crown" width="46" height="32" viewBox="0 0 100 70" fill="none" style="opacity:0; transition: opacity 0.35s ease, filter 0.35s ease;">
+          <path d="M12 56 L6 20 L30 38 L50 10 L70 38 L94 20 L88 56 Z" fill="url(#cGold)" stroke="#fff7ed" stroke-width="2.5"/>
+          <rect x="12" y="54" width="76" height="8" rx="4" fill="#d97706" stroke="#fff7ed" stroke-width="2"/>
+          <circle id="worn-gem" cx="50" cy="10" r="5" fill="#38bdf8"/>
+        </svg>
+      </div>
+
+      <svg id="camelita-svg" width="124" height="162" viewBox="0 0 148 190" fill="none">
+        <g id="cam-hair">
+          <path d="M36 52 C28 84 26 122 34 142 C46 146 102 146 114 142 C122 122 120 84 112 52 C102 24 46 24 36 52 Z" fill="#18141c" stroke="#0b090e" stroke-width="2.5"/>
         </g>
-        <g id="leg-r">
-          <rect x="80" y="138" width="14" height="36" rx="7" fill="#c68b67" stroke="#2d1e17" stroke-width="2"/>
-          <path d="M78 168 C78 164 96 164 97 172 C97 176 77 176 78 168 Z" fill="#181822" stroke="#3b3b4d" stroke-width="1.5"/>
+        <!-- Pantalón azul marino -->
+        <g id="cam-legs">
+          <g id="cam-leg-l">
+            <rect x="54" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
+            <path d="M51 168 C51 164 69 164 70 172 C70 176 50 176 51 168 Z" fill="#111827"/>
+          </g>
+          <g id="cam-leg-r">
+            <rect x="80" y="138" width="14" height="34" rx="7" fill="#1e3a5f" stroke="#0f172a" stroke-width="2"/>
+            <path d="M78 168 C78 164 96 164 97 172 C97 176 77 176 78 168 Z" fill="#111827"/>
+          </g>
         </g>
-      </g>
-      <g id="camelita-arms">
-        <g id="arm-l">
-          <path d="M46 102 C32 114 28 132 36 138 C42 142 50 132 52 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
-          <circle cx="38" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+        <g id="cam-arms">
+          <g id="cam-arm-l">
+            <path d="M46 102 C32 114 28 132 36 138 C42 142 50 132 52 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
+            <circle cx="38" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+          </g>
+          <g id="cam-arm-r">
+            <path d="M102 102 C116 114 120 132 112 138 C106 142 98 132 96 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
+            <circle cx="110" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
+          </g>
         </g>
-        <g id="arm-r">
-          <path d="M102 102 C116 114 120 132 112 138 C106 142 98 132 96 116 Z" fill="#14141d" stroke="#2e2e3d" stroke-width="2"/>
-          <circle cx="110" cy="137" r="6" fill="#c68b67" stroke="#2d1e17" stroke-width="1.8"/>
-        </g>
-      </g>
-      <g id="camelita-body">
+        <!-- Buzo / Hoodie negro -->
         <path d="M46 98 C44 92 104 92 102 98 L108 142 C108 148 40 148 40 142 Z" fill="#161620" stroke="#323244" stroke-width="2.2"/>
-        <path d="M56 124 L92 124 L95 140 L53 140 Z" fill="#1e1e2b" stroke="#2f2f40" stroke-width="1.5"/>
         <path d="M67 98 L65 114 M81 98 L83 114" stroke="#f5d076" stroke-width="2" stroke-linecap="round"/>
-      </g>
-      <!-- Corazón en las manos (Escena 3) -->
-      <path id="camelita-heart" d="M74 114 C68 106 56 110 56 119 C56 128 74 138 74 138 C74 138 92 128 92 119 C92 110 80 106 74 114 Z" fill="#fb7185" stroke="#fff" stroke-width="1.5" opacity="0"/>
-      <g id="camelita-head">
-        <ellipse cx="74" cy="64" rx="33" ry="31" fill="#c68b67" stroke="#2d1e17" stroke-width="2.2"/>
-        <path d="M40 56 C42 32 106 32 108 56 C96 44 84 48 74 42 C64 48 52 44 40 56 Z" fill="#18141c" stroke="#0b090e" stroke-width="2"/>
-        <g id="camelita-eyes">
-          <g id="camelita-pupils">
+        <!-- Rosa / Corazón en las manos -->
+        <text id="cam-prop-emoji" x="74" y="128" text-anchor="middle" font-size="24" opacity="0">🌹</text>
+        <!-- Cabeza -->
+        <g id="cam-head">
+          <ellipse cx="74" cy="64" rx="33" ry="31" fill="#c68b67" stroke="#2d1e17" stroke-width="2.2"/>
+          <path d="M40 56 C42 32 106 32 108 56 C96 44 84 48 74 42 C64 48 52 44 40 56 Z" fill="#18141c"/>
+          <g id="cam-eyes-open">
             <ellipse cx="60" cy="66" rx="6.5" ry="8" fill="#141016"/>
             <ellipse cx="88" cy="66" rx="6.5" ry="8" fill="#141016"/>
             <circle cx="62" cy="63" r="2.4" fill="#fff"/>
             <circle cx="90" cy="63" r="2.4" fill="#fff"/>
           </g>
-          <!-- Estrellitas en los ojos (Escena 1) -->
-          <g id="camelita-sparkles" opacity="0">
-            <text x="56" y="69" font-size="11" fill="#fde68a">✦</text>
-            <text x="84" y="69" font-size="11" fill="#fde68a">✦</text>
+          <g id="cam-eyes-stars" opacity="0">
+            <text x="55" y="70" font-size="12" fill="#fde68a">✦</text>
+            <text x="83" y="70" font-size="12" fill="#fde68a">✦</text>
           </g>
-          <!-- Ojitos cerrados tiernos / guiño -->
-          <path id="eye-closed-l" d="M53 66 Q60 60 67 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
-          <path id="eye-closed-r" d="M81 66 Q88 60 95 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
+          <path id="cam-eye-closed-l" d="M53 66 Q60 60 67 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
+          <path id="cam-eye-closed-r" d="M81 66 Q88 60 95 66" stroke="#141016" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0"/>
+          <g id="cam-blush" opacity="0.55">
+            <ellipse cx="50" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
+            <ellipse cx="98" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
+          </g>
+          <path d="M69 80 Q74 85 79 80" stroke="#4a281d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
         </g>
-        <g id="camelita-blush" opacity="0.55">
-          <ellipse cx="50" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
-          <ellipse cx="98" cy="75" rx="6" ry="3.2" fill="#f472b6"/>
-        </g>
-        <g id="camelita-mouth">
-          <path id="mouth-curve" d="M69 80 Q74 84 79 80" stroke="#4a281d" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-        </g>
-      </g>
-    </svg>
-  </div>
-
-  <!-- Sobre Real Final (34.0s+) -->
-  <div id="final-envelope">
-    <div class="text-5xl drop-shadow-[0_0_20px_rgba(245,208,118,0.95)]">💌</div>
-    <span class="glass rounded-full px-3 py-0.5 text-[11px] font-royal text-amber-200 mt-1">Abrir Carta</span>
-  </div>
-
-  <!-- Scrubber Inferior con Marcadores 👑 -->
-  <div id="scrubber-bar" class="glass">
-    <span id="time-cur" class="text-[11px] font-mono text-amber-200 min-w-[38px]">00.0s</span>
-    <div class="scrubber-track" id="scrubber-track">
-      <div class="scrubber-fill" id="scrubber-fill"></div>
-      <span class="crown-marker" data-t="7.0" style="left: 19.4%" title="1ra Corona (7.0s)">👑</span>
-      <span class="crown-marker" data-t="14.5" style="left: 40.3%" title="2da Corona (14.5s)">👑</span>
-      <span class="crown-marker" data-t="21.5" style="left: 59.7%" title="3ra Corona (21.5s)">👑</span>
-      <span class="crown-marker" data-t="29.0" style="left: 80.5%" title="4ta Corona (29.0s)">👑</span>
+      </svg>
     </div>
-    <span class="text-[11px] font-mono text-slate-300">36.0s</span>
+
+    <!-- Gatito Compañero 2D (#char-cat) -->
+    <div id="char-cat" class="actor-box" style="opacity:0; margin-left:-4px;">
+      <svg id="cat-svg" width="58" height="68" viewBox="0 0 70 80" fill="none">
+        <!-- Mini coronita morada/negra -->
+        <path d="M22 18 L20 6 L30 13 L35 3 L40 13 L50 6 L48 18 Z" fill="#a855f7" stroke="#f5d076" stroke-width="1.5"/>
+        <!-- Orejitas -->
+        <polygon points="18,22 24,14 30,22" fill="#f1f5f9" stroke="#1e293b" stroke-width="2"/>
+        <polygon points="40,22 46,14 52,22" fill="#f1f5f9" stroke="#1e293b" stroke-width="2"/>
+        <!-- Cuerpo y carita -->
+        <ellipse cx="35" cy="54" rx="16" ry="18" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
+        <circle cx="35" cy="32" r="15" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
+        <circle cx="29" cy="31" r="2.5" fill="#0f172a"/>
+        <circle cx="41" cy="31" r="2.5" fill="#0f172a"/>
+        <path d="M32 36 Q35 39 38 36" stroke="#f472b6" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M50 58 Q64 48 60 36" stroke="#1e293b" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
   </div>
 
-  <!-- Overlay Inicial -->
+  <!-- Sobre Real Final -->
+  <button id="btn-final-envelope" class="hidden fixed bottom-[132px] right-4 sm:right-12 z-35 glass rounded-2xl px-3.5 py-2 flex flex-col items-center animate-bounce cursor-pointer">
+    <span class="text-3xl">💌</span>
+    <span class="text-[10px] font-royal text-amber-200">Nota Final</span>
+  </button>
+
+  <!-- Exhibidor Interactivo de las 4 Coronitas (abajo) -->
+  <div id="crowns-dock" class="glass">
+    <button class="dock-crown-btn" data-c="0" title="Corona 1: Diamantes">👑</button>
+    <button class="dock-crown-btn" data-c="1" title="Corona 2: Oscura Morada">👑</button>
+    <button class="dock-crown-btn" data-c="2" title="Corona 3: Rosas Rojas">👑</button>
+    <button class="dock-crown-btn" data-c="3" title="Corona 4: Imperial">👑</button>
+  </div>
+
+  <!-- Barra Scrubber con Marcadores de Versos -->
+  <div id="scrubber-wrap" class="glass">
+    <span id="scrub-time" class="text-[11px] font-mono text-amber-200 min-w-[38px]">0.0s</span>
+    <div class="scrub-track" id="scrub-track">
+      <div class="scrub-fill" id="scrub-fill"></div>
+    </div>
+    <span class="text-[11px] font-mono text-slate-300">125s</span>
+  </div>
+
+  <!-- Pantalla de Inicio -->
   <div id="start-overlay">
-    <div class="text-5xl mb-4 animate-pulse">👑</div>
-    <p class="font-royal text-xs tracking-[0.26em] uppercase text-amber-200/75 mb-2">14 de Noviembre • Audio-Sync</p>
+    <div class="text-5xl mb-3 animate-pulse">👑</div>
+    <p class="font-royal text-xs tracking-[0.26em] uppercase text-amber-200/75 mb-2">14 de Noviembre • Siddhartha - Únicos</p>
     <h1 class="font-royal text-2xl sm:text-3xl font-bold text-white mb-6">Para Camelita ✨</h1>
-    <button id="btn-start" class="glow-btn">Tocar para Iniciar 💗</button>
-    <p id="audio-ready-hint" class="text-xs text-slate-400 mt-3">Preparando audio de precisión...</p>
+    <button id="btn-start" class="glow-btn">Tocar para Comenzar 💗</button>
+  </div>
+
+  <!-- Modal Tarjeta de Corona -->
+  <div id="crown-modal" class="modal-backdrop">
+    <div class="glass rounded-3xl w-full max-w-sm overflow-hidden text-center">
+      <div class="relative h-48 bg-black">
+        <img id="cm-img" src="" alt="Corona" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0e0e18] via-transparent to-transparent"></div>
+        <span id="cm-badge" class="absolute top-3 left-3 text-[10px] font-royal uppercase tracking-widest px-3 py-1 rounded-full bg-black/70 border border-amber-200/40 text-amber-200"></span>
+      </div>
+      <div class="p-5">
+        <h3 id="cm-title" class="font-royal text-lg font-bold text-amber-200 mb-2"></h3>
+        <p id="cm-msg" class="text-xs sm:text-sm text-slate-200 leading-relaxed mb-4"></p>
+        <div class="flex gap-2 justify-center">
+          <button id="cm-equip" class="glow-btn text-xs px-4 py-2">Ponerle a Camelita 👑</button>
+          <button id="cm-close" class="glass rounded-full text-xs px-4 py-2 cursor-pointer">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Modal Carta Final -->
   <div id="final-modal" class="modal-backdrop">
-    <div class="glass rounded-3xl w-full max-w-md p-6 sm:p-8 text-center max-h-[85vh] overflow-y-auto">
+    <div class="glass rounded-3xl w-full max-w-md p-6 text-center max-h-[84vh] overflow-y-auto">
       <div class="text-4xl mb-2">💌👑</div>
-      <h2 class="font-royal text-2xl font-bold text-amber-200 mb-3">Para mi Reina, Camelita</h2>
-      <p id="final-letter-body" class="text-sm sm:text-base text-slate-200 leading-relaxed whitespace-pre-line mb-6"></p>
-      <button id="btn-close-final" class="glow-btn text-sm px-6 py-2.5">Seguir viendo a Camelita ✨</button>
+      <h2 class="font-royal text-xl font-bold text-amber-200 mb-3">14 de Noviembre • Para Camelita</h2>
+      <p id="final-letter-text" class="text-sm text-slate-200 leading-relaxed whitespace-pre-line mb-5"></p>
+      <button id="btn-close-final" class="glow-btn text-xs px-5 py-2.5">Seguir viendo ✨</button>
     </div>
   </div>
 
-  <!-- Modal ⚙️ Calibración y Música -->
-  <div id="settings-modal" class="modal-backdrop">
-    <div class="glass rounded-3xl w-full max-w-sm p-6 text-center">
-      <h3 class="font-royal text-lg font-bold text-amber-200 mb-3">⚙️ Música y Calibración</h3>
-      <input id="inp-music-url" type="url" placeholder="https://.../musica.mp3" class="w-full px-3 py-2 rounded-xl bg-black/50 border border-amber-200/40 text-xs text-white mb-2.5" />
-      <div class="flex items-center justify-between text-xs text-slate-200 mb-3 bg-white/5 px-3 py-2 rounded-xl">
-        <span>Modo Calibración (Ver reloj 00.00s)</span>
-        <input id="chk-calib" type="checkbox" class="accent-pink-400 w-4 h-4" />
-      </div>
-      <div class="flex gap-2 justify-center mb-3">
-        <button id="btn-mark-time" class="glass rounded-full px-3 py-1.5 text-xs text-cyan-300 cursor-pointer">⏱ Marcar tiempo</button>
-        <span id="mark-log" class="text-xs font-mono text-amber-200 self-center"></span>
-      </div>
+  <!-- Modal ⚙️ Configuración y Ajuste de Voz -->
+  <div id="cfg-modal" class="modal-backdrop">
+    <div class="glass rounded-3xl w-full max-w-sm p-5 text-center">
+      <h3 class="font-royal text-base font-bold text-amber-200 mb-3">⚙️ Música y Sincronización</h3>
+      <input id="inp-url" type="url" placeholder="Pega aquí el link directo .mp3" class="w-full px-3 py-2 rounded-xl bg-black/50 border border-amber-200/40 text-xs text-white mb-3" />
+      <button id="btn-set-vocal-offset" class="w-full glass rounded-xl py-2 text-xs text-pink-200 font-semibold mb-3 cursor-pointer">
+        Ajustar aquí inicio de voz 🎤
+      </button>
+      <p id="offset-info" class="text-[11px] font-mono text-cyan-300 mb-3"></p>
       <div class="flex gap-2 justify-center">
-        <button id="btn-apply-cfg" class="glow-btn text-xs px-5 py-2">Aplicar ▶</button>
+        <button id="btn-apply-url" class="glow-btn text-xs px-5 py-2">Aplicar ▶</button>
         <button id="btn-close-cfg" class="glass rounded-full text-xs px-4 py-2 cursor-pointer">Cerrar</button>
       </div>
     </div>
@@ -438,476 +423,702 @@
 
   <script>
     // =========================================================================
-    // 👇 PEGA AQUÍ EL LINK DE TU MÚSICA (.mp3) 👇
+    // 👇 PEGA AQUÍ EL LINK O ARCHIVO DE TU MÚSICA (.mp3) 👇
     // =========================================================================
     const CONFIG = {
-      musicUrl: "./musica.mp3",
-      musicStartTime: 0.00,
-      totalDuration: 36.00,
+      musicUrl: "",
+      // Permite ajustar con un solo número si el .mp3 empieza directo en la voz o tras otra intro
+      vocalStartOffset: 0.0,
+      totalDuration: 125.0,
 
       crowns: [
         {
           title: "Corona de Diamantes y Hielo",
+          color: "#38bdf8",
           image: "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&w=900&q=80",
-          message: "Por esos ojitos tan lindos y por tener esa luz que brilla incluso en los días más grises ✨"
+          message: "Por esos ojitos grandes tan lindos y por tener esa luz que brilla incluso en los días más grises ✨"
         },
         {
-          title: "Corona Estética Oscura / Morada",
+          title: "Corona Oscura & Estética - Los Únicos",
+          color: "#a855f7",
           image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80",
           message: "Para la niña más inquieta, única y auténtica; porque tu vibra tan bonita no la tiene nadie más 💜"
         },
         {
-          title: "Corona sobre Rosas Rojas",
+          title: "Corona sobre Rosas Rojas - Ráfaga de Amor",
+          color: "#e11d48",
           image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80",
-          message: "Porque hay personas, risas y momentos que se quedan guardados con cariño sin importar el tiempo 🌹"
+          message: "Por esa ráfaga de momentos y risas que sacudió todo y se quedó guardada con cariño sin importar el tiempo 🌹"
         },
         {
-          title: "Corona Imperial Dorada",
+          title: "Corona Real del 14 de Noviembre",
+          color: "#f59e0b",
           image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=80",
-          message: "Porque sea 14 de noviembre o cualquier otro día, Camelita siempre merece todo lo bonito de este mundo 👑"
+          message: "Porque sea 14 de noviembre o cualquier otro día, siempre somos únicos y Camelita siempre merece todas las coronas 👑"
         }
       ],
 
-      // Matriz Maestra TIMELINE (tiempos exactos al centésimo de segundo)
-      TIMELINE: [
-        { startTime: 0.00, endTime: 2.20, text: "14 DE NOVIEMBRE? NO IMPORTA EL DÍA...", state: "intro_sitting", theme: "" },
-        { startTime: 2.20, endTime: 4.50, text: "ESTAS CORONITAS SON PARA TI, CAMELITA 💗... <3", state: "intro_sitting", theme: "" },
-        { startTime: 4.50, endTime: 11.00, text: "Por esos ojitos tan lindos y por tener esa luz que brilla incluso en los días más grises ✨", state: "sparkle_eyes_walk", theme: "", crownAppear: 7.00, crownIndex: 0 },
-        { startTime: 11.00, endTime: 18.50, text: "Para la niña más inquieta, única y auténtica; porque tu vibra tan bonita no la tiene nadie más 💜", state: "happy_dance_spin", theme: "theme-purple", crownAppear: 14.50, crownIndex: 1 },
-        { startTime: 18.50, endTime: 26.00, text: "Porque hay personas, risas y momentos que se quedan guardados con cariño sin importar el tiempo 🌹", state: "hug_heart_petals", theme: "theme-rose", crownAppear: 21.50, crownIndex: 2 },
-        { startTime: 26.00, endTime: 34.00, text: "Porque sea 14 de noviembre o cualquier otro día, Camelita siempre merece todo lo bonito de este mundo 👑", state: "royal_climax", theme: "theme-gold", crownAppear: 29.00, crownIndex: 3 },
-        { startTime: 34.00, endTime: 999.00, text: "Para siempre, mi reina Camelita 👑💗", state: "royal_climax", theme: "theme-gold" }
-      ],
-
       finalLetter:
-        "No importa si es 14 de noviembre o cualquier otro día del calendario: siempre habrá mil razones para recordarte lo increíble que eres.\n\n" +
-        "Cada corona representa algo que adoro de ti: tu mirada brillante, tu vibra única, tus risas y todo lo bonito que mereces en esta vida.\n\n" +
-        "Nunca dejes de sonreír, Camelita. 💗👑✨"
+        "14 de noviembre o cualquier otro día: contigo cada momento se siente único.\n\n" +
+        "Estas 4 coronitas son para recordarte lo especial que eres, tus ojitos que brillan, tu vibra tan auténtica y las risas que se quedan guardadas para siempre.\n\n" +
+        "Nunca dejes de ser tú, Camelita. 👑💗✨"
     };
 
+    const LYRICS_TIMELINE = [
+      // ================= INTRO INSTRUMENTAL + TIKTOK INTRO (0.0s - 14.0s) =================
+      {
+        start: 0.0, end: 4.5,
+        lyric: "14 DE NOVIEMBRE? NO IMPORTA EL DÍA...",
+        subText: "ESTAS CORONITAS SON PARA TI, CAMELITA 💗... <3",
+        state: "intro_tiktok_dark",
+        bgTheme: "night_sparkles",
+        crown: null,
+        actionNote: "Texto grande brillante estilo TikTok; debajo aparece Camelita sentada en la noche estrellada con su letrero ✨ Camelita ✨ encima"
+      },
+      {
+        start: 4.5, end: 9.5,
+        lyric: "👑 Arrastra o toca la coronita para coronar a Camelita ✨",
+        subText: "(Suena la guitarra inicial de la canción...)",
+        state: "crown_drop_equip",
+        bgTheme: "night_sparkles",
+        crown: 1,
+        actionNote: "Baja la primera coronita brillante; al tocar su cabeza explotan corazones, Camelita se levanta feliz y desbloquea la 1ra Corona (Diamantes)"
+      },
+      {
+        start: 9.5, end: 14.0,
+        lyric: "✨ Camelita está lista... empieza nuestra historia ✨",
+        subText: "",
+        state: "camelita_start_walking",
+        bgTheme: "warm_dusk",
+        crown: 1,
+        actionNote: "Camelita empieza a caminar al ritmo de la batería junto a su gatito 2D mientras su corona de diamantes brilla"
+      },
+
+      // ================= ESTROFA 1 (14.0s - 28.0s) =================
+      {
+        start: 14.0, end: 17.5,
+        lyric: "Veinte millas de calor",
+        subText: "☀️🔥",
+        state: "walk_desert_heat",
+        bgTheme: "sunset_heat",
+        crown: 1,
+        actionNote: "Sol grande cálido en 2D; Camelita camina abanicándose tiernamente"
+      },
+      {
+        start: 17.5, end: 21.0,
+        lyric: "Y el camino no tiene retorno",
+        subText: "🛣️✨",
+        state: "endless_star_road",
+        bgTheme: "sunset_heat",
+        crown: 1,
+        actionNote: "El sendero bajo los pies de Camelita se ilumina con huellas de luz dorada"
+      },
+      {
+        start: 21.0, end: 24.5,
+        lyric: "Algo pasa entre tú y yo",
+        subText: "⚡💗",
+        state: "boy_appears_spark",
+        bgTheme: "twilight_magic",
+        crown: 1,
+        actionNote: "Entra el chico 2D frente a Camelita con chispa rosada llena de corazones"
+      },
+      {
+        start: 24.5, end: 28.0,
+        lyric: "Sudo gotas de licor y polvo",
+        subText: "🍹✨",
+        state: "cocktail_toast_dust",
+        bgTheme: "twilight_magic",
+        crown: 1,
+        actionNote: "Cóctel brillante entre los dos soltando burbujas de luz y polvo dorado"
+      },
+
+      // ================= PRE-CORO 1 (28.0s - 37.5s) =================
+      {
+        start: 28.0, end: 31.5,
+        lyric: "Y ahora que te vuelvo a ver",
+        subText: "👀💖",
+        state: "reunion_blush_eyes",
+        bgTheme: "sunrise_pink",
+        crown: 1,
+        actionNote: "Los ojos grandes de Camelita se llenan de estrellitas blancas y se sonroja"
+      },
+      {
+        start: 31.5, end: 35.0,
+        lyric: "Ya no quiero amanecer tan solo",
+        subText: "🌅🫶",
+        state: "sunrise_together",
+        bgTheme: "sunrise_pink",
+        crown: 1,
+        actionNote: "Sube un sol de amanecer rosado/dorado; el chico se acerca al lado de Camelita"
+      },
+      {
+        start: 35.0, end: 37.5,
+        lyric: "Otra vez...",
+        subText: "✨",
+        state: "hold_hands_smile",
+        bgTheme: "sunrise_pink",
+        crown: 1,
+        actionNote: "Se toman de las manos y dan un pequeño brinquito antes del coro"
+      },
+
+      // ================= CORO 1 + DESBLOQUEO CORONA 2 (37.5s - 52.0s) =================
+      {
+        start: 37.5, end: 42.5,
+        lyric: "Porque ahora somos únicos, los únicos",
+        subText: "👑💜 ¡2da Coronita para Camelita!",
+        state: "chorus_dance_crown2",
+        bgTheme: "neon_purple_party",
+        crown: 2,
+        actionNote: "Explosión morada y plateada; se desbloquea la 2da Corona y todos bailan"
+      },
+      {
+        start: 42.5, end: 46.5,
+        lyric: "Y ahora que te vuelvo a ver",
+        subText: "💜✨",
+        state: "spin_happy_camelita",
+        bgTheme: "neon_purple_party",
+        crown: 2,
+        actionNote: "Camelita da una vueltita feliz presumiendo su nueva corona"
+      },
+      {
+        start: 46.5, end: 52.0,
+        lyric: "Ya no quiero amanecer tan solo",
+        subText: "🌟💗",
+        state: "walk_together_rhythm",
+        bgTheme: "neon_purple_party",
+        crown: 2,
+        actionNote: "Caminan juntos al compás de la guitarra"
+      },
+
+      // ================= ESTROFA 2 + DESBLOQUEO CORONA 3 (52.0s - 66.5s) =================
+      {
+        start: 52.0, end: 55.5,
+        lyric: "Veinte millas de calor",
+        subText: "🔥✨",
+        state: "warm_breeze_walk",
+        bgTheme: "golden_hour",
+        crown: 2,
+        actionNote: "Cielo dorado intenso mientras siguen avanzando juntos"
+      },
+      {
+        start: 55.5, end: 59.0,
+        lyric: "Y el camino que se hundió en el polvo",
+        subText: "🌌",
+        state: "floating_star_bridge",
+        bgTheme: "golden_hour",
+        crown: 2,
+        actionNote: "Flotan sobre un puente de cristal luminoso"
+      },
+      {
+        start: 59.0, end: 62.5,
+        lyric: "Una ráfaga de amor",
+        subText: "🌹💨 ¡3ra Coronita desbloqueada!",
+        state: "love_gust_roses_crown3",
+        bgTheme: "crimson_roses",
+        crown: 3,
+        actionNote: "Ráfaga de viento con pétalos de rosas rojas y 3ra Corona"
+      },
+      {
+        start: 62.5, end: 66.5,
+        lyric: "Lentamente sacudió el entorno",
+        subText: "🌹❤️",
+        state: "screen_shake_petals",
+        bgTheme: "crimson_roses",
+        crown: 3,
+        actionNote: "Escenario vibra suavemente con lluvia de rosas; Camelita atrapa una rosa"
+      },
+
+      // ================= PRE-CORO 2 (66.5s - 75.5s) =================
+      {
+        start: 66.5, end: 70.0,
+        lyric: "Y ahora que te vuelvo a ver",
+        subText: "🥺💗",
+        state: "close_gaze_hearts",
+        bgTheme: "crimson_roses",
+        crown: 3,
+        actionNote: "Camelita mira al frente con sonrisa tierna y corazoncitos"
+      },
+      {
+        start: 70.0, end: 73.5,
+        lyric: "Ya no quiero amanecer tan solo",
+        subText: "🌅💞",
+        state: "hug_giant_heart",
+        bgTheme: "sunrise_pink",
+        crown: 3,
+        actionNote: "Camelita y el chico sostienen juntos un corazón brillante"
+      },
+      {
+        start: 73.5, end: 75.5,
+        lyric: "Otra vez...",
+        subText: "👑✨",
+        state: "prepare_climax_jump",
+        bgTheme: "royal_gold",
+        crown: 3,
+        actionNote: "Toman impulso para el gran final de coronas"
+      },
+
+      // ================= COROS FINALES EN CADENA + CORONA 4 (75.5s - FINAL) =================
+      {
+        start: 75.5, end: 80.5,
+        lyric: "Porque ahora somos únicos, los únicos",
+        subText: "👑✨ ¡4ta Coronita Real del 14 de Noviembre!",
+        state: "royal_crown4_unlock",
+        bgTheme: "royal_gold",
+        crown: 4,
+        actionNote: "El chico coloca la 4ta Corona Imperial Dorada a Camelita"
+      },
+      {
+        start: 80.5, end: 85.5,
+        lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo",
+        subText: "💖👑",
+        state: "royal_dance_1",
+        bgTheme: "royal_gold",
+        crown: 4,
+        actionNote: "Camelita baila feliz con todas sus coronas brillando"
+      },
+      {
+        start: 85.5, end: 88.0,
+        lyric: "Y otra vez...",
+        subText: "✨",
+        state: "jump_sparkle_turn",
+        bgTheme: "neon_purple_party",
+        crown: 4,
+        actionNote: "Salto sincronizado con explosión de fuegos artificiales"
+      },
+      {
+        start: 88.0, end: 93.0,
+        lyric: "Porque ahora somos únicos, los únicos",
+        subText: "💜👑✨",
+        state: "all_characters_party",
+        bgTheme: "neon_purple_party",
+        crown: 4,
+        actionNote: "Camelita, el chico y el gatito bailan juntos bajo destellos"
+      },
+      {
+        start: 93.0, end: 98.0,
+        lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo",
+        subText: "🌅💗",
+        state: "sunset_embrace",
+        bgTheme: "sunrise_pink",
+        crown: 4,
+        actionNote: "Abrazo tierno entre el chico y Camelita"
+      },
+      {
+        start: 98.0, end: 100.5,
+        lyric: "Otra vez...",
+        subText: "💫",
+        state: "star_shower",
+        bgTheme: "royal_gold",
+        crown: 4,
+        actionNote: "Lluvia de estrellas fugaces cruzando el cielo"
+      },
+      {
+        start: 100.5, end: 105.5,
+        lyric: "Porque ahora somos únicos, los únicos",
+        subText: "👑 Para ti, Camelita 👑",
+        state: "camelita_queen_pose",
+        bgTheme: "royal_gold",
+        crown: 4,
+        actionNote: "Camelita saluda y guiña un ojo en el centro"
+      },
+      {
+        start: 105.5, end: 111.0,
+        lyric: "Y ahora que te vuelvo a ver, ya no quiero amanecer tan solo",
+        subText: "🌹✨",
+        state: "petal_and_diamond_rain",
+        bgTheme: "crimson_roses",
+        crown: 4,
+        actionNote: "Lluvia de diamantes y pétalos de rosas rojas"
+      },
+      {
+        start: 111.0, end: 125.0,
+        lyric: "Y otra vez... Porque ahora somos únicos, los únicos... Ya no quiero amanecer tan solo 💗",
+        subText: "💌 Toca el sobre brillante para leer tu nota del 14 de Noviembre",
+        state: "grand_finale_envelope",
+        bgTheme: "royal_gold",
+        crown: 4,
+        actionNote: "Sobre Real Brillante junto a Camelita para abrir la dedicatoria final"
+      }
+    ];
+
     // =========================================================================
-    // MOTOR DE PARTÍCULAS (CANVAS)
+    // CANVAS DE PARTÍCULAS Y REACCIÓN AL RITMO
     // =========================================================================
-    const canvas = document.getElementById("bg-canvas");
+    const canvas = document.getElementById("fx-canvas");
     const ctx = canvas.getContext("2d");
     let cw = 0, ch = 0;
-    const stars = Array.from({ length: 75 }, () => ({ x: Math.random(), y: Math.random(), r: 0.8 + Math.random() * 2, p: Math.random() * 6 }));
-    const fxList = [];
+    const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: 0.8 + Math.random() * 2, p: Math.random() * 6 }));
+    const fxParticles = [];
 
     function resize() { cw = canvas.width = window.innerWidth; ch = canvas.height = window.innerHeight; }
     window.addEventListener("resize", resize);
     resize();
 
-    function spawnFx(x, y, count, type = "heart") {
+    function spawnFx(x, y, count, kind = "heart") {
       for (let i = 0; i < count; i++) {
-        const ang = Math.random() * Math.PI * 2;
-        const spd = type === "petal" || type === "gold" ? 0.8 + Math.random() * 2.2 : 2 + Math.random() * 4.5;
-        fxList.push({
+        const a = Math.random() * Math.PI * 2;
+        const sp = kind === "petal" || kind === "gold" || kind === "diamond" ? 1 + Math.random() * 2.5 : 2 + Math.random() * 4.5;
+        fxParticles.push({
           x, y,
-          vx: type === "petal" || type === "gold" ? (Math.random() - 0.5) * 1.6 : Math.cos(ang) * spd,
-          vy: type === "petal" || type === "gold" ? 1.5 + Math.random() * 2.5 : Math.sin(ang) * spd - 1.5,
-          life: 1, decay: type === "petal" || type === "gold" ? 0.008 : 0.02,
-          type, size: 6 + Math.random() * 7
+          vx: kind === "petal" ? -1.5 - Math.random() * 2 : kind === "gold" || kind === "diamond" ? (Math.random() - 0.5) * 1.4 : Math.cos(a) * sp,
+          vy: kind === "petal" || kind === "gold" || kind === "diamond" ? 1.8 + Math.random() * 2.5 : Math.sin(a) * sp - 1.5,
+          life: 1, decay: kind === "petal" || kind === "gold" ? 0.008 : 0.02,
+          kind, size: 6 + Math.random() * 7
         });
       }
     }
 
-    function drawParticles(nowMs) {
+    function drawCanvas(nowMs) {
       ctx.clearRect(0, 0, cw, ch);
       const t = nowMs * 0.002;
       stars.forEach((s) => {
-        ctx.fillStyle = `rgba(245, 208, 118, ${0.25 + 0.55 * Math.sin(t + s.p)})`;
-        ctx.beginPath();
-        ctx.arc(s.x * cw, s.y * ch, s.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = `rgba(255, 255, 255, ${0.2 + 0.55 * Math.sin(t + s.p)})`;
+        ctx.beginPath(); ctx.arc(s.x * cw, s.y * ch, s.r, 0, Math.PI * 2); ctx.fill();
       });
-
-      for (let i = fxList.length - 1; i >= 0; i--) {
-        const p = fxList[i];
+      for (let i = fxParticles.length - 1; i >= 0; i--) {
+        const p = fxParticles[i];
         p.x += p.vx; p.y += p.vy;
-        if (p.type === "heart") p.vy += 0.07;
+        if (p.kind === "heart" || p.kind === "note") p.vy += 0.06;
         p.life -= p.decay;
-        if (p.life <= 0) { fxList.splice(i, 1); continue; }
-        ctx.save();
-        ctx.globalAlpha = p.life;
-        ctx.fillStyle = p.type === "petal" ? "#e11d48" : p.type === "gold" ? "#f5d076" : "#ff7eb6";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2);
-        ctx.fill();
+        if (p.life <= 0) { fxParticles.splice(i, 1); continue; }
+        ctx.save(); ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.kind === "petal" ? "#e11d48" : p.kind === "gold" ? "#f5d076" : p.kind === "diamond" ? "#7dd3fc" : "#ff7eb6";
+        if (p.kind === "note") {
+          ctx.font = "16px sans-serif";
+          ctx.fillText("♪", p.x, p.y);
+        } else {
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.44, 0, Math.PI * 2); ctx.fill();
+        }
         ctx.restore();
       }
     }
 
     // =========================================================================
-    // RELOJ MAESTRO DE PRECISIÓN MILIMÉTRICA (Audio + Respaldo performance.now)
+    // AUDIO + RELOJ MAESTRO 60 FPS
     // =========================================================================
     const audio = document.getElementById("bg-music");
-    let useAudioClock = false;
-    let audioReady = false;
-    let isRunning = false;
-    let isPaused = false;
-    let gatePassed = false;
-    let gateWaiting = false;
-    let virtualElapsed = 0;
-    let lastPerf = performance.now();
+    let useAudio = false;
+    let running = false;
+    let paused = false;
+    let virtualT = 0;
+    let lastNow = performance.now();
 
-    if (CONFIG.musicUrl) {
-      audio.src = CONFIG.musicUrl;
-      audio.addEventListener("canplaythrough", () => {
-        audioReady = true;
-        document.getElementById("audio-ready-hint").textContent = "Audio listo • Sincronización exacta ✅";
-      });
-      audio.addEventListener("error", () => {
-        useAudioClock = false;
-        document.getElementById("audio-ready-hint").textContent = "Modo reloj virtual activo (sin audio)";
-      });
-    } else {
-      document.getElementById("audio-ready-hint").textContent = "Modo reloj virtual listo (puedes pegar tu .mp3 en ⚙️)";
+    function effectiveTime(rawT) {
+      return rawT;
     }
-
-    function getElapsed() {
-      if (useAudioClock && !audio.paused) {
-        return Math.max(0, audio.currentTime - CONFIG.musicStartTime);
-      }
-      return virtualElapsed;
+    function getBlockStart(b) {
+      return b.start >= 14.0 ? Math.max(0, b.start + CONFIG.vocalStartOffset) : b.start;
     }
-
-    function seekTo(sec) {
-      const clamped = Math.max(0, Math.min(CONFIG.totalDuration, sec));
-      virtualElapsed = clamped;
-      if (clamped >= 4.50 && !gatePassed) {
-        gatePassed = true;
-        gateWaiting = false;
-        gateWrap.classList.remove("active");
-        equippedCrown.classList.add("visible");
-      }
-      if (useAudioClock) {
-        audio.currentTime = CONFIG.musicStartTime + clamped;
-      }
-      renderAt(clamped);
+    function getBlockEnd(b) {
+      return b.end >= 14.0 ? Math.max(0.5, b.end + CONFIG.vocalStartOffset) : b.end;
     }
 
     // =========================================================================
-    // ELEMENTOS UI Y ESCENAS
+    // REFERENCIAS DE UI Y ELENCO 2D
     // =========================================================================
-    const startOverlay = document.getElementById("start-overlay");
-    const btnStart = document.getElementById("btn-start");
-    const btnPlayPause = document.getElementById("btn-play-pause");
-    const karaokeLine = document.getElementById("karaoke-line");
-    const crownShowcase = document.getElementById("crown-showcase");
-    const flipInner = document.getElementById("flip-inner");
-    const gateWrap = document.getElementById("gate-crown-wrap");
-    const gateCrown = document.getElementById("gate-crown");
+    const karaokeMain = document.getElementById("karaoke-main");
+    const karaokeSub = document.getElementById("karaoke-sub");
+    const sceneProps = document.getElementById("scene-props");
+    const stageActors = document.getElementById("stage-actors");
+    const charBoy = document.getElementById("char-boy");
+    const charCamelita = document.getElementById("char-camelita");
+    const charCat = document.getElementById("char-cat");
+    const camSvg = document.getElementById("camelita-svg");
+    const camLegL = document.getElementById("cam-leg-l");
+    const camLegR = document.getElementById("cam-leg-r");
+    const camArmL = document.getElementById("cam-arm-l");
+    const camArmR = document.getElementById("cam-arm-r");
+    const camEyesOpen = document.getElementById("cam-eyes-open");
+    const camEyesStars = document.getElementById("cam-eyes-stars");
+    const camEyeClosedL = document.getElementById("cam-eye-closed-l");
+    const camEyeClosedR = document.getElementById("cam-eye-closed-r");
+    const camBlush = document.getElementById("cam-blush");
+    const camPropEmoji = document.getElementById("cam-prop-emoji");
+    const wornCrown = document.getElementById("worn-crown");
+    const wornGem = document.getElementById("worn-gem");
     const crownSlot = document.getElementById("camelita-crown-slot");
-    const equippedCrown = document.getElementById("equipped-crown");
-    const camelitaPlayer = document.getElementById("camelita-player");
-    const camelitaSvg = document.getElementById("camelita-svg");
-    const legL = document.getElementById("leg-l");
-    const legR = document.getElementById("leg-r");
-    const armL = document.getElementById("arm-l");
-    const armR = document.getElementById("arm-r");
-    const camelitaPupils = document.getElementById("camelita-pupils");
-    const camelitaSparkles = document.getElementById("camelita-sparkles");
-    const eyeClosedL = document.getElementById("eye-closed-l");
-    const eyeClosedR = document.getElementById("eye-closed-r");
-    const camelitaBlush = document.getElementById("camelita-blush");
-    const camelitaHeart = document.getElementById("camelita-heart");
-    const orbitCrowns = document.getElementById("orbit-crowns");
-    const finalEnvelope = document.getElementById("final-envelope");
-    const hudScore = document.getElementById("hud-score");
-    const hudCrowns = document.querySelectorAll("#hud-crowns button");
-    const scrubberFill = document.getElementById("scrubber-fill");
-    const timeCur = document.getElementById("time-cur");
-    const calibClock = document.getElementById("calib-clock");
+    const introCrownDrag = document.getElementById("intro-crown-drag");
+    const btnFinalEnv = document.getElementById("btn-final-envelope");
+    const hudCount = document.getElementById("hud-count");
+    const dockBtns = document.querySelectorAll(".dock-crown-btn");
+    const scrubFill = document.getElementById("scrub-fill");
+    const scrubTime = document.getElementById("scrub-time");
+    const clockBadge = document.getElementById("clock-badge");
 
-    document.getElementById("final-letter-body").textContent = CONFIG.finalLetter;
+    document.getElementById("final-letter-text").textContent = CONFIG.finalLetter;
 
-    let currentBlockIdx = -1;
-    let shownCrownIdx = -1;
-    let unlockedCrowns = [false, false, false, false];
-    let winkTimeout = null;
+    let unlocked = [false, false, false, false];
+    let currentIdx = -1;
+    let activeCrownModalIdx = 0;
 
-    function showCrownCard(idx) {
-      if (idx < 0 || idx >= CONFIG.crowns.length) return;
-      shownCrownIdx = idx;
+    function equipCrown(idx) {
       const c = CONFIG.crowns[idx];
-      document.getElementById("sc-img").src = c.image;
-      document.getElementById("sc-badge").textContent = `Corona ${idx + 1} de 4`;
-      document.getElementById("sc-title").textContent = c.title;
-      document.getElementById("sc-back-title").textContent = c.title;
-      document.getElementById("sc-back-msg").textContent = c.message;
-      flipInner.classList.remove("flipped");
-      crownShowcase.classList.add("visible");
+      if (!c) return;
+      wornCrown.style.opacity = "1";
+      wornGem.setAttribute("fill", c.color);
+      wornCrown.style.filter = `drop-shadow(0 0 14px ${c.color})`;
     }
 
-    flipInner.addEventListener("click", () => {
-      flipInner.classList.toggle("flipped");
-      const r = flipInner.getBoundingClientRect();
-      spawnFx(r.left + r.width / 2, r.top + r.height / 2, 18, "heart");
+    function unlockCrown(idx) {
+      if (idx < 0 || idx > 3 || unlocked[idx]) return;
+      unlocked[idx] = true;
+      dockBtns[idx].classList.add("unlocked");
+      hudCount.textContent = `${unlocked.filter(Boolean).length} / 4 👑`;
+      equipCrown(idx);
+      const r = crownSlot.getBoundingClientRect();
+      spawnFx(r.left + r.width / 2, r.top + r.height / 2, 28, "heart");
+    }
+
+    function openCrownModal(idx) {
+      activeCrownModalIdx = idx;
+      const c = CONFIG.crowns[idx];
+      document.getElementById("cm-img").src = c.image;
+      document.getElementById("cm-badge").textContent = `Corona ${idx + 1} de 4`;
+      document.getElementById("cm-title").textContent = c.title;
+      document.getElementById("cm-msg").textContent = c.message;
+      document.getElementById("crown-modal").classList.add("open");
+    }
+    document.getElementById("cm-close").addEventListener("click", () => document.getElementById("crown-modal").classList.remove("open"));
+    document.getElementById("cm-equip").addEventListener("click", () => {
+      equipCrown(activeCrownModalIdx);
+      document.getElementById("crown-modal").classList.remove("open");
     });
 
-    hudCrowns.forEach((btn) => {
+    dockBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         const idx = Number(btn.dataset.c);
-        showCrownCard(idx);
-        flipInner.classList.add("flipped");
+        if (unlocked[idx]) openCrownModal(idx);
       });
     });
 
-    // Reacción táctil instantánea en Camelita (sin pausar el reloj)
-    camelitaPlayer.addEventListener("click", (e) => {
-      spawnFx(e.clientX, e.clientY, 16, "heart");
-      eyeClosedL.setAttribute("opacity", "1");
-      camelitaPupils.style.opacity = "0.5";
-      clearTimeout(winkTimeout);
-      winkTimeout = setTimeout(() => {
-        eyeClosedL.setAttribute("opacity", "0");
-        camelitaPupils.style.opacity = "1";
-      }, 280);
-    });
-
-    // Compuerta Interactiva Drag & Drop (4.50s)
-    let draggingGate = false;
-    function nearCrownSlot(cx, cy) {
+    // Arrastrar corona inicial (4.5s - 9.5s)
+    let draggingIntroCrown = false;
+    function nearSlot(cx, cy) {
       const r = crownSlot.getBoundingClientRect();
-      return Math.hypot(cx - (r.left + r.width / 2), cy - (r.top + r.height / 2)) <= 95;
+      return Math.hypot(cx - (r.left + r.width / 2), cy - (r.top + r.height / 2)) <= 90;
     }
-    function completeGate() {
-      if (gatePassed) return;
-      gatePassed = true;
-      gateWaiting = false;
-      gateWrap.classList.remove("active");
-      equippedCrown.classList.add("visible");
-      const r = crownSlot.getBoundingClientRect();
-      spawnFx(r.left + r.width / 2, r.top + r.height / 2, 34, "heart");
-      if (useAudioClock) {
-        audio.currentTime = CONFIG.musicStartTime + 4.50;
-        audio.play().catch(() => {});
-      }
-      virtualElapsed = 4.50;
-    }
-    gateCrown.addEventListener("pointerdown", (e) => {
+    introCrownDrag.addEventListener("pointerdown", (e) => {
       e.preventDefault();
-      draggingGate = true;
-      gateCrown.classList.add("dragging");
-      gateCrown.style.left = `${e.clientX - 41}px`;
-      gateCrown.style.top = `${e.clientY - 29}px`;
+      draggingIntroCrown = true;
+      introCrownDrag.classList.add("dragging");
+      introCrownDrag.style.left = `${e.clientX - 38}px`;
+      introCrownDrag.style.top = `${e.clientY - 27}px`;
+      introCrownDrag.style.marginLeft = "0";
     });
     window.addEventListener("pointermove", (e) => {
-      if (!draggingGate) return;
-      gateCrown.style.left = `${e.clientX - 41}px`;
-      gateCrown.style.top = `${e.clientY - 29}px`;
-      crownSlot.classList.toggle("drag-hover", nearCrownSlot(e.clientX, e.clientY));
+      if (!draggingIntroCrown) return;
+      introCrownDrag.style.left = `${e.clientX - 38}px`;
+      introCrownDrag.style.top = `${e.clientY - 27}px`;
+      crownSlot.classList.toggle("drag-hover", nearSlot(e.clientX, e.clientY));
     });
     window.addEventListener("pointerup", (e) => {
-      if (!draggingGate) return;
-      draggingGate = false;
+      if (!draggingIntroCrown) return;
+      draggingIntroCrown = false;
       crownSlot.classList.remove("drag-hover");
-      if (nearCrownSlot(e.clientX, e.clientY)) completeGate();
-      else {
-        gateCrown.classList.remove("dragging");
-        gateCrown.style.left = "";
-        gateCrown.style.top = "";
+      if (nearSlot(e.clientX, e.clientY)) {
+        introCrownDrag.classList.remove("visible", "dragging");
+        unlockCrown(0);
+      } else {
+        introCrownDrag.classList.remove("dragging");
+        introCrownDrag.style.left = "";
+        introCrownDrag.style.top = "";
+        introCrownDrag.style.marginLeft = "-38px";
       }
     });
-    // También permite tocar la coronita directamente para coronarla rápido si se prefiere
-    gateCrown.addEventListener("click", () => { if (!draggingGate) completeGate(); });
+    introCrownDrag.addEventListener("click", () => {
+      if (!draggingIntroCrown) {
+        introCrownDrag.classList.remove("visible");
+        unlockCrown(0);
+      }
+    });
 
-    // =========================================================================
-    // RENDERIZADO SINCRONIZADO POR FRAME (60 FPS)
-    // =========================================================================
+    // Toques en pantalla / Camelita -> corazones + notas + guiño sin pausar música
+    window.addEventListener("pointerdown", (e) => {
+      if (!running || e.target.closest("button, input, .modal-backdrop")) return;
+      spawnFx(e.clientX, e.clientY, 10, Math.random() < 0.5 ? "heart" : "note");
+      camEyeClosedL.setAttribute("opacity", "1");
+      setTimeout(() => camEyeClosedL.setAttribute("opacity", "0"), 260);
+    });
+
+    // Props 2D por estado
+    function renderSceneProps(state) {
+      let html = "";
+      if (state === "walk_desert_heat" || state === "endless_star_road") {
+        html = `<div class="fixed top-28 right-8 text-6xl animate-pulse drop-shadow-[0_0_24px_rgba(251,146,60,0.9)]">☀️</div>`;
+      } else if (state === "cocktail_toast_dust") {
+        html = `<div class="fixed bottom-[230px] left-1/2 -translate-x-1/2 text-4xl animate-bounce drop-shadow-[0_0_16px_rgba(245,208,118,0.9)]">🍹✨</div>`;
+      } else if (state === "sunrise_together" || state === "hold_hands_smile") {
+        html = `<div class="fixed bottom-[150px] left-1/2 -translate-x-1/2 w-44 h-24 rounded-t-full bg-gradient-to-t from-amber-300/60 to-pink-400/30 blur-md"></div>`;
+      } else if (state === "hug_giant_heart") {
+        html = `<div class="fixed bottom-[225px] left-1/2 -translate-x-1/2 text-5xl animate-pulse drop-shadow-[0_0_24px_rgba(244,63,94,0.95)]">💖</div>`;
+      }
+      sceneProps.innerHTML = html;
+    }
+
     function renderAt(t) {
-      timeCur.textContent = `${t.toFixed(1)}s`;
-      calibClock.textContent = `${t.toFixed(2)}s`;
-      scrubberFill.style.width = `${Math.min(100, (t / CONFIG.totalDuration) * 100)}%`;
+      scrubTime.textContent = `${t.toFixed(1)}s`;
+      clockBadge.textContent = `${t.toFixed(2)}s`;
+      scrubFill.style.width = `${Math.min(100, (t / CONFIG.totalDuration) * 100)}%`;
 
-      // Bloque actual del TIMELINE
       let bIdx = 0;
-      for (let i = 0; i < CONFIG.TIMELINE.length; i++) {
-        if (t >= CONFIG.TIMELINE[i].startTime) bIdx = i;
+      for (let i = 0; i < LYRICS_TIMELINE.length; i++) {
+        if (t >= getBlockStart(LYRICS_TIMELINE[i])) bIdx = i;
       }
-      const blk = CONFIG.TIMELINE[bIdx];
+      const b = LYRICS_TIMELINE[bIdx];
 
-      if (bIdx !== currentBlockIdx) {
-        currentBlockIdx = bIdx;
-        document.body.className = blk.theme || "";
-        const words = blk.text.split(" ");
-        karaokeLine.innerHTML = words.map((w) => `<span class="k-word">${w}</span>`).join(" ");
+      if (bIdx !== currentIdx) {
+        currentIdx = bIdx;
+        document.body.className = `theme-${b.bgTheme}`;
+        karaokeMain.innerHTML = b.lyric.split(" ").map((w) => `<span class="k-word">${w}</span>`).join(" ");
+        karaokeSub.textContent = b.subText || "";
+        renderSceneProps(b.state);
+        if (b.crown) unlockCrown(b.crown - 1);
       }
 
-      // Interpolación palabra por palabra
-      const wordEls = karaokeLine.querySelectorAll(".k-word");
-      const span = Math.max(0.1, blk.endTime - blk.startTime);
-      const frac = Math.max(0, Math.min(1, (t - blk.startTime) / span));
-      const activeWordIdx = Math.floor(frac * wordEls.length);
-      wordEls.forEach((el, idx) => {
-        el.classList.toggle("done", idx < activeWordIdx);
-        el.classList.toggle("active", idx === activeWordIdx);
+      // Karaoke palabra por palabra
+      const bs = getBlockStart(b);
+      const be = getBlockEnd(b);
+      const frac = Math.max(0, Math.min(1, (t - bs) / Math.max(0.1, be - bs)));
+      const wEls = karaokeMain.querySelectorAll(".k-word");
+      const activeW = Math.floor(frac * wEls.length);
+      wEls.forEach((el, idx) => {
+        el.classList.toggle("done", idx < activeW);
+        el.classList.toggle("active", idx === activeW);
       });
 
-      // Aparición de coronas según timestamps exactos (7.0s, 14.5s, 21.5s, 29.0s)
-      CONFIG.TIMELINE.forEach((b) => {
-        if (b.crownAppear && t >= b.crownAppear && !unlockedCrowns[b.crownIndex]) {
-          unlockedCrowns[b.crownIndex] = true;
-          hudCrowns[b.crownIndex].classList.remove("opacity-40");
-          hudCrowns[b.crownIndex].classList.add("bg-amber-400/30");
-          hudScore.textContent = `${unlockedCrowns.filter(Boolean).length} / 4`;
-          showCrownCard(b.crownIndex);
-        }
-      });
+      // Visibilidad corona inicial
+      introCrownDrag.classList.toggle("visible", b.state === "crown_drop_equip" && !unlocked[0]);
+      stageActors.classList.toggle("shake", b.state === "screen_shake_petals");
+      btnFinalEnv.classList.toggle("hidden", b.state !== "grand_finale_envelope");
 
-      // Animaciones exactas de Camelita según `blk.state` y sub-timestamps
+      // Expresiones y posturas de Camelita, Chico y Gatito
       const bounce = Math.abs(Math.sin(t * 7.5));
-      if (blk.state === "intro_sitting") {
-        camelitaPlayer.style.opacity = Math.min(1, 0.25 + t * 0.25);
-        legL.style.transform = "rotate(36deg) translate(-6px,-6px)";
-        legR.style.transform = "rotate(-36deg) translate(6px,-6px)";
-        camelitaSvg.style.transform = "translateY(14px)";
+      camEyesStars.setAttribute("opacity", "0");
+      camEyeClosedR.setAttribute("opacity", "0");
+      camPropEmoji.setAttribute("opacity", "0");
+      camBlush.setAttribute("opacity", "0.55");
+      camSvg.style.transform = `translateY(${-bounce * 6}px)`;
+
+      // Gatito aparece desde 9.5s
+      charCat.style.opacity = t >= 9.5 ? "1" : "0";
+      charCat.style.transform = `translateY(${-Math.abs(Math.sin(t * 8.5)) * 10}px)`;
+
+      // Chico aparece desde 21.0s
+      if (t >= 21.0) {
+        charBoy.style.opacity = "1";
+        charBoy.style.transform = b.state === "sunset_embrace" || b.state === "hold_hands_smile" ? "translateX(12px)" : "translateX(0px)";
       } else {
-        camelitaPlayer.style.opacity = "1";
-        camelitaSvg.style.transform = `translateY(${-bounce * 6}px)`;
+        charBoy.style.opacity = "0";
+        charBoy.style.transform = "translateX(-80px)";
       }
 
-      // Reset expresiones
-      camelitaSparkles.setAttribute("opacity", "0");
-      camelitaHeart.setAttribute("opacity", "0");
-      eyeClosedR.setAttribute("opacity", "0");
+      if (b.state === "intro_tiktok_dark" || b.state === "crown_drop_equip") {
+        camLegL.style.transform = "rotate(34deg) translate(-6px,-6px)";
+        camLegR.style.transform = "rotate(-34deg) translate(6px,-6px)";
+        camSvg.style.transform = "translateY(14px)";
+      } else {
+        camLegL.style.transform = `rotate(${Math.sin(t * 10) * 16}deg)`;
+        camLegR.style.transform = `rotate(${-Math.sin(t * 10) * 16}deg)`;
+      }
 
-      if (blk.state === "sparkle_eyes_walk") {
-        if (t >= 6.50) {
-          legL.style.transform = "rotate(0deg)"; legR.style.transform = "rotate(0deg)";
-          camelitaSparkles.setAttribute("opacity", "1");
-          camelitaBlush.setAttribute("opacity", "0.95");
-        } else {
-          legL.style.transform = `rotate(${Math.sin(t * 10) * 18}deg)`;
-          legR.style.transform = `rotate(${-Math.sin(t * 10) * 18}deg)`;
-        }
-      } else if (blk.state === "happy_dance_spin") {
-        armL.style.transform = `rotate(${45 + Math.sin(t * 10) * 20}deg)`;
-        armR.style.transform = `rotate(${-45 - Math.sin(t * 10) * 20}deg)`;
-        if (t >= 14.00 && t <= 14.90) {
-          const spinFrac = (t - 14.00) / 0.90;
-          camelitaSvg.style.transform = `rotateY(${spinFrac * 360}deg)`;
-        }
-      } else if (blk.state === "hug_heart_petals") {
-        if (Math.random() < 0.25) spawnFx(Math.random() * cw, -10, 1, "petal");
-        if (t >= 21.00) {
-          camelitaHeart.setAttribute("opacity", "1");
-          eyeClosedL.setAttribute("opacity", "1");
-          eyeClosedR.setAttribute("opacity", "1");
-        }
-      } else if (blk.state === "royal_climax") {
-        if (Math.random() < 0.3) spawnFx(Math.random() * cw, -10, 1, "gold");
-        armL.style.transform = "rotate(120deg)";
-        armR.style.transform = "rotate(-120deg)";
-        orbitCrowns.classList.add("visible");
-        if (t >= 34.00) finalEnvelope.classList.add("visible");
+      if (b.state === "reunion_blush_eyes" || b.state === "boy_appears_spark") {
+        camEyesStars.setAttribute("opacity", "1");
+        camBlush.setAttribute("opacity", "0.95");
+      }
+      if (b.state === "spin_happy_camelita" || b.state === "jump_sparkle_turn") {
+        camSvg.style.transform = `translateY(${-bounce * 12}px) rotateY(${((t - bs) * 360) % 360}deg)`;
+      }
+      if (b.state === "love_gust_roses_crown3" || b.state === "screen_shake_petals" || b.state === "petal_and_diamond_rain") {
+        if (Math.random() < 0.35) spawnFx(cw + 10, Math.random() * ch * 0.7, 1, "petal");
+        if (b.state === "screen_shake_petals") camPropEmoji.setAttribute("opacity", "1");
+      }
+      if (b.state === "royal_crown4_unlock" || b.state === "royal_dance_1" || b.state === "grand_finale_envelope") {
+        if (Math.random() < 0.32) spawnFx(Math.random() * cw, -10, 1, "gold");
+        camArmL.style.transform = "rotate(110deg)";
+        camArmR.style.transform = "rotate(-110deg)";
+      } else {
+        camArmL.style.transform = `rotate(${Math.sin(t * 8) * 18}deg)`;
+        camArmR.style.transform = `rotate(${-Math.sin(t * 8) * 18}deg)`;
       }
     }
 
-    function mainLoop(now) {
-      requestAnimationFrame(mainLoop);
-      drawParticles(now);
-
-      if (!isRunning || isPaused) {
-        lastPerf = now;
-        return;
-      }
-
-      const dt = (now - lastPerf) / 1000;
-      lastPerf = now;
-
-      if (!useAudioClock || audio.paused) {
-        virtualElapsed += dt;
-      }
-
-      const elapsed = getElapsed();
-
-      // Compuerta Interactiva en 4.50s
-      if (elapsed >= 4.50 && !gatePassed) {
-        gateWaiting = true;
-        gateWrap.classList.add("active");
-        if (useAudioClock && !audio.paused) audio.pause();
-        virtualElapsed = 4.50;
-        renderAt(4.50);
-        return;
-      }
-
-      renderAt(elapsed);
+    function loop(now) {
+      requestAnimationFrame(loop);
+      drawCanvas(now);
+      if (!running || paused) { lastNow = now; return; }
+      const dt = (now - lastNow) / 1000;
+      lastNow = now;
+      if (!useAudio || audio.paused) virtualT += dt;
+      const cur = useAudio && !audio.paused ? audio.currentTime : virtualT;
+      renderAt(Math.min(CONFIG.totalDuration, cur));
     }
-    requestAnimationFrame(mainLoop);
+    requestAnimationFrame(loop);
 
-    // Inicio
-    btnStart.addEventListener("click", async () => {
-      startOverlay.classList.add("hidden-phase");
-      isRunning = true;
-      lastPerf = performance.now();
+    // Inicio y controles
+    document.getElementById("btn-start").addEventListener("click", async () => {
+      document.getElementById("start-overlay").classList.add("hidden-phase");
+      running = true;
+      lastNow = performance.now();
       if (CONFIG.musicUrl) {
+        audio.src = CONFIG.musicUrl;
         try {
-          audio.currentTime = CONFIG.musicStartTime;
           await audio.play();
-          useAudioClock = true;
-          btnPlayPause.textContent = "⏸ Pausa";
-        } catch {
-          useAudioClock = false;
-        }
+          useAudio = true;
+          document.getElementById("play-label").textContent = "⏸";
+          document.getElementById("btn-play").classList.add("playing");
+        } catch { useAudio = false; }
       }
     });
 
-    btnPlayPause.addEventListener("click", async () => {
-      if (!isRunning || gateWaiting) return;
-      isPaused = !isPaused;
-      if (isPaused) {
-        if (useAudioClock) audio.pause();
-        btnPlayPause.textContent = "▶ Play";
+    document.getElementById("btn-play").addEventListener("click", async () => {
+      if (!running) return;
+      paused = !paused;
+      if (paused) {
+        if (useAudio) audio.pause();
+        document.getElementById("play-label").textContent = "▶";
+        document.getElementById("btn-play").classList.remove("playing");
       } else {
-        lastPerf = performance.now();
-        if (useAudioClock) await audio.play().catch(() => {});
-        btnPlayPause.textContent = "⏸ Pausa";
+        lastNow = performance.now();
+        if (useAudio) await audio.play().catch(() => {});
+        document.getElementById("play-label").textContent = "⏸";
+        document.getElementById("btn-play").classList.add("playing");
       }
     });
 
-    // Scrubber y marcadores de coronitas
-    document.getElementById("scrubber-track").addEventListener("click", (e) => {
-      if (!isRunning) return;
+    document.getElementById("scrub-track").addEventListener("click", (e) => {
+      if (!running) return;
       const r = e.currentTarget.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-      seekTo(ratio * CONFIG.totalDuration);
-    });
-    document.querySelectorAll(".crown-marker").forEach((m) => {
-      m.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (!isRunning) return;
-        seekTo(Number(m.dataset.t));
-      });
+      const targetT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * CONFIG.totalDuration;
+      virtualT = targetT;
+      if (useAudio) audio.currentTime = targetT;
+      renderAt(targetT);
     });
 
-    // Sobre final
-    finalEnvelope.addEventListener("click", () => document.getElementById("final-modal").classList.add("open"));
+    btnFinalEnv.addEventListener("click", () => document.getElementById("final-modal").classList.add("open"));
     document.getElementById("btn-close-final").addEventListener("click", () => document.getElementById("final-modal").classList.remove("open"));
 
-    // Settings / Calibración
-    const settingsModal = document.getElementById("settings-modal");
-    document.getElementById("btn-settings").addEventListener("click", () => {
-      document.getElementById("inp-music-url").value = CONFIG.musicUrl;
-      settingsModal.classList.add("open");
+    // Modal Configuración & Calibración
+    const cfgModal = document.getElementById("cfg-modal");
+    document.getElementById("btn-cfg").addEventListener("click", () => {
+      document.getElementById("inp-url").value = CONFIG.musicUrl;
+      document.getElementById("offset-info").textContent = `Offset actual de voz: ${CONFIG.vocalStartOffset.toFixed(2)}s`;
+      cfgModal.classList.add("open");
     });
-    document.getElementById("btn-close-cfg").addEventListener("click", () => settingsModal.classList.remove("open"));
-    document.getElementById("chk-calib").addEventListener("change", (e) => {
-      calibClock.classList.toggle("hidden", !e.target.checked);
+    document.getElementById("btn-close-cfg").addEventListener("click", () => cfgModal.classList.remove("open"));
+    document.getElementById("btn-set-vocal-offset").addEventListener("click", () => {
+      const cur = useAudio && !audio.paused ? audio.currentTime : virtualT;
+      CONFIG.vocalStartOffset = cur - 14.0;
+      document.getElementById("offset-info").textContent = `Nuevo offset: ${CONFIG.vocalStartOffset.toFixed(2)}s ✅`;
     });
-    document.getElementById("btn-mark-time").addEventListener("click", () => {
-      document.getElementById("mark-log").textContent = `${getElapsed().toFixed(2)}s`;
-    });
-    document.getElementById("btn-apply-cfg").addEventListener("click", async () => {
-      const val = document.getElementById("inp-music-url").value.trim();
-      CONFIG.musicUrl = val;
-      if (val) {
-        audio.src = val;
-        audio.currentTime = CONFIG.musicStartTime + getElapsed();
-        await audio.play().then(() => { useAudioClock = true; }).catch(() => {});
+    document.getElementById("btn-apply-url").addEventListener("click", async () => {
+      const url = document.getElementById("inp-url").value.trim();
+      CONFIG.musicUrl = url;
+      if (url) {
+        audio.src = url;
+        audio.currentTime = virtualT;
+        await audio.play().then(() => { useAudio = true; }).catch(() => {});
       }
-      settingsModal.classList.remove("open");
+      cfgModal.classList.remove("open");
     });
   </script>
 </body>
